@@ -4,6 +4,8 @@ pygame.init()
 
 #creating the screen
 screen = pygame.display.set_mode((800,800))
+
+
 pygame.display.set_caption("Hunter Assassin")
 
 runL = pygame.image.load('Running-02.png')
@@ -24,12 +26,12 @@ left = False
 right = False
 STAND = False
 
-
 def charmove():
     global stand1, runR1, runL1
 
     if STAND == True:
         screen.blit(stand1, (x,y))
+        
     
     elif up == True:
         screen.blit(runL1, (x,y))
@@ -53,10 +55,7 @@ def charmove():
         screen.blit(runR1, (x,y))
 
     
-
-    
     pygame.display.update()
-    
 
 
 #game loop
@@ -104,6 +103,7 @@ while running == True:
       
     charmove()
 
-    screen.fill((0,128,0))
+    screen.fill((152,251,152))
+    
 
 pygame.quit()
