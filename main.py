@@ -58,7 +58,7 @@ def charmove():
 #game loop
 running = True
 while running == True:
-    clock.tick(30)
+    
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -75,14 +75,14 @@ while running == True:
                 runL1 = pygame. transform. rotate(runL, 90)
                 stand1 = pygame. transform. rotate(stand, 90)
 
-            if event.key == pygame.K_RIGHT :
+            elif event.key == pygame.K_RIGHT :
                 x += vel
                 right = True
                 runR1 = pygame. transform. rotate(runR, -90)
                 runL1 = pygame. transform. rotate(runL, -90)
                 stand1 = pygame. transform. rotate(stand, -90)
 
-            if event.key == pygame.K_UP :
+            elif event.key == pygame.K_UP :
                 y -= vel
                 up = True
                 runR1 = pygame. transform. rotate(runR, 0)
@@ -90,7 +90,7 @@ while running == True:
                 stand1 = pygame. transform. rotate(stand, 0)
 
 
-            if event.key == pygame.K_DOWN  :
+            elif event.key == pygame.K_DOWN  :
                 y += vel
                 down = True
                 runR1 = pygame.transform.rotate(runR, 180)
