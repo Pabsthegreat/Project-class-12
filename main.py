@@ -6,6 +6,9 @@ pygame.init()
 screen = pygame.display.set_mode((800,800))
 pygame.display.set_caption("Hunter Assassin")
 
+icon = pygame.image.load("Resting-01.png")
+pygame.display.set_icon(icon)
+
 runL = pygame.image.load('Running-02.png')
 runR = pygame.image.load('Running-03.png')
 stand = pygame.image.load('Resting-01.png')
