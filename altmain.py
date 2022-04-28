@@ -18,49 +18,58 @@ enemy = pygame.image.load("enemy.png")
 
 
 clock = pygame.time.Clock()
-x = 700
-y = 756
-width = 64
-height = 64
-vel = 5
-up = False
-down = False
-left = False
-right = False
-STAND = False
 
+class player(object):
+    def __init__(self, x, y, width,height): 
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.vel = 5
+        self.up = False
+        self.down = False
+        self.left = False
+        self.right = False
+        self.STAND = False
 
-def charmove():
-    global stand1, runR1, runL1
+    def charmove(self):
+        global stand1, runR1, runL1, screen 
 
-    if STAND == True:
-        screen.blit(stand1, (x,y))
-    
-    elif up == True:
-        screen.blit(runR1, (x,y))
-        pygame.display.update()
-        screen.blit(runL1, (x,y))
-
-    elif down == True:
+        if self.STAND == True:
+            screen.blit(stand1, (self.x,self.y))
         
-        screen.blit(runR1, (x,y))
-        pygame.display.update()
-        screen.blit(runL1, (x,y))
+        elif self.up == True:
+            screen.blit(runR1, (self.x,self.y))
+            pygame.display.update()
+            screen.blit(runL1, (self.x,self.y))
 
-    elif right == True:
-        screen.blit(runR1, (x,y))
-        pygame.display.update()
-        screen.blit(runL1, (x,y))
+        elif self.down == True:
+            
+            screen.blit(runR1, (self.x,self.y))
+            pygame.display.update()
+            screen.blit(runL1, (self.x,self.y))
 
-    elif left == True:
-        screen.blit(runR1, (x,y))
-        pygame.display.update()
-        screen.blit(runL1, (x,y))
+        elif self.right == True:
+            screen.blit(runR1, (self.x,self.y))
+            pygame.display.update()
+            screen.blit(runL1, (lad.x,lad.y))
 
-    pygame.display.update()
+        elif self.left == True:
+            screen.blit(runR1, (self.x,self.y))
+            pygame.display.update()
+            screen.blit(runL1, (self.x,self.y))
+
+        pygame.display.update()
     
+def draw():
+    lad.charmove()
+    pygame.display.update()
+
+
+
 
 #game loop
+lad = player(400,100,64,64)
 running = True
 while running == True:
     clock.tick(30)
@@ -69,59 +78,55 @@ while running == True:
         if event.type == pygame.QUIT:
             running = False
 
-
-    #just for now
-    screen.blit(enemy, (100,100))
-    pygame.display.update()
-
     keys = pygame.key.get_pressed()
 
     if keys [pygame.K_LEFT] or keys [pygame.K_a] :
-        x -= vel
-        left = True
+        lad.x -= lad.vel
+        lad.left = True
         runR1 = pygame. transform. rotate(runR, 90)
         runL1 = pygame. transform. rotate(runL, 90)
         stand1 = pygame. transform. rotate(stand, 90)
 
     elif keys [pygame.K_RIGHT] or keys [pygame.K_d]  :
-        x += vel
-        right = True
+        lad.x += lad.vel
+        lad.right = True
         runR1 = pygame. transform. rotate(runR, -90)
         runL1 = pygame. transform. rotate(runL, -90)
         stand1 = pygame. transform. rotate(stand, -90)
 
     elif keys [pygame.K_UP] or keys [pygame.K_w] :
-        y -= vel
-        up = True
+        lad.y -= lad.vel
+        lad.up = True
         runR1 = pygame. transform. rotate(runR, 0)
         runL1 = pygame. transform. rotate(runL, 0)
         stand1 = pygame. transform. rotate(stand, 0)
 
     elif keys [pygame.K_DOWN] or keys [pygame.K_s] :
-        y += vel
-        down = True
+        lad.y += lad.vel
+        lad.down = True
         runR1 = pygame.transform.rotate(runR, 180)
         runL1 = pygame.transform.rotate(runL, 180)
         stand1 = pygame. transform. rotate(stand, 180)
     
     if keys [pygame.KEYUP]:
-        STAND = True
+        lad.STAND = True
       
-    charmove()
+    
 
 #have to do it this was , as "and", "or" together in the previous method was not working when awsd was added
-    if x <= 0 :
-        x = 0
+    if lad.x <= 0 :
+        lad.x = 0
     
-    if y <= 0:
-        y = 0
+    if lad.y <= 0:
+        lad.y = 0
 
-    if x >= 736:
-        x = 736
+    if lad.x >= 736:
+        lad.x = 736
 
-    if y >= 736:
-        y = 736   
+    if lad.y >= 736:
+        lad.y = 736   
 
     screen.fill((0,128,0))
+    draw()
 
 pygame.quit()
