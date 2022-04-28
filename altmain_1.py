@@ -8,10 +8,11 @@ pygame.display.set_caption("Hunter Assassin")
 
 Walk = [pygame.image.load('Hunter_Move/1.png'),pygame.image.load('Hunter_Move/2.png'),pygame.image.load('Hunter_Move/3.png'),
 pygame.image.load('Hunter_Move/4.png'),pygame.image.load('Hunter_Move/5.png'),pygame.image.load('Hunter_Move/6.png'),
-pygame.image.load('Hunter_Move/7.png'),pygame.image.load('Hunter_Move/8.png'),pygame.image.load('Hunter_Move/8a.png'),
-pygame.image.load('Hunter_Move/9.png'),pygame.image.load('Hunter_Move/10.png'),pygame.image.load('Hunter_Move/11.png'),
+pygame.image.load('Hunter_Move/7.png'),pygame.image.load('Hunter_Move/8.png'), pygame.image.load("Hunter_Move/8a.png"),pygame.image.load('Hunter_Move/9.png'),pygame.image.load('Hunter_Move/10.png'),pygame.image.load('Hunter_Move/11.png'),
 pygame.image.load('Hunter_Move/12.png'),pygame.image.load('Hunter_Move/13.png'),pygame.image.load('Hunter_Move/14.png'),
 pygame.image.load('Hunter_Move/15.png')]
+
+rest = pygame.image.load("Hunter_Move/8a.png")
 
 icon = pygame.image.load("Hunter_Move/8a.png")
 pygame.display.set_icon(icon)
@@ -39,34 +40,38 @@ class player(object):
 
 
     def move(self):
-        
+
         if self.stand == True:
-                screen.blit('Hunter_Move/8a.png')
+            screen.blit(rest, (self.x, self.y))
+            pygame.display.update()
+
+        elif self.COUNT <= 15:
+
+            if self.up == True:
+                m = pygame.transform.rotate(Walk[self.COUNT], 0)
+                screen.blit(m,(self.x,self.y))
                 pygame.display.update()
+
+            elif self.down == True:
+                m = pygame.transform.rotate(Walk[self.COUNT], 180)
+                screen.blit(m,(self.x,self.y))
+                pygame.display.update()
+
+            elif self.right == True:
+                m = pygame.transform.rotate(Walk[self.COUNT], -90)
+                screen.blit(m,(self.x,self.y))
+                pygame.display.update()
+
+            elif self.left == True:
+                m = pygame.transform.rotate(Walk[self.COUNT], 90)
+                screen.blit(m,(self.x,self.y))
+                pygame.display.update()
+
+            self.COUNT += 1
+            
 
         else:
-            if self.COUNT < 16:
-
-                if self.up == True:
-                    m = pygame. transform. rotate(Walk[self.COUNT], 0)
-                    screen.blit(m,(self.x,self.y))
-
-                elif self.down == True:
-                    m = pygame. transform. rotate(Walk[self.COUNT], 180)
-                    screen.blit(m,(self.x,self.y))
-
-                elif self.right == True:
-                    m = pygame. transform. rotate(Walk[self.COUNT], -90)
-                    screen.blit(m,(self.x,self.y))
-
-                elif self.left == True:
-                    m = pygame. transform. rotate(Walk[self.COUNT], 90)
-                    screen.blit(m,(self.x,self.y))
-
-                self.COUNT += 1
-                pygame.display.update()
-            else:
-                self.COUNT = 0
+            self.COUNT = 0
 
 
 def draw():
@@ -76,10 +81,10 @@ def draw():
 
 
 #game loop
-lad = player(400,100,64,64)
+lad = player(400,100,128,128)
 running = True
 while running == True:
-    clock.tick(30)
+    clock.tick(48)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -90,22 +95,26 @@ while running == True:
     if keys [pygame.K_LEFT] or keys [pygame.K_a] :
         lad.x -= lad.vel
         lad.left = True
-        
+        rest = pygame. transform. rotate(rest, 90)
+
 
     elif keys [pygame.K_RIGHT] or keys [pygame.K_d]  :
         lad.x += lad.vel
         lad.right = True
+        rest = pygame. transform. rotate(rest, -90)
         
     elif keys [pygame.K_UP] or keys [pygame.K_w] :
         lad.y -= lad.vel
         lad.up = True
+        rest = pygame. transform. rotate(rest, 0)
         
     elif keys [pygame.K_DOWN] or keys [pygame.K_s] :
         lad.y += lad.vel
         lad.down = True
+        rest = pygame. transform. rotate(rest, 180)
         
     
-    if keys [pygame.KEYUP]:
+    while keys [pygame.KEYUP]:
         lad.stand = True
       
     
@@ -117,13 +126,15 @@ while running == True:
     if lad.y <= 0:
         lad.y = 0
 
-    if lad.x >= 736:
-        lad.x = 736
+    if lad.x >= 672:
+        lad.x = 672
 
-    if lad.y >= 736:
-        lad.y = 736   
+    if lad.y >= 672:
+        lad.y = 672   
 
     screen.fill((0,0,0))
     draw()
 
 pygame.quit()
+
+

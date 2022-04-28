@@ -9,8 +9,8 @@ pygame.display.set_caption("Hunter Assassin")
 icon = pygame.image.load("Resting-01.png")
 pygame.display.set_icon(icon)
 
-runL = pygame.image.load('sprite.gif')
-runR = pygame.image.load('sprite.gif')
+runL = pygame.image.load('Running-02.png')
+runR = pygame.image.load('Running-03.png')
 stand = pygame.image.load('Resting-01.png')
 bg =  pygame.image.load('bg.png')
 #enemy
@@ -124,6 +124,7 @@ while running == True:
 
     if lad.y >= 672:
         lad.y = 672   
+
 
     draw()
 
