@@ -1,3 +1,4 @@
+from this import d
 import pygame
 
 pygame.init()
@@ -69,15 +70,54 @@ class player(object):
 
             self.COUNT += 1
             
-
         else:
             self.COUNT = 0
 
 
 def draw():
     screen.blit(bg, (0,0))
-    lad.move()
+    #lad.move()
     pygame.display.update()
+
+COUNT = 0
+
+def mom(direction,x,y):
+    
+    global COUNT,Walk,screen
+
+    if direction == None:
+        screen.blit(rest, (x, y))
+        pygame.display.update()
+        COUNT += 0
+
+    if direction == "up":
+        m = pygame.transform.rotate(Walk[COUNT], 0)
+        screen.blit(m,(x,y))
+        pygame.display.update()
+        COUNT += 1
+
+    if direction == "down":
+        m = pygame.transform.rotate(Walk[COUNT], 180)
+        screen.blit(m,(x,y))
+        pygame.display.update()
+        COUNT += 1
+      
+
+    if direction == "left":
+        m = pygame.transform.rotate(Walk[COUNT], 90)
+        screen.blit(m,(x,y))
+        pygame.display.update()
+        COUNT += 1
+
+    if direction == "right":
+        m = pygame.transform.rotate(Walk[COUNT], -90)
+        screen.blit(m,(x,y))
+        pygame.display.update()
+        COUNT += 1
+
+
+    if COUNT == 14:
+        COUNT = 0
 
 
 #game loop
@@ -95,27 +135,32 @@ while running == True:
     if keys [pygame.K_LEFT] or keys [pygame.K_a] :
         lad.x -= lad.vel
         lad.left = True
+        mom("left",lad.x,lad.y)
         rest = pygame. transform. rotate(rest, 90)
 
 
     elif keys [pygame.K_RIGHT] or keys [pygame.K_d]  :
         lad.x += lad.vel
         lad.right = True
+        mom("right",lad.x,lad.y)
         rest = pygame. transform. rotate(rest, -90)
         
     elif keys [pygame.K_UP] or keys [pygame.K_w] :
         lad.y -= lad.vel
         lad.up = True
+        mom("up",lad.x,lad.y)
         rest = pygame. transform. rotate(rest, 0)
         
     elif keys [pygame.K_DOWN] or keys [pygame.K_s] :
         lad.y += lad.vel
         lad.down = True
+        mom("down",lad.x,lad.y)
         rest = pygame. transform. rotate(rest, 180)
         
     
     while keys [pygame.KEYUP]:
         lad.stand = True
+        mom(None,lad.x,lad.y)
       
     
 
@@ -137,4 +182,4 @@ while running == True:
 
 pygame.quit()
 
-
+COUNT = 0
