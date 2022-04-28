@@ -4,3 +4,6 @@ project class 12
 
 player movements completed
 planning for enemy
+how to do collison 
+bullets
+enemy reactions
