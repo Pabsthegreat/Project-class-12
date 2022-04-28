@@ -1,4 +1,4 @@
-from this import d
+
 import pygame
 
 pygame.init()
@@ -166,11 +166,7 @@ while running == True:
         mom('None' ,lad.x,lad.y) 
         lad.stand = True
     
-    lad.move()  
-
-      
     
-
 #have to do it this was , as "and", "or" together in the previous method was not working when awsd was added
     if lad.x <= 0 :
         lad.x = 0
