@@ -74,28 +74,28 @@ while running == True:
    
     keys = pygame.key.get_pressed()
 
-    if keys [pygame.K_LEFT] and x > vel :
+    if keys [pygame.K_LEFT] or keys [pygame.K_a] and x > vel :
         x -= vel
         left = True
         runR1 = pygame. transform. rotate(runR, 90)
         runL1 = pygame. transform. rotate(runL, 90)
         stand1 = pygame. transform. rotate(stand, 90)
 
-    elif keys [pygame.K_RIGHT] and x < 800 - width - vel :
+    elif keys [pygame.K_RIGHT] or keys [pygame.K_d] and x < 800 - width - vel :
         x += vel
         right = True
         runR1 = pygame. transform. rotate(runR, -90)
         runL1 = pygame. transform. rotate(runL, -90)
         stand1 = pygame. transform. rotate(stand, -90)
 
-    elif keys [pygame.K_UP] and y > vel:
+    elif keys [pygame.K_UP] or keys [pygame.K_w] and y > vel:
         y -= vel
         up = True
         runR1 = pygame. transform. rotate(runR, 0)
         runL1 = pygame. transform. rotate(runL, 0)
         stand1 = pygame. transform. rotate(stand, 0)
 
-    elif keys [pygame.K_DOWN] and y < 800 - width - vel :
+    elif keys [pygame.K_DOWN] or keys [pygame.K_s] and y < 800 - width - vel :
         y += vel
         down = True
         runR1 = pygame.transform.rotate(runR, 180)
