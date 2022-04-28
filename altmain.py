@@ -12,7 +12,7 @@ pygame.display.set_icon(icon)
 runL = pygame.image.load('Running-02.png')
 runR = pygame.image.load('Running-03.png')
 stand = pygame.image.load('Resting-01.png')
-
+bg =  pygame.image.load('bg.png')
 #enemy
 enemy = pygame.image.load("enemy.png")
 
@@ -62,6 +62,7 @@ class player(object):
         pygame.display.update()
     
 def draw():
+    screen.blit(bg, (0,0))
     lad.charmove()
     pygame.display.update()
 
