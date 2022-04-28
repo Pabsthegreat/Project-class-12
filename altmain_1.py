@@ -21,7 +21,7 @@ pygame.display.set_icon(icon)
 bg =  pygame.image.load('bg.png')
 
 #enemy
-enemy = pygame.image.load("enemy.png")
+#enemy = pygame.image.load("enemy.png")
 
 clock = pygame.time.Clock()
 
@@ -84,38 +84,40 @@ COUNT = 0
 
 def mom(direction,x,y):
     
-    global COUNT,Walk,screen
+    global COUNT
+
     if COUNT <= 15:
         if direction == 'None':
             screen.blit(rest, (x, y))
-            pygame.display.update()
+            
             COUNT += 0
 
         elif direction == "up":
             m = pygame.transform.rotate(Walk[COUNT], 0)
             screen.blit(m,(x,y))
-            pygame.display.update()
+            
             COUNT += 1
 
         elif direction == "down":
             m = pygame.transform.rotate(Walk[COUNT], 180)
             screen.blit(m,(x,y))
-            pygame.display.update()
+           
             COUNT += 1
         
 
         elif direction == "left":
             m = pygame.transform.rotate(Walk[COUNT], 90)
             screen.blit(m,(x,y))
-            pygame.display.update()
+            
             COUNT += 1
 
         elif direction == "right":
             m = pygame.transform.rotate(Walk[COUNT], -90)
             screen.blit(m,(x,y))
-            pygame.display.update()
+            
             COUNT += 1
 
+        pygame.display.update()
 
     else:
         COUNT = 0
@@ -125,7 +127,7 @@ def mom(direction,x,y):
 lad = player(400,100,128,128)
 running = True
 while running == True:
-    clock.tick(30)
+    clock.tick(60)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -137,31 +139,34 @@ while running == True:
     
     if keys [pygame.K_LEFT] or keys [pygame.K_a] :
         lad.x -= lad.vel
-        #lad.left = True
+        lad.left = True
         mom("left",lad.x,lad.y)
         rest = pygame. transform. rotate(rest, -90)
 
 
     elif keys [pygame.K_RIGHT] or keys [pygame.K_d]  :
         lad.x += lad.vel
-        #lad.right = True
+        lad.right = True
         mom("right",lad.x,lad.y)
         rest = pygame. transform. rotate(rest, 90)
         
     elif keys [pygame.K_UP] or keys [pygame.K_w] :
         lad.y -= lad.vel
-        #lad.up = True
+        lad.up = True
         mom("up",lad.x,lad.y)
         rest = pygame. transform. rotate(rest, 0)
         
     elif keys [pygame.K_DOWN] or keys [pygame.K_s] :
         lad.y += lad.vel
-        #lad.down = True
+        lad.down = True
         mom("down",lad.x,lad.y)
         rest = pygame. transform. rotate(rest, 180)
 
     else:
-        mom('None' ,lad.x,lad.y)   
+        mom('None' ,lad.x,lad.y) 
+        lad.stand = True
+    
+    lad.move()  
 
       
     
