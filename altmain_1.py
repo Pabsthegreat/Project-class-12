@@ -77,6 +77,7 @@ class player(object):
 def draw():
     screen.blit(bg, (0,0))
     #lad.move()
+    
     pygame.display.update()
 
 COUNT = 0
@@ -84,39 +85,39 @@ COUNT = 0
 def mom(direction,x,y):
     
     global COUNT,Walk,screen
+    if COUNT <= 15:
+        if direction == 'None':
+            screen.blit(rest, (x, y))
+            pygame.display.update()
+            COUNT += 0
 
-    if direction == None:
-        screen.blit(rest, (x, y))
-        pygame.display.update()
-        COUNT += 0
+        elif direction == "up":
+            m = pygame.transform.rotate(Walk[COUNT], 0)
+            screen.blit(m,(x,y))
+            pygame.display.update()
+            COUNT += 1
 
-    if direction == "up":
-        m = pygame.transform.rotate(Walk[COUNT], 0)
-        screen.blit(m,(x,y))
-        pygame.display.update()
-        COUNT += 1
+        elif direction == "down":
+            m = pygame.transform.rotate(Walk[COUNT], 180)
+            screen.blit(m,(x,y))
+            pygame.display.update()
+            COUNT += 1
+        
 
-    if direction == "down":
-        m = pygame.transform.rotate(Walk[COUNT], 180)
-        screen.blit(m,(x,y))
-        pygame.display.update()
-        COUNT += 1
-      
+        elif direction == "left":
+            m = pygame.transform.rotate(Walk[COUNT], 90)
+            screen.blit(m,(x,y))
+            pygame.display.update()
+            COUNT += 1
 
-    if direction == "left":
-        m = pygame.transform.rotate(Walk[COUNT], 90)
-        screen.blit(m,(x,y))
-        pygame.display.update()
-        COUNT += 1
-
-    if direction == "right":
-        m = pygame.transform.rotate(Walk[COUNT], -90)
-        screen.blit(m,(x,y))
-        pygame.display.update()
-        COUNT += 1
+        elif direction == "right":
+            m = pygame.transform.rotate(Walk[COUNT], -90)
+            screen.blit(m,(x,y))
+            pygame.display.update()
+            COUNT += 1
 
 
-    if COUNT == 14:
+    else:
         COUNT = 0
 
 
@@ -124,7 +125,7 @@ def mom(direction,x,y):
 lad = player(400,100,128,128)
 running = True
 while running == True:
-    clock.tick(48)
+    clock.tick(30)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -132,35 +133,36 @@ while running == True:
 
     keys = pygame.key.get_pressed()
 
+
+    
     if keys [pygame.K_LEFT] or keys [pygame.K_a] :
         lad.x -= lad.vel
-        lad.left = True
+        #lad.left = True
         mom("left",lad.x,lad.y)
-        rest = pygame. transform. rotate(rest, 90)
+        rest = pygame. transform. rotate(rest, -90)
 
 
     elif keys [pygame.K_RIGHT] or keys [pygame.K_d]  :
         lad.x += lad.vel
-        lad.right = True
+        #lad.right = True
         mom("right",lad.x,lad.y)
-        rest = pygame. transform. rotate(rest, -90)
+        rest = pygame. transform. rotate(rest, 90)
         
     elif keys [pygame.K_UP] or keys [pygame.K_w] :
         lad.y -= lad.vel
-        lad.up = True
+        #lad.up = True
         mom("up",lad.x,lad.y)
         rest = pygame. transform. rotate(rest, 0)
         
     elif keys [pygame.K_DOWN] or keys [pygame.K_s] :
         lad.y += lad.vel
-        lad.down = True
+        #lad.down = True
         mom("down",lad.x,lad.y)
         rest = pygame. transform. rotate(rest, 180)
-        
-    
-    while keys [pygame.KEYUP]:
-        lad.stand = True
-        mom(None,lad.x,lad.y)
+
+    else:
+        mom('None' ,lad.x,lad.y)   
+
       
     
 
@@ -179,7 +181,7 @@ while running == True:
 
     screen.fill((0,0,0))
     draw()
-
+    
 pygame.quit()
 
 COUNT = 0
