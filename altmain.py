@@ -9,8 +9,8 @@ pygame.display.set_caption("Hunter Assassin")
 icon = pygame.image.load("Resting-01.png")
 pygame.display.set_icon(icon)
 
-runL = pygame.image.load('Running-02.png')
-runR = pygame.image.load('Running-03.png')
+runL = pygame.image.load('sprite.gif')
+runR = pygame.image.load('sprite.gif')
 stand = pygame.image.load('Resting-01.png')
 bg =  pygame.image.load('bg.png')
 #enemy
@@ -68,7 +68,7 @@ def draw():
 
 
 #game loop
-lad = player(400,100,64,64)
+lad = player(400,100,128,128)
 running = True
 while running == True:
     clock.tick(30)
@@ -119,13 +119,12 @@ while running == True:
     if lad.y <= 0:
         lad.y = 0
 
-    if lad.x >= 736:
-        lad.x = 736
+    if lad.x >= 672:
+        lad.x = 672
 
-    if lad.y >= 736:
-        lad.y = 736   
+    if lad.y >= 672:
+        lad.y = 672   
 
-    screen.fill((0,128,0))
     draw()
 
 pygame.quit()
