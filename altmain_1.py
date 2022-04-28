@@ -134,8 +134,6 @@ while running == True:
             running = False
 
     keys = pygame.key.get_pressed()
-
-
     
     if keys [pygame.K_LEFT] or keys [pygame.K_a] :
         lad.x -= lad.vel
