@@ -4,6 +4,8 @@ pygame.init()
 
 #creating the screen
 screen = pygame.display.set_mode((800,800))
+
+
 pygame.display.set_caption("Hunter Assassin")
 
 icon = pygame.image.load("Resting-01.png")
@@ -13,13 +15,11 @@ runL = pygame.image.load('Running-02.png')
 runR = pygame.image.load('Running-03.png')
 stand = pygame.image.load('Resting-01.png')
 
-#enemy
-enemy = pygame.image.load("enemy.png")
 
 
 clock = pygame.time.Clock()
-x = 700
-y = 756
+x = 400
+y = 400
 width = 64
 height = 64
 vel = 5
@@ -29,36 +29,37 @@ left = False
 right = False
 STAND = False
 
-
 def charmove():
     global stand1, runR1, runL1
 
     if STAND == True:
         screen.blit(stand1, (x,y))
+        
     
     elif up == True:
-        screen.blit(runR1, (x,y))
-        pygame.display.update()
         screen.blit(runL1, (x,y))
+        pygame.display.update()
+        screen.blit(runR1, (x,y))
 
     elif down == True:
         
-        screen.blit(runR1, (x,y))
-        pygame.display.update()
         screen.blit(runL1, (x,y))
+        pygame.display.update()
+        screen.blit(runR1, (x,y))
 
     elif right == True:
-        screen.blit(runR1, (x,y))
-        pygame.display.update()
         screen.blit(runL1, (x,y))
+        pygame.display.update()
+        screen.blit(runR1, (x,y))
 
     elif left == True:
-        screen.blit(runR1, (x,y))
-        pygame.display.update()
         screen.blit(runL1, (x,y))
+        pygame.display.update()
+        screen.blit(runR1, (x,y))
 
-    pygame.display.update()
     
+    pygame.display.update()
+
 
 #game loop
 running = True
@@ -68,36 +69,32 @@ while running == True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-
-
-    #just for now
-    screen.blit(enemy, (100,100))
-    pygame.display.update()
-
+    
+   
     keys = pygame.key.get_pressed()
 
-    if keys [pygame.K_LEFT] or keys [pygame.K_a] :
+    if keys [pygame.K_LEFT] or keys [pygame.K_a] and x > vel :
         x -= vel
         left = True
         runR1 = pygame. transform. rotate(runR, 90)
         runL1 = pygame. transform. rotate(runL, 90)
         stand1 = pygame. transform. rotate(stand, 90)
 
-    elif keys [pygame.K_RIGHT] or keys [pygame.K_d]  :
+    elif keys [pygame.K_RIGHT] or keys [pygame.K_d] and x < 800 - width - vel :
         x += vel
         right = True
         runR1 = pygame. transform. rotate(runR, -90)
         runL1 = pygame. transform. rotate(runL, -90)
         stand1 = pygame. transform. rotate(stand, -90)
 
-    elif keys [pygame.K_UP] or keys [pygame.K_w] :
+    elif keys [pygame.K_UP] or keys [pygame.K_w] and y > vel:
         y -= vel
         up = True
         runR1 = pygame. transform. rotate(runR, 0)
         runL1 = pygame. transform. rotate(runL, 0)
         stand1 = pygame. transform. rotate(stand, 0)
 
-    elif keys [pygame.K_DOWN] or keys [pygame.K_s] :
+    elif keys [pygame.K_DOWN] or keys [pygame.K_s] and y < 800 - width - vel :
         y += vel
         down = True
         runR1 = pygame.transform.rotate(runR, 180)
@@ -109,19 +106,7 @@ while running == True:
       
     charmove()
 
-#have to do it this was , as "and", "or" together in the previous method was not working when awsd was added
-    if x <= 0 :
-        x = 0
+    screen.fill((152,251,152))
     
-    if y <= 0:
-        y = 0
-
-    if x >= 736:
-        x = 736
-
-    if y >= 736:
-        y = 736   
-
-    screen.fill((0,128,0))
 
 pygame.quit()
