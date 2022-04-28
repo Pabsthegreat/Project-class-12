@@ -52,7 +52,7 @@ class player(object):
         elif self.right == True:
             screen.blit(runR1, (self.x,self.y))
             pygame.display.update()
-            screen.blit(runL1, (lad.x,lad.y))
+            screen.blit(runL1, (self.x,self.y))
 
         elif self.left == True:
             screen.blit(runR1, (self.x,self.y))
@@ -64,8 +64,6 @@ class player(object):
 def draw():
     lad.charmove()
     pygame.display.update()
-
-
 
 
 #game loop
