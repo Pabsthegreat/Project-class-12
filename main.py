@@ -11,11 +11,14 @@ pygame.display.set_caption("Hunter Assassin")
 icon = pygame.image.load("Resting-01.png")
 pygame.display.set_icon(icon)
 
-runL = pygame.image.load('Running-02.png')
-runR = pygame.image.load('Running-03.png')
-stand = pygame.image.load('Resting-01.png')
+Walk = [pygame.image.load('Hunter_Move/1.png'),pygame.image.load('Hunter_Move/2.png'),pygame.image.load('Hunter_Move/3.png'),
+pygame.image.load('Hunter_Move/4.png'),pygame.image.load('Hunter_Move/5.png'),pygame.image.load('Hunter_Move/6.png'),
+pygame.image.load('Hunter_Move/7.png'),pygame.image.load('Hunter_Move/8.png'), pygame.image.load("Hunter_Move/8a.png"),pygame.image.load('Hunter_Move/9.png'),pygame.image.load('Hunter_Move/10.png'),pygame.image.load('Hunter_Move/11.png'),
+pygame.image.load('Hunter_Move/12.png'),pygame.image.load('Hunter_Move/13.png'),pygame.image.load('Hunter_Move/14.png'),
+pygame.image.load('Hunter_Move/15.png')]
 
-
+rest = pygame.image.load("Hunter_Move/8a.png")
+rest1 = rest
 
 clock = pygame.time.Clock()
 x = 400
@@ -28,37 +31,42 @@ down = False
 left = False
 right = False
 STAND = False
+COUNT = 0
 
-def charmove():
-    global stand1, runR1, runL1
+def move():
+    global COUNT,rest1
 
     if STAND == True:
-        screen.blit(stand1, (x,y))
+        screen.blit(rest1, (x, y))
+        pygame.display.update()
+
+    elif COUNT <= 15:
+
+        if up == True:
+            m = pygame.transform.rotate(Walk[COUNT], 0)
+            screen.blit(m,(x,y))
+            pygame.display.update()
+
+        if down == True:
+            m = pygame.transform.rotate(Walk[COUNT], 180)
+            screen.blit(m,(x,y))
+            pygame.display.update()
+
+        if right == True:
+            m = pygame.transform.rotate(Walk[COUNT], -90)
+            screen.blit(m,(x,y))
+            pygame.display.update()
+
+        if left == True:
+            m = pygame.transform.rotate(Walk[COUNT], 90)
+            screen.blit(m,(x,y))
+            pygame.display.update()
+
+        COUNT += 1
         
-    
-    elif up == True:
-        screen.blit(runL1, (x,y))
-        pygame.display.update()
-        screen.blit(runR1, (x,y))
+    else:
+        COUNT = 0
 
-    elif down == True:
-        
-        screen.blit(runL1, (x,y))
-        pygame.display.update()
-        screen.blit(runR1, (x,y))
-
-    elif right == True:
-        screen.blit(runL1, (x,y))
-        pygame.display.update()
-        screen.blit(runR1, (x,y))
-
-    elif left == True:
-        screen.blit(runL1, (x,y))
-        pygame.display.update()
-        screen.blit(runR1, (x,y))
-
-    
-    pygame.display.update()
 
 
 #game loop
@@ -69,42 +77,49 @@ while running == True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-    
-   
+
+        if event.type == pygame.KEYUP:
+            STAND = True
+
     keys = pygame.key.get_pressed()
 
     if keys [pygame.K_LEFT] or keys [pygame.K_a] and x > vel :
         x -= vel
         left = True
-        runR1 = pygame. transform. rotate(runR, 90)
-        runL1 = pygame. transform. rotate(runL, 90)
-        stand1 = pygame. transform. rotate(stand, 90)
+        up = False
+        down = False
+        right = False
+        STAND = False
+        rest1 = pygame.transform.rotate(rest, 90)
 
     elif keys [pygame.K_RIGHT] or keys [pygame.K_d] and x < 800 - width - vel :
         x += vel
         right = True
-        runR1 = pygame. transform. rotate(runR, -90)
-        runL1 = pygame. transform. rotate(runL, -90)
-        stand1 = pygame. transform. rotate(stand, -90)
+        up = False
+        down = False
+        left = False
+        STAND = False
+        rest1 = pygame.transform.rotate(rest, -90)
 
     elif keys [pygame.K_UP] or keys [pygame.K_w] and y > vel:
         y -= vel
         up = True
-        runR1 = pygame. transform. rotate(runR, 0)
-        runL1 = pygame. transform. rotate(runL, 0)
-        stand1 = pygame. transform. rotate(stand, 0)
+        right = False
+        down = False
+        left = False
+        STAND = False
+        rest1 = pygame.transform.rotate(rest, 0)
 
     elif keys [pygame.K_DOWN] or keys [pygame.K_s] and y < 800 - width - vel :
         y += vel
         down = True
-        runR1 = pygame.transform.rotate(runR, 180)
-        runL1 = pygame.transform.rotate(runL, 180)
-        stand1 = pygame. transform. rotate(stand, 180)
-    
-    if keys [pygame.KEYUP]:
-        STAND = True
+        STAND = False
+        up = False
+        right = False
+        left = False
+        rest1 = pygame.transform.rotate(rest, 180)     
       
-    charmove()
+    move()
 
     screen.fill((152,251,152))
     
