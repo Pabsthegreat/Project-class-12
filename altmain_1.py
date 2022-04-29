@@ -27,7 +27,7 @@ w16 = pygame.image.load('Hunter_Move/15.png').convert_alpha()
 Walk = [w1,w2,w3,w4,w5,w6,w7,w8,rest,w10,w11,w12,w13,w14,w15,w16]
 
 rest = pygame.image.load("Hunter_Move/8a.png")
-
+rest1 = rest
 icon = pygame.image.load("Hunter_Move/8a.png")
 pygame.display.set_icon(icon)
 
@@ -55,7 +55,7 @@ class player(object):
 
     def move(self):
         if self.stand == True:
-            screen.blit(rest, (self.x, self.y))
+            screen.blit(rest1, (self.x, self.y))
             pygame.display.update()
 
         elif self.COUNT <= 15:
@@ -163,7 +163,7 @@ while running == True:
         lad.down = False
         lad.right = False
         lad.stand = False
-        rest = pygame. transform. rotate(rest, 90)
+        rest1 = pygame. transform. rotate(rest, 90)
 
 
     elif keys [pygame.K_RIGHT] or keys [pygame.K_d]  :
@@ -173,7 +173,7 @@ while running == True:
         lad.up = False
         lad.down = False
         lad.stand = False
-        rest = pygame. transform. rotate(rest, -90)
+        rest1 = pygame. transform. rotate(rest, -90)
         
     elif keys [pygame.K_UP] or keys [pygame.K_w] :
         lad.y -= lad.vel
@@ -182,7 +182,7 @@ while running == True:
         lad.down = False
         lad.right = False
         lad.stand = False
-        rest = pygame. transform. rotate(rest, 0)
+        rest1 = pygame. transform. rotate(rest, 0)
         
     elif keys [pygame.K_DOWN] or keys [pygame.K_s] :
         lad.y += lad.vel
@@ -191,7 +191,7 @@ while running == True:
         lad.up = False
         lad.right = False
         lad.stand = False
-        rest = pygame. transform. rotate(rest, 180)
+        rest1 = pygame. transform. rotate(rest, 180)
         
     
     
