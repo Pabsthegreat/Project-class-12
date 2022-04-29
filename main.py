@@ -121,6 +121,18 @@ while running == True:
       
     move()
 
+    if x <= 0 :
+        x = 0
+    
+    if y <= 0:
+        y = 0
+
+    if x >= 672:
+        x = 672
+
+    if y >= 672:
+        y = 672
+
     screen.fill((152,251,152))
     
 

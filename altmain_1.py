@@ -88,11 +88,13 @@ class player(object):
 
 def draw():
     screen.blit(bg, (0,0))
-    #lad.move()
+    lad.move()
     pygame.display.update()
 
 COUNT = 0
 
+#alt mom
+'''
 def mom(direction,x,y):
     
     global COUNT
@@ -132,7 +134,7 @@ def mom(direction,x,y):
 
     else:
         COUNT = 0
-
+'''
 
 #game loop
 lad = player(400,100,128,128)
@@ -144,36 +146,53 @@ while running == True:
         if event.type == pygame.QUIT:
             running = False
 
+        if event.type == pygame.KEYUP:
+
+            lad.stand = True
+            lad.left = True
+            lad.up = False
+            lad.down = False
+            lad.right = False
+
     keys = pygame.key.get_pressed()
     
     if keys [pygame.K_LEFT] or keys [pygame.K_a] :
         lad.x -= lad.vel
         lad.left = True
-        mom("left",lad.x,lad.y)
+        lad.up = False
+        lad.down = False
+        lad.right = False
+        lad.stand = False
         rest = pygame. transform. rotate(rest, 90)
 
 
     elif keys [pygame.K_RIGHT] or keys [pygame.K_d]  :
         lad.x += lad.vel
         lad.right = True
-        mom("right",lad.x,lad.y)
+        lad.left = True
+        lad.up = False
+        lad.down = False
+        lad.stand = False
         rest = pygame. transform. rotate(rest, -90)
         
     elif keys [pygame.K_UP] or keys [pygame.K_w] :
         lad.y -= lad.vel
         lad.up = True
-        mom("up",lad.x,lad.y)
+        lad.left = True
+        lad.down = False
+        lad.right = False
+        lad.stand = False
         rest = pygame. transform. rotate(rest, 0)
         
     elif keys [pygame.K_DOWN] or keys [pygame.K_s] :
         lad.y += lad.vel
         lad.down = True
-        mom("down",lad.x,lad.y)
+        lad.left = True
+        lad.up = False
+        lad.right = False
+        lad.stand = False
         rest = pygame. transform. rotate(rest, 180)
-
-    else:
-        mom('None' ,lad.x,lad.y) 
-        lad.stand = True
+        
     
     
 #have to do it this was , as "and", "or" together in the previous method was not working when awsd was added

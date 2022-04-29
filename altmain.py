@@ -82,6 +82,10 @@ while running == True:
     if keys [pygame.K_LEFT] or keys [pygame.K_a] :
         lad.x -= lad.vel
         lad.left = True
+        lad.up = False
+        lad.down = False
+        lad.right = False
+        lad.STAND = False
         runR1 = pygame. transform. rotate(runR, 90)
         runL1 = pygame. transform. rotate(runL, 90)
         stand1 = pygame. transform. rotate(stand, 90)
@@ -89,6 +93,10 @@ while running == True:
     elif keys [pygame.K_RIGHT] or keys [pygame.K_d]  :
         lad.x += lad.vel
         lad.right = True
+        lad.left = True
+        lad.up = False
+        lad.down = False
+        lad.STAND = False
         runR1 = pygame. transform. rotate(runR, -90)
         runL1 = pygame. transform. rotate(runL, -90)
         stand1 = pygame. transform. rotate(stand, -90)
@@ -96,6 +104,10 @@ while running == True:
     elif keys [pygame.K_UP] or keys [pygame.K_w] :
         lad.y -= lad.vel
         lad.up = True
+        lad.left = True
+        lad.down = False
+        lad.right = False
+        lad.STAND = False
         runR1 = pygame. transform. rotate(runR, 0)
         runL1 = pygame. transform. rotate(runL, 0)
         stand1 = pygame. transform. rotate(stand, 0)
@@ -103,12 +115,21 @@ while running == True:
     elif keys [pygame.K_DOWN] or keys [pygame.K_s] :
         lad.y += lad.vel
         lad.down = True
+        lad.left = True
+        lad.up = False
+        lad.right = False
+        lad.STAND = False
         runR1 = pygame.transform.rotate(runR, 180)
         runL1 = pygame.transform.rotate(runL, 180)
         stand1 = pygame. transform. rotate(stand, 180)
     
     if keys [pygame.KEYUP]:
         lad.STAND = True
+        lad.left = True
+        lad.up = False
+        lad.down = False
+        lad.right = False
+        
       
     
 
