@@ -89,7 +89,7 @@ class player(object):
 
 class rival(object):
     global Walk
-    def __init__(self, x, y, width, height, endx, endy): 
+    def __init__(self, x, y, width, height,startx,starty ,endx, endy): 
         self.x = x
         self.y = y
         self.width = width
@@ -97,36 +97,53 @@ class rival(object):
         self.vel = 5
         self.endx = endx
         self.endy = endy
-        self.path = [self.x, self.end]
+        self.startx = startx
+        self.starty = starty
+        self.pathx = [self.x, startx,self.endx]
+        self.pathy = [self.y, starty,self.endy]
         self.COUNT = 0  
     
     def draw(self):
         global screen
-        self.move()
+        self.moveit()
         if self.COUNT >= 15:
             self.COUNT = 0
 
-        if self.x > 0 :
+        if self.x < self.pathx[2]   and self.x > self.pathx[1]:
             right  = pygame.transform.rotate(Walk[self.COUNT], -90)
             screen.blit(right, (self.x, self.y))
             self.COUNT += 1
 
-        if self.x < 0:
+        if self.x == self.pathx[2] - self.width:
             left = pygame.transform.rotate(Walk[self.COUNT], 90)
             screen.blit(left, (self.x, self.y))
             self.COUNT += 1
 
-        if self.y < 0:
+        if self.y > self.pathy[2] and self.y > self.pathy[1]:
             up = pygame.transform.rotate(Walk[self.COUNT], 0)
             screen.blit(up, (self.x, self.y))
             self.COUNT += 1
 
-        if self.y > 0:
+        if self.y < self.pathy[2] and self.y > self.pathy[1]:
             down = pygame.transform.rotate(Walk[self.COUNT], 180)
             screen.blit(down, (self.x, self.y))
             self.COUNT += 1
 
-        
+
+        pygame.display.update()
+
+    def moveit(self):
+        if self.x < self.pathx[2] - self.width:
+            self.x += self.vel
+
+        elif self.x == self.pathx[2]- self.width:
+            self.x -= self.vel
+
+        if self.y < self.pathy[2] - self.height:
+            self.y += self.vel
+
+        elif self.y == self.pathy[2] - self.height:
+            self.y -= self.vel
 
         
 
@@ -135,8 +152,10 @@ class rival(object):
 
 def draw():
     screen.blit(bg, (0,0))
-    screen.blit(enemy,(100,100))
+    chad.draw()
+    vlad.draw()
     lad.move()
+    pygame.draw.rect()
     pygame.display.update()
 
 COUNT = 0
@@ -186,6 +205,8 @@ def mom(direction,x,y):
 
 #game loop
 lad = player(400,100,128,128)
+chad = rival(100,100,128,128,128,128,800,128)
+vlad = rival(200,200,128,128,256,256,256,800)
 running = True
 while running == True:
     clock.tick(30)
