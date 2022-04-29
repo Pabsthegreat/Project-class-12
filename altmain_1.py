@@ -142,6 +142,18 @@ class rival(object):
         elif self.y == self.pathy[2] - self.height:
             self.y -= self.vel
 
+        if self.x <= 0 :
+            self.x = 0
+    
+        if self.y <= 0:
+            self.y = 0
+
+        if self.x >= 672:
+            self.x = 672
+
+        if self.y >= 672:
+            self.y = 672   
+
         
 
 

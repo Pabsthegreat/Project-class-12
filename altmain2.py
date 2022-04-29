@@ -108,7 +108,7 @@ def draw(self):
         if self.x < self.pathx[2] - self.width and self.x > self.pathx[1] + self.width:
             self.x += self.vel
 
-        elif self.x > self.pathx[2] - self.width:
+        elif self.x == self.pathx[2] - self.width:
             self.x -= self.vel
 
         elif self.x < self.pathx[1] + self.width:
@@ -118,11 +118,23 @@ def draw(self):
         if self.y < self.pathy[2] - self.height and self.y > self.pathy[1] + self.height:
             self.y += self.vel
 
-        elif self.y > self.pathy[2] - self.height:
+        elif self.y == self.pathy[2] - self.height:
             self.y -= self.vel
 
-        elif self.y < self.pathy[1] - self.height:
+        elif self.y < self.pathy[1] + self.height:
             self.y += self.vel
+
+        if self.x <= 0 :
+            self.x = 0
+    
+        if self.y <= 0:
+            self.y = 0
+
+        if self.x >= 672:
+            self.x = 672
+
+        if self.y >= 672:
+            self.y = 672   
 
 '''
 #pabs changes
