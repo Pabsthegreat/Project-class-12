@@ -1,4 +1,6 @@
 
+from re import X
+from turtle import down, left
 import pygame
 
 pygame.init()
@@ -34,7 +36,7 @@ pygame.display.set_icon(icon)
 bg =  pygame.image.load('bg.png')
 
 #enemy
-#enemy = pygame.image.load("enemy.png")
+enemy = pygame.image.load("enemy.png")
 
 clock = pygame.time.Clock()
 
@@ -85,9 +87,55 @@ class player(object):
         else:
             self.COUNT = 0
 
+class rival(object):
+    global Walk
+    def __init__(self, x, y, width, height, endx, endy): 
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.vel = 5
+        self.endx = endx
+        self.endy = endy
+        self.path = [self.x, self.end]
+        self.COUNT = 0  
+    
+    def draw(self):
+        global screen
+        self.move()
+        if self.COUNT >= 15:
+            self.COUNT = 0
+
+        if self.x > 0 :
+            right  = pygame.transform.rotate(Walk[self.COUNT], -90)
+            screen.blit(right, (self.x, self.y))
+            self.COUNT += 1
+
+        if self.x < 0:
+            left = pygame.transform.rotate(Walk[self.COUNT], 90)
+            screen.blit(left, (self.x, self.y))
+            self.COUNT += 1
+
+        if self.y < 0:
+            up = pygame.transform.rotate(Walk[self.COUNT], 0)
+            screen.blit(up, (self.x, self.y))
+            self.COUNT += 1
+
+        if self.y > 0:
+            down = pygame.transform.rotate(Walk[self.COUNT], 180)
+            screen.blit(down, (self.x, self.y))
+            self.COUNT += 1
+
+        
+
+        
+
+
+
 
 def draw():
     screen.blit(bg, (0,0))
+    screen.blit(enemy,(100,100))
     lad.move()
     pygame.display.update()
 
