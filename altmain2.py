@@ -61,3 +61,67 @@ def mom(direction,x,y):
     else:
         COUNT = 0
 '''
+
+#changes
+'''
+def draw(self):
+        global screen
+        self.moveit()
+        
+        if self.COUNT <=15:
+            if self.x < self.pathx[2] - self.width and self.x > self.pathx[1] + self.width:
+                right  = pygame.transform.rotate(Walk[self.COUNT], -90)
+                screen.blit(right, (self.x, self.y))
+                self.COUNT += 1
+
+            elif self.x > self.pathx[2] - self.width:
+                left = pygame.transform.rotate(Walk[self.COUNT], 90)
+                screen.blit(left, (self.x, self.y))
+                self.COUNT += 1
+            
+            elif self.x < self.pathx[1] + self.width:
+                right = pygame.transform.rotate(Walk[self.COUNT], -90)
+                screen.blit(right, (self.x, self.y))
+                self.COUNT += 1
+
+            if self.y < self.pathy[2] - self.height and self.y > self.pathy[1] + self.height:
+                up = pygame.transform.rotate(Walk[self.COUNT], 0)
+                screen.blit(up, (self.x, self.y))
+                self.COUNT += 1
+
+            elif self.y < self.pathy[2] and self.y > self.pathy[1]:
+                down = pygame.transform.rotate(Walk[self.COUNT], 180)
+                screen.blit(down, (self.x, self.y))
+                self.COUNT += 1
+
+            elif self.y < self.pathy[1] + self.height:
+                up = pygame.transform.rotate(Walk[self.COUNT], -90)
+                screen.blit(up, (self.x, self.y))
+                self.COUNT += 1
+
+        else:
+            self.COUNT = 0
+
+        pygame.display.update()
+
+    def moveit(self):
+        if self.x < self.pathx[2] - self.width and self.x > self.pathx[1] + self.width:
+            self.x += self.vel
+
+        elif self.x > self.pathx[2] - self.width:
+            self.x -= self.vel
+
+        elif self.x < self.pathx[1] + self.width:
+            self.x += self.vel
+
+ 
+        if self.y < self.pathy[2] - self.height and self.y > self.pathy[1] + self.height:
+            self.y += self.vel
+
+        elif self.y > self.pathy[2] - self.height:
+            self.y -= self.vel
+
+        elif self.y < self.pathy[1] - self.height:
+            self.y += self.vel
+
+'''
