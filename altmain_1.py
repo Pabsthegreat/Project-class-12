@@ -7,11 +7,24 @@ pygame.init()
 screen = pygame.display.set_mode((800,800))
 pygame.display.set_caption("Hunter Assassin")
 
-Walk = [pygame.image.load('Hunter_Move/1.png'),pygame.image.load('Hunter_Move/2.png'),pygame.image.load('Hunter_Move/3.png'),
-pygame.image.load('Hunter_Move/4.png'),pygame.image.load('Hunter_Move/5.png'),pygame.image.load('Hunter_Move/6.png'),
-pygame.image.load('Hunter_Move/7.png'),pygame.image.load('Hunter_Move/8.png'), pygame.image.load("Hunter_Move/8a.png"),pygame.image.load('Hunter_Move/9.png'),pygame.image.load('Hunter_Move/10.png'),pygame.image.load('Hunter_Move/11.png'),
-pygame.image.load('Hunter_Move/12.png'),pygame.image.load('Hunter_Move/13.png'),pygame.image.load('Hunter_Move/14.png'),
-pygame.image.load('Hunter_Move/15.png')]
+w1 = pygame.image.load('Hunter_Move/1.png').convert_alpha() 
+w2 = pygame.image.load('Hunter_Move/2.png').convert_alpha() 
+w3 = pygame.image.load('Hunter_Move/3.png').convert_alpha()
+w4 = pygame.image.load('Hunter_Move/4.png').convert_alpha()
+w5 = pygame.image.load('Hunter_Move/5.png').convert_alpha()
+w6 = pygame.image.load('Hunter_Move/6.png').convert_alpha()
+w7 = pygame.image.load('Hunter_Move/7.png').convert_alpha()
+w8 = pygame.image.load('Hunter_Move/8.png').convert_alpha()
+rest = pygame.image.load("Hunter_Move/8a.png").convert_alpha()
+w10 = pygame.image.load('Hunter_Move/9.png').convert_alpha()
+w11 = pygame.image.load('Hunter_Move/10.png').convert_alpha()
+w12 = pygame.image.load('Hunter_Move/11.png').convert_alpha()
+w13 = pygame.image.load('Hunter_Move/12.png').convert_alpha()
+w14 = pygame.image.load('Hunter_Move/13.png').convert_alpha()
+w15 = pygame.image.load('Hunter_Move/14.png').convert_alpha()
+w16 = pygame.image.load('Hunter_Move/15.png').convert_alpha()
+
+Walk = [w1,w2,w3,w4,w5,w6,w7,w8,rest,w10,w11,w12,w13,w14,w15,w16]
 
 rest = pygame.image.load("Hunter_Move/8a.png")
 
@@ -41,7 +54,6 @@ class player(object):
 
 
     def move(self):
-
         if self.stand == True:
             screen.blit(rest, (self.x, self.y))
             pygame.display.update()
@@ -77,7 +89,6 @@ class player(object):
 def draw():
     screen.blit(bg, (0,0))
     #lad.move()
-    
     pygame.display.update()
 
 COUNT = 0
@@ -127,7 +138,7 @@ def mom(direction,x,y):
 lad = player(400,100,128,128)
 running = True
 while running == True:
-    clock.tick(60)
+    clock.tick(30)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -139,14 +150,14 @@ while running == True:
         lad.x -= lad.vel
         lad.left = True
         mom("left",lad.x,lad.y)
-        rest = pygame. transform. rotate(rest, -90)
+        rest = pygame. transform. rotate(rest, 90)
 
 
     elif keys [pygame.K_RIGHT] or keys [pygame.K_d]  :
         lad.x += lad.vel
         lad.right = True
         mom("right",lad.x,lad.y)
-        rest = pygame. transform. rotate(rest, 90)
+        rest = pygame. transform. rotate(rest, -90)
         
     elif keys [pygame.K_UP] or keys [pygame.K_w] :
         lad.y -= lad.vel
