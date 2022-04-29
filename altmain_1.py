@@ -148,14 +148,12 @@ class rival(object):
         
 
 
-
-
 def draw():
     screen.blit(bg, (0,0))
     chad.draw()
     vlad.draw()
     lad.move()
-    pygame.draw.rect()
+  
     pygame.display.update()
 
 COUNT = 0

@@ -19,4 +19,45 @@ pygame.display.set_icon(icon)
 
 bg =  pygame.image.load('bg.png')
 
-#fuck this shit im sleeping , see you tomorrow ,im starting enemy tomorrow
+'''
+COUNT = 0
+def mom(direction,x,y):
+    
+    global COUNT
+
+    if COUNT <= 15:
+        if direction == 'None':
+            screen.blit(rest, (x, y))
+            
+            COUNT += 0
+
+        elif direction == "up":
+            m = pygame.transform.rotate(Walk[COUNT], 0)
+            screen.blit(m,(x,y))
+            
+            COUNT += 1
+
+        elif direction == "down":
+            m = pygame.transform.rotate(Walk[COUNT], 180)
+            screen.blit(m,(x,y))
+           
+            COUNT += 1
+        
+
+        elif direction == "left":
+            m = pygame.transform.rotate(Walk[COUNT], 90)
+            screen.blit(m,(x,y))
+            
+            COUNT += 1
+
+        elif direction == "right":
+            m = pygame.transform.rotate(Walk[COUNT], -90)
+            screen.blit(m,(x,y))
+            
+            COUNT += 1
+
+        pygame.display.update()
+
+    else:
+        COUNT = 0
+'''
