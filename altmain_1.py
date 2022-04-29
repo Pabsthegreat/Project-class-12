@@ -1,6 +1,3 @@
-
-from re import X
-from turtle import down, left
 import pygame
 
 pygame.init()
@@ -109,7 +106,7 @@ class rival(object):
         if self.COUNT >= 15:
             self.COUNT = 0
 
-        if self.x < self.pathx[2]   and self.x > self.pathx[1]:
+        if self.x < self.pathx[2]  and self.x > self.pathx[1]:
             right  = pygame.transform.rotate(Walk[self.COUNT], -90)
             screen.blit(right, (self.x, self.y))
             self.COUNT += 1
@@ -139,7 +136,7 @@ class rival(object):
         elif self.x == self.pathx[2]- self.width:
             self.x -= self.vel
 
-        if self.y < self.pathy[2] - self.height:
+        elif self.y < self.pathy[2] - self.height:
             self.y += self.vel
 
         elif self.y == self.pathy[2] - self.height:
@@ -148,7 +145,7 @@ class rival(object):
         
 
 
-def draw():
+def maindraw():
     screen.blit(bg, (0,0))
     chad.draw()
     vlad.draw()
@@ -232,7 +229,7 @@ while running == True:
         lad.y = 672   
 
     screen.fill((0,0,0))
-    draw()
+    maindraw()
     
 pygame.quit()
 
