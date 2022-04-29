@@ -125,3 +125,97 @@ def draw(self):
             self.y += self.vel
 
 '''
+#pabs changes
+'''
+    def draw(self):
+        global screen
+        self.moveit()
+        
+        if self.COUNT <=15:
+            if self.eventx[-1] == "start":                                      #what if end>start
+                right  = pygame.transform.rotate(Walk[self.COUNT], -90)
+                screen.blit(right, (self.x, self.y))
+                self.COUNT += 1
+
+            elif self.eventx[-1] == "end":
+                left = pygame.transform.rotate(Walk[self.COUNT], 90)
+                screen.blit(left, (self.x, self.y))
+                self.COUNT += 1
+
+            if self.eventy[-1] == "end":
+                up = pygame.transform.rotate(Walk[self.COUNT], 0)
+                screen.blit(up, (self.x, self.y))
+                self.COUNT += 1
+
+            elif self.eventy[-1] == "start":
+                down = pygame.transform.rotate(Walk[self.COUNT], 180)
+                screen.blit(down, (self.x, self.y))
+                self.COUNT += 1
+
+        else:
+            self.COUNT = 0
+
+        pygame.display.update()
+        
+    def moveit(self):
+
+        if self.eventy == []:
+            if self.startx == self.endx:
+                self.eventx.append("0")
+                
+            else:
+                self.eventx.append("start")
+
+        elif self.eventx[-1] == "0":
+            self.x += 0
+
+        elif self.eventx[-1] == "start":
+            self.x += self.vel
+
+        elif self.x == self.pathx[1] - self.width:
+            self.eventx.append("start")
+            
+        elif self.x == self.pathx[2] + self.width :
+            self.x -= self.vel
+            self.eventx.append("end")
+
+        elif self.eventx[-1] == "end":
+            self.x -= self.vel
+#y
+        if self.eventy == []:
+            if self.starty == self.endy:
+                self.eventy.append("0")
+                
+            else:
+                self.eventy.append("start")
+
+        elif self.eventy[-1] == "0":
+            self.y += 0
+
+        elif self.eventy[-1] == "start":
+            self.y += self.vel
+
+        elif self.y == self.pathy[1] + self.height:
+            self.eventy.append("start")
+            
+        elif self.y == self.pathy[2] - self.height :
+            self.y -= self.vel
+            self.eventx.append("end")
+
+        elif self.eventy[-1] == "end":
+            self.y -= self.vel
+
+
+
+        if self.x <= 0 :
+            self.x = 0
+    
+        if self.y <= 0:
+            self.y = 0
+
+        if self.x >= 672:
+            self.x = 672
+
+        if self.y >= 672:
+            self.y = 672   
+'''
