@@ -231,3 +231,90 @@ def draw(self):
         if self.y >= 672:
             self.y = 672   
 '''
+#change 3
+'''
+class rival(object):
+    global Walk
+    def __init__(self, x, y, width, height,startx,starty ,endx, endy): 
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.velx = []
+        self.vely = []
+        self.endx = endx
+        self.endy = endy
+        self.startx = startx
+        self.starty = starty
+        self.pathx = [self.x, startx,self.endx]
+        self.pathy = [self.y, starty,self.endy]
+        self.COUNT = 0  
+    
+    def draw(self):
+        global screen
+        self.moveit()
+        if self.COUNT >= 15:
+            self.COUNT = 0
+
+        elif self.velx[-1] == 5:
+            right  = pygame.transform.rotate(Walk[self.COUNT], -90)
+            screen.blit(right, (self.x, self.y))
+            self.COUNT += 1
+
+        elif self.velx[-1] == -5:
+            left = pygame.transform.rotate(Walk[self.COUNT], 90)
+            screen.blit(left, (self.x, self.y))
+            self.COUNT += 1
+
+        elif self.vely[-1] == -5:
+            up = pygame.transform.rotate(Walk[self.COUNT], 0)
+            screen.blit(up, (self.x, self.y))
+            self.COUNT += 1
+
+        elif self.vely[-1] == 5:
+            down = pygame.transform.rotate(Walk[self.COUNT], 180)
+            screen.blit(down, (self.x, self.y))
+            self.COUNT += 1
+
+
+        pygame.display.update()
+
+    def moveit(self):
+        if self.endx == self.startx:
+            self.velx.append(0)
+        else:
+             self.velx.append(5)
+
+        if self.endy == self.starty:
+            self.vely.append(0)
+        else:
+            self.vely.append(5)
+
+        if self.x + self.width < self.pathx[2] - self.width- self.velx[-1]:
+            self.x += self.velx[-1]
+
+        elif self.x +self.width == self.pathx[2]- self.width - self.velx[-1]:
+            self.velx.append(-5)
+            self.x += self.velx[-1]
+            
+
+        elif self.y + self.height< self.pathy[2] - self.height - self.vely[-1]:
+            self.y += self.vely[-1]
+
+        elif self.y + self.height == self.pathy[2] - self.height  - self.vely[-1]:
+            self.vely.append(-5)
+            self.y += self.vely[-1]
+
+        if self.x <= 0 :
+            self.x = 0
+    
+        if self.y <= 0:
+            self.y = 0
+
+        if self.x >= 672:
+            self.x = 672
+
+        if self.y >= 672:
+            self.y = 672   
+
+'''
