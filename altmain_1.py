@@ -84,14 +84,15 @@ class player(object):
         else:
             self.COUNT = 0
 
-class rival(object):
+class rivalx(object):
     global Walk
     def __init__(self, x, y, width, height,startx,starty ,endx, endy): 
         self.x = x
         self.y = y
         self.width = width
         self.height = height
-        self.vel = 5
+        self.velx = 5
+        self.vely = 5
         self.endx = endx
         self.endy = endy
         self.startx = startx
@@ -100,28 +101,29 @@ class rival(object):
         self.pathy = [self.y, starty,self.endy]
         self.COUNT = 0  
     
-    def draw(self):
+    def drawx(self):
         global screen
-        self.moveit()
+        self.moveitx()
+        
         if self.COUNT >= 15:
             self.COUNT = 0
 
-        elif self.x == self.pathx[2] - self.width:
+        elif self.velx < 0:
             left = pygame.transform.rotate(Walk[self.COUNT], 90)
             screen.blit(left, (self.x, self.y))
             self.COUNT += 1
 
-        elif self.x < self.pathx[2]  and self.x > self.pathx[1]:
+        elif self.velx > 0:
             right  = pygame.transform.rotate(Walk[self.COUNT], -90)
             screen.blit(right, (self.x, self.y))
             self.COUNT += 1
 
-        elif self.y == self.pathy[2] - self.height:
+        elif self.vely < 0:
             up = pygame.transform.rotate(Walk[self.COUNT], 0)
             screen.blit(up, (self.x, self.y))
             self.COUNT += 1
 
-        elif self.y < self.pathy[2] and self.y > self.pathy[1]:
+        elif self.vely > 0:
             down = pygame.transform.rotate(Walk[self.COUNT], 180)
             screen.blit(down, (self.x, self.y))
             self.COUNT += 1
@@ -129,38 +131,91 @@ class rival(object):
 
         pygame.display.update()
 
-    def moveit(self):
-        if self.x < self.pathx[2] - self.width:
-            self.x += self.vel
+    def moveitx(self):
 
-        elif self.x == self.pathx[2] + self.width:
-            self.x -= self.vel
+        if self.velx > 0:
+            if self.x + self.velx < self.pathx[2] - self.height:
+                self.x += self.velx
+            else:
+                self.velx = self.velx * -1
+                self.COUNT = 0
 
-        elif self.y < self.pathy[2] - self.height:
-            self.y += self.vel
+        else :
+            if self.x- self.velx >  self.pathx[1]:
+                self.x += self.velx
 
-        elif self.y == self.pathy[2] + self.height:
-            self.y -= self.vel
+            else:
+                self.velx = self.velx * -1
+                self.COUNT = 0
 
-        if self.x <= 0 :
-            self.x = 0
+class rivaly(object):
+    global Walk
+    def __init__(self, x, y, width, height,startx,starty ,endx, endy): 
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.velx = 5
+        self.vely = 5
+        self.endx = endx
+        self.endy = endy
+        self.startx = startx
+        self.starty = starty
+        self.pathx = [self.x, startx,self.endx]
+        self.pathy = [self.y, starty,self.endy]
+        self.COUNT = 0  
     
-        if self.y <= 0:
-            self.y = 0
-
-        if self.x >= 672:
-            self.x = 672
-
-        if self.y >= 672:
-            self.y = 672   
-
+    def drawy(self):
+        global screen
+        self.moveity()
         
+        if self.COUNT >= 15:
+            self.COUNT = 0
 
+        elif self.vely < 0:
+            up = pygame.transform.rotate(Walk[self.COUNT], 0)
+            screen.blit(up, (self.x, self.y))
+            self.COUNT += 1
+
+        elif self.vely > 0:
+            down = pygame.transform.rotate(Walk[self.COUNT], 180)
+            screen.blit(down, (self.x, self.y))
+            self.COUNT += 1
+
+
+        elif self.velx < 0:
+            left = pygame.transform.rotate(Walk[self.COUNT], 90)
+            screen.blit(left, (self.x, self.y))
+            self.COUNT += 1
+
+        elif self.velx > 0:
+            right  = pygame.transform.rotate(Walk[self.COUNT], -90)
+            screen.blit(right, (self.x, self.y))
+            self.COUNT += 1
+
+
+        pygame.display.update()
+
+    def moveity(self):
+
+        if self.vely > 0:
+            if self.y + self.vely < self.pathy[2] - self.height:
+                self.y += self.vely
+            else:
+                self.vely = self.vely * -1
+                self.COUNT = 0
+        else:
+            if self.y - self.vely >  self.pathy[1]:
+                self.y += self.vely
+
+            else:
+                self.vely = self.vely * -1
+                self.COUNT =0    
 
 def maindraw():
     screen.blit(bg, (0,0))
-    chad.draw()
-    vlad.draw()
+    chad.drawx()
+    vlad.drawy()
     lad.move()
   
     pygame.display.update()
@@ -168,8 +223,8 @@ def maindraw():
 
 #game loop
 lad = player(400,100,128,128)
-chad = rival(100,100,128,128,128,128,800,128)
-vlad = rival(200,200,128,128,256,256,256,800)
+chad = rivalx(100,100,128,128,128,128,800,128)
+vlad = rivaly(200,200,128,128,256,256,256,800)
 running = True
 while running == True:
     clock.tick(30)
