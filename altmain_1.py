@@ -3,7 +3,7 @@ import pygame
 pygame.init()
 
 #creating the screen
-screen = pygame.display.set_mode((800,800))
+screen = pygame.display.set_mode((1400,800))
 pygame.display.set_caption("Hunter Assassin")
 
 w1 = pygame.image.load('Hunter_Move/1.png').convert_alpha() 
