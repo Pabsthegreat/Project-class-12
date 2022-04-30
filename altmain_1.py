@@ -106,22 +106,22 @@ class rival(object):
         if self.COUNT >= 15:
             self.COUNT = 0
 
-        if self.x < self.pathx[2]  and self.x > self.pathx[1]:
-            right  = pygame.transform.rotate(Walk[self.COUNT], -90)
-            screen.blit(right, (self.x, self.y))
-            self.COUNT += 1
-
-        if self.x == self.pathx[2] - self.width:
+        elif self.x == self.pathx[2] - self.width:
             left = pygame.transform.rotate(Walk[self.COUNT], 90)
             screen.blit(left, (self.x, self.y))
             self.COUNT += 1
 
-        if self.y > self.pathy[2] and self.y > self.pathy[1]:
+        elif self.x < self.pathx[2]  and self.x > self.pathx[1]:
+            right  = pygame.transform.rotate(Walk[self.COUNT], -90)
+            screen.blit(right, (self.x, self.y))
+            self.COUNT += 1
+
+        elif self.y == self.pathy[2] - self.height:
             up = pygame.transform.rotate(Walk[self.COUNT], 0)
             screen.blit(up, (self.x, self.y))
             self.COUNT += 1
 
-        if self.y < self.pathy[2] and self.y > self.pathy[1]:
+        elif self.y < self.pathy[2] and self.y > self.pathy[1]:
             down = pygame.transform.rotate(Walk[self.COUNT], 180)
             screen.blit(down, (self.x, self.y))
             self.COUNT += 1
@@ -133,13 +133,13 @@ class rival(object):
         if self.x < self.pathx[2] - self.width:
             self.x += self.vel
 
-        elif self.x == self.pathx[2]- self.width:
+        elif self.x == self.pathx[2] + self.width:
             self.x -= self.vel
 
         elif self.y < self.pathy[2] - self.height:
             self.y += self.vel
 
-        elif self.y == self.pathy[2] - self.height:
+        elif self.y == self.pathy[2] + self.height:
             self.y -= self.vel
 
         if self.x <= 0 :
