@@ -91,8 +91,8 @@ class rival(object):
         self.y = y
         self.width = width
         self.height = height
-        self.velx = 5
-        self.vely = 5
+        self.velx = 2.5
+        self.vely = 2.5
         self.endx = endx
         self.endy = endy
         self.startx = startx
@@ -178,7 +178,7 @@ def maindraw():
     vlad.draw()
     lad.move()
   
-    pygame.display.update()
+    pygame.display.flip()
 
 
 #game loop
