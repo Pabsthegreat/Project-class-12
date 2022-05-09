@@ -32,6 +32,7 @@ h15 = pygame.image.load('Hunter_Move/14.png').convert_alpha()
 h16 = pygame.image.load('Hunter_Move/15.png').convert_alpha()
 
 Hunter_Walk = [h1,h2,h3,h4,h5,h6,h7,h8,rest,h10,h11,h12,h13,h14,h15,h16]
+rest1 = pygame.image.load("Hunter_Move/8a.png").convert_alpha()
 
 #Getting images for enemy
 e1 = pygame.image.load('Enemy_Move/1.png').convert_alpha() 
@@ -62,38 +63,34 @@ class player(object):
         self.width = 128
         self.height = 128
         self.vel = 5
-        self.up = False
-        self.down = False
-        self.left = False
-        self.right = False
-        self.stand = False
+        self.dir = None
         self.COUNT = 0
 
     def move(self):
-        global COUNT,rest1
+        global rest1
 
-        if self.stand == True:
+        if self.dir == None:
             screen.blit(rest1, (self.x, self.y))
             pygame.display.update()
 
         elif self.COUNT <= 15:
 
-            if self.up == True:
+            if self.dir == "up":
                 m = pygame.transform.rotate(Hunter_Walk[self.COUNT], 0)
                 screen.blit(m,(self.x,self.y))
                 pygame.display.update()
 
-            if self.down == True:
+            if self.dir == "down":
                 m = pygame.transform.rotate(Hunter_Walk[self.COUNT], 180)
                 screen.blit(m,(self.x,self.y))
                 pygame.display.update()
 
-            if self.right == True:
+            if self.dir == "right":
                 m = pygame.transform.rotate(Hunter_Walk[self.COUNT], -90)
                 screen.blit(m,(self.x,self.y))
                 pygame.display.update()
 
-            if self.left == True:
+            if self.dir == "left":
                 m = pygame.transform.rotate(Hunter_Walk[self.COUNT], 90)
                 screen.blit(m,(self.x,self.y))
                 pygame.display.update()
@@ -283,7 +280,7 @@ while running == True:
             running = False
 
         if event.type == pygame.KEYUP:
-            lad.stand = True
+            lad.dir = None
         
         if event.type == pygame.K_SPACE:
             lad.kill()
@@ -297,40 +294,24 @@ while running == True:
     keys = pygame.key.get_pressed()
     
     #player movement
-    if keys [pygame.K_LEFT] or keys [pygame.K_a] and lad.x > lad.vel :
+    if keys [pygame.K_LEFT] or keys [pygame.K_a]  :
         lad.x -= lad.vel
-        lad.left = True
-        lad.up = False
-        lad.down = False
-        lad.right = False
-        lad.stand = False
+        lad.dir = "left"
         rest1 = pygame.transform.rotate(rest, 90)
 
-    elif keys [pygame.K_RIGHT] or keys [pygame.K_d] and lad.x < 800 - lad.width - lad.vel :
+    elif keys [pygame.K_RIGHT] or keys [pygame.K_d]  :
         lad.x += lad.vel
-        lad.right = True
-        lad.up = False
-        lad.down = False
-        lad.left = False
-        lad.stand = False
+        lad.dir = "right"
         rest1 = pygame.transform.rotate(rest, -90)
 
-    elif keys [pygame.K_UP] or keys [pygame.K_w] and lad.y > lad.vel:
+    elif keys [pygame.K_UP] or keys [pygame.K_w]:
         lad.y -= lad.vel
-        lad.up = True
-        lad.right = False
-        lad.down = False
-        lad.left = False
-        lad.stand = False
+        lad.dir = "up"
         rest1 = pygame.transform.rotate(rest, 0)
 
-    elif keys [pygame.K_DOWN] or keys [pygame.K_s] and lad.y < 800 - lad.width - lad.vel :
+    elif keys [pygame.K_DOWN] or keys [pygame.K_s]  :
         lad.y += lad.vel
-        lad.down = True
-        lad.stand = False
-        lad.up = False
-        lad.right = False
-        lad.left = False
+        lad.dir = "down"
         rest1 = pygame.transform.rotate(rest, 180)     
      
 
