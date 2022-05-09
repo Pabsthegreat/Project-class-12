@@ -108,14 +108,14 @@ class player(object):
 
 class rival(object):
     global Enemy_Walk
-    def __init__(self, x, y, width, height,startx,starty ,endx, endy): 
+    def __init__(self, x, y, width, height ,endx, endy): 
         self.x = x
         self.y = y
         self.width = width
         self.height = height
         self.vel = 2.5
-        self.startx = startx
-        self.starty = starty
+        self.startx = x
+        self.starty = y
         self.endx = endx
         self.endy = endy
         self.count = 0  
@@ -126,96 +126,103 @@ class rival(object):
     def draw(self):
         global screen
         
-        if self.count <= 15:
-            while self.dir == 'Front':
+        while self.dir == 'Front':
 
-                if self.endx > self.endy:
-                    self.DIR = 'SIDEWAYS'
+            if self.endx > self.endy:
+                self.DIR = 'SIDEWAYS'
 
-                    if self.count <= 15:
-                        if self.x <= self.endx - self.width and self.x >= self.startx:
-                            right  = pygame.transform.rotate(Enemy_Walk[self.count], -90)
-                            screen.blit(right, (self.x, self.y))
-                            self.count += 1
+                if self.count <= 15:
+                    if self.x <= self.endx - self.width and self.x >= self.startx:
+                        right  = pygame.transform.rotate(Enemy_Walk[self.count], -90)
+                        screen.blit(right, (self.x, self.y))
+                        self.count += 1
+                        self.x += self.vel
+                        pygame.display.update()
 
-                        else:
-                            left = pygame.transform.rotate(Enemy_Walk[self.count], 90)
-                            screen.blit(left, (self.x, self.y))
-                            self.count += 1
-                            self.dir == 'Back'
                     else:
-                        self.count = 0
-
-                    self.x += self.vel
+                        left = pygame.transform.rotate(Enemy_Walk[self.count], 90)
+                        screen.blit(left, (self.x, self.y))
+                        self.count += 1
+                        self.dir == 'Back'
+                        pygame.display.update()
+                        break
+                    
 
                 else:
-                    self.DIR = 'UPDOWN'
-                    
-                    if self.count <= 15:
-                        if self.y <= self.endy - self.width and self.y >= self.starty + self.width:
-                            down  = pygame.transform.rotate(Enemy_Walk[self.count], 180)
-                            screen.blit(down, (self.x, self.y))
-                            self.count += 1
+                    self.count = 0
 
-                        else:
-                            up = Enemy_Walk[self.count]
-                            screen.blit(up, (self.x, self.y))
-                            self.count += 1
-                            self.dir == 'Back'
                     
-                    else:
-                        self.count = 0
 
-                    self.y += self.vel
+            else:
+                self.DIR = 'UPDOWN'
                 
+                if self.count <= 15:
+                    if self.y <= self.endy - self.width and self.y >= self.starty:
+                        down  = pygame.transform.rotate(Enemy_Walk[self.count], 180)
+                        screen.blit(down, (self.x, self.y))
+                        self.count += 1
+                        self.y += self.vel
+                        pygame.display.update()
 
-            while self.dir == 'Back':
-
-                if self.endx > self.endy:
-                    self.DIR = 'SIDEWAYS'
-
-                    if self.count <= 15:
-                        if self.x >= self.startx:
-                            left  = pygame.transform.rotate(Enemy_Walk[self.count], 90)
-                            screen.blit(left, (self.x, self.y))
-                            self.count += 1
-                        
-                        else:
-                            right = pygame.transform.rotate(Enemy_Walk[self.count], -90)
-                            screen.blit(right, (self.x, self.y))
-                            self.count += 1
-                            self.dir == 'Front'
-                    
                     else:
-                        self.count = 0
-
-                    self.x -= self.vel
-
+                        up = Enemy_Walk[self.count]
+                        screen.blit(up, (self.x, self.y))
+                        self.count += 1
+                        self.dir == 'Back'
+                        pygame.display.update()
+                        break
                 else:
-                    self.DIR = 'UPDOWN'
+                    self.count = 0
 
-                    if self.count <= 15:
-                        if self.y >= self.starty:
-                            up  = Enemy_Walk[self.count]
-                            screen.blit(up, (self.x, self.y))
-                            self.count += 1
-                        
-                        else:
-                            down = pygame.transform.rotate(Enemy_Walk[self.count], 180)
-                            screen.blit(down, (self.x, self.y))
-                            self.count += 1
-                            self.dir == 'Front'
+                
+            
+
+        while self.dir == 'Back':
+
+            if self.endx > self.endy:
+                self.DIR = 'SIDEWAYS'
+
+                if self.count <= 15:
+                    if self.x >= self.startx:
+                        left  = pygame.transform.rotate(Enemy_Walk[self.count], 90)
+                        screen.blit(left, (self.x, self.y))
+                        self.count += 1
+                        self.x -= self.vel
+                        pygame.display.update()
                     
                     else:
-                        self.count = 0
-
-                    self.y -= self.vel
+                        right = pygame.transform.rotate(Enemy_Walk[self.count], -90)
+                        screen.blit(right, (self.x, self.y))
+                        self.count += 1
+                        self.dir == 'Front'
+                        pygame.display.update()
+                        break
                 
+                else:
+                    self.count = 0
 
-        else:
-            self.count = 0
+                
+            else:
+                self.DIR = 'UPDOWN'
 
-        pygame.display.update()
+                if self.count <= 15:
+                    if self.y >= self.starty:
+                        up  = Enemy_Walk[self.count]
+                        screen.blit(up, (self.x, self.y))
+                        self.count += 1
+                        self.y -= self.vel
+                        pygame.display.update()
+                    
+                    else:
+                        down = pygame.transform.rotate(Enemy_Walk[self.count], 180)
+                        screen.blit(down, (self.x, self.y))
+                        self.count += 1
+                        self.dir == 'Front'
+                        pygame.display.update()
+                        break
+                
+                else:
+                    self.count = 0
 
     
 '''
@@ -252,8 +259,8 @@ class bullet(object):
 
 #setting up players
 lad = player(400,100)
-chad = rival(100,100,128,128,128,128,800,128)
-vlad = rival(100,200,128,128,256,256,256,800)
+chad = rival(128,128,128,128,800,128)
+vlad = rival(256,256,128,128,256,800)
 
 
 def maindraw():
