@@ -6,24 +6,44 @@ pygame.init()
 screen = pygame.display.set_mode((800,800))
 pygame.display.set_caption("Hunter Assassin")
 
-w1 = pygame.image.load('Hunter_Move/1.png').convert_alpha() 
-w2 = pygame.image.load('Hunter_Move/2.png').convert_alpha() 
-w3 = pygame.image.load('Hunter_Move/3.png').convert_alpha()
-w4 = pygame.image.load('Hunter_Move/4.png').convert_alpha()
-w5 = pygame.image.load('Hunter_Move/5.png').convert_alpha()
-w6 = pygame.image.load('Hunter_Move/6.png').convert_alpha()
-w7 = pygame.image.load('Hunter_Move/7.png').convert_alpha()
-w8 = pygame.image.load('Hunter_Move/8.png').convert_alpha()
+h1 = pygame.image.load('Hunter_Move/1.png').convert_alpha() 
+h2 = pygame.image.load('Hunter_Move/2.png').convert_alpha() 
+h3 = pygame.image.load('Hunter_Move/3.png').convert_alpha()
+h4 = pygame.image.load('Hunter_Move/4.png').convert_alpha()
+h5 = pygame.image.load('Hunter_Move/5.png').convert_alpha()
+h6 = pygame.image.load('Hunter_Move/6.png').convert_alpha()
+h7 = pygame.image.load('Hunter_Move/7.png').convert_alpha()
+h8 = pygame.image.load('Hunter_Move/8.png').convert_alpha()
 rest = pygame.image.load("Hunter_Move/8a.png").convert_alpha()
-w10 = pygame.image.load('Hunter_Move/9.png').convert_alpha()
-w11 = pygame.image.load('Hunter_Move/10.png').convert_alpha()
-w12 = pygame.image.load('Hunter_Move/11.png').convert_alpha()
-w13 = pygame.image.load('Hunter_Move/12.png').convert_alpha()
-w14 = pygame.image.load('Hunter_Move/13.png').convert_alpha()
-w15 = pygame.image.load('Hunter_Move/14.png').convert_alpha()
-w16 = pygame.image.load('Hunter_Move/15.png').convert_alpha()
+h10 = pygame.image.load('Hunter_Move/9.png').convert_alpha()
+h11 = pygame.image.load('Hunter_Move/10.png').convert_alpha()
+h12 = pygame.image.load('Hunter_Move/11.png').convert_alpha()
+h13 = pygame.image.load('Hunter_Move/12.png').convert_alpha()
+h14 = pygame.image.load('Hunter_Move/13.png').convert_alpha()
+h15 = pygame.image.load('Hunter_Move/14.png').convert_alpha()
+h16 = pygame.image.load('Hunter_Move/15.png').convert_alpha()
 
-Walk = [w1,w2,w3,w4,w5,w6,w7,w8,rest,w10,w11,w12,w13,w14,w15,w16]
+Hunter_Walk = [h1,h2,h3,h4,h5,h6,h7,h8,rest,h10,h11,h12,h13,h14,h15,h16]
+
+#Getting images for enemy
+e1 = pygame.image.load('Enemy_Move/1.png').convert_alpha() 
+e2 = pygame.image.load('Enemy_Move/2.png').convert_alpha() 
+e3 = pygame.image.load('Enemy_Move/3.png').convert_alpha() 
+e4 = pygame.image.load('Enemy_Move/4.png').convert_alpha() 
+e5 = pygame.image.load('Enemy_Move/5.png').convert_alpha() 
+e6 = pygame.image.load('Enemy_Move/5a.png').convert_alpha() 
+e7 = pygame.image.load('Enemy_Move/5b.png').convert_alpha() 
+e8 = pygame.image.load('Enemy_Move/5c.png').convert_alpha() 
+REST = pygame.image.load('Enemy_Move/5d.png').convert_alpha() 
+e10 = pygame.image.load('Enemy_Move/6.png').convert_alpha() 
+e11 = pygame.image.load('Enemy_Move/7.png').convert_alpha() 
+e12 = pygame.image.load('Enemy_Move/8.png').convert_alpha() 
+e13 = pygame.image.load('Enemy_Move/9.png').convert_alpha() 
+e14 = pygame.image.load('Enemy_Move/9a.png').convert_alpha() 
+e15 = pygame.image.load('Enemy_Move/9b.png').convert_alpha() 
+e16 = pygame.image.load('Enemy_Move/9c.png').convert_alpha() 
+
+Enemy_Walk = [e1,e2,e3,e4,e5,e6,e7,e8,REST,e10,e11,e12,e13,e14,e15,e16]
 
 rest = pygame.image.load("Hunter_Move/8a.png")
 rest1 = rest
@@ -60,22 +80,22 @@ class player(object):
         elif self.COUNT <= 15:
 
             if self.up == True:
-                m = pygame.transform.rotate(Walk[self.COUNT], 0)
+                m = pygame.transform.rotate(Hunter_Walk[self.COUNT], 0)
                 screen.blit(m,(self.x,self.y))
                 pygame.display.update()
 
             elif self.down == True:
-                m = pygame.transform.rotate(Walk[self.COUNT], 180)
+                m = pygame.transform.rotate(Hunter_Walk[self.COUNT], 180)
                 screen.blit(m,(self.x,self.y))
                 pygame.display.update()
 
             elif self.right == True:
-                m = pygame.transform.rotate(Walk[self.COUNT], -90)
+                m = pygame.transform.rotate(Hunter_Walk[self.COUNT], -90)
                 screen.blit(m,(self.x,self.y))
                 pygame.display.update()
 
             elif self.left == True:
-                m = pygame.transform.rotate(Walk[self.COUNT], 90)
+                m = pygame.transform.rotate(Hunter_Walk[self.COUNT], 90)
                 screen.blit(m,(self.x,self.y))
                 pygame.display.update()
 
@@ -85,7 +105,7 @@ class player(object):
             self.COUNT = 0
 
 class rival(object):
-    global Walk
+    global Enemy_Walk
     def __init__(self, x, y, width, height,startx,starty ,endx, endy): 
         self.x = x
         self.y = y
@@ -109,22 +129,22 @@ class rival(object):
             self.COUNT = 0
 
         elif self.velx < 0:
-            left = pygame.transform.rotate(Walk[self.COUNT], 90)
+            left = pygame.transform.rotate(Enemy_Walk[self.COUNT], 90)
             screen.blit(left, (self.x, self.y))
             self.COUNT += 1
 
         elif self.velx > 0:
-            right  = pygame.transform.rotate(Walk[self.COUNT], -90)
+            right  = pygame.transform.rotate(Enemy_Walk[self.COUNT], -90)
             screen.blit(right, (self.x, self.y))
             self.COUNT += 1
 
         elif self.vely < 0:
-            up = pygame.transform.rotate(Walk[self.COUNT], 0)
+            up = pygame.transform.rotate(Enemy_Walk[self.COUNT], 0)
             screen.blit(up, (self.x, self.y))
             self.COUNT += 1
 
         elif self.vely > 0:
-            down = pygame.transform.rotate(Walk[self.COUNT], 180)
+            down = pygame.transform.rotate(Enemy_Walk[self.COUNT], 180)
             screen.blit(down, (self.x, self.y))
             self.COUNT += 1
 
