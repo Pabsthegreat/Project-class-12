@@ -193,7 +193,7 @@ class rival(object):
                         self.vely = self.vely * -1
                         self.COUNT =0
 
-        rival.checkPoint(self,100, lad.x, lad.y,self.x,self.y ,50, 0)
+        rival.checkPoint(self,300, lad.x, lad.y,self.x,self.y ,50, 0)
 
     def shoot(self):
         if self.dir== 'right':
@@ -216,8 +216,8 @@ class rival(object):
     def checkPoint(self,radius, x, y, selfx ,selfy ,percent, startAngle): 
         endAngle = 360 * percent/100 + startAngle 
 
-        x = x - selfx
-        y = y - selfy
+        x =  selfx - x 
+        y =  selfy - y
 
         if x >=0 and y >= 0:
             polarradius = math.sqrt(x * x + y * y)
