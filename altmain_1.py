@@ -1,4 +1,7 @@
+from re import X
 import pygame
+import math
+
 
 pygame.init()
 
@@ -64,37 +67,33 @@ class player(object):
         self.width = width
         self.height = height
         self.vel = 5
-        self.up = False
-        self.down = False
-        self.left = False
-        self.right = False
-        self.stand = False
+        self.dir = None
         self.COUNT = 0
 
 
     def move(self):
-        if self.stand == True:
+        if self.dir == None:
             screen.blit(rest1, (self.x, self.y))
             pygame.display.update()
 
         elif self.COUNT <= 15:
 
-            if self.up == True:
+            if self.dir == "up":
                 m = pygame.transform.rotate(Hunter_Walk[self.COUNT], 0)
                 screen.blit(m,(self.x,self.y))
                 pygame.display.update()
 
-            elif self.down == True:
+            elif self.dir == "down":
                 m = pygame.transform.rotate(Hunter_Walk[self.COUNT], 180)
                 screen.blit(m,(self.x,self.y))
                 pygame.display.update()
 
-            elif self.right == True:
+            elif self.dir == "right":
                 m = pygame.transform.rotate(Hunter_Walk[self.COUNT], -90)
                 screen.blit(m,(self.x,self.y))
                 pygame.display.update()
 
-            elif self.left == True:
+            elif self.dir == "left":
                 m = pygame.transform.rotate(Hunter_Walk[self.COUNT], 90)
                 screen.blit(m,(self.x,self.y))
                 pygame.display.update()
@@ -115,6 +114,7 @@ class rival(object):
         self.vely = 2.5
         self.endx = endx
         self.endy = endy
+        self.dir = None
         self.startx = startx
         self.starty = starty
         self.pathx = [self.x, startx,self.endx]
@@ -152,6 +152,7 @@ class rival(object):
         pygame.display.update()
 
     def moveit(self):
+        global lad 
 
         if self.startx == self.endx or self.starty == self.endy:
 
@@ -192,6 +193,58 @@ class rival(object):
                         self.vely = self.vely * -1
                         self.COUNT =0
 
+        rival.checkPoint(self,100, lad.x, lad.y, 50, 0)
+
+    def shoot(self):
+        if self.dir== 'right':
+            if self.x - self.x <= 256:
+                bulletss(self.x,self.y)
+        
+        elif self.dir == 'left':
+            if self.x - self.x <= 256:
+                bulletss(self.x,self.y)
+
+        elif self.dir == 'down':
+            if self.y - self.y <= 256:
+                bulletss(self.x,self.y)
+
+        elif self.dir == 'up':
+            if self.y - self.y <= 256:
+                bulletss(self.x,self.y)
+
+
+    def checkPoint(self,radius, x, y, percent, startAngle): 
+        endAngle = 360 * percent/100 + startAngle 
+    
+        if x >=0:
+            polarradius = math.sqrt(x * x + y * y)
+
+        if x == 0:
+            Angle = 90
+        else:
+            Angle = math.atan(y / x)
+
+        if (Angle >= startAngle and Angle <= endAngle and polarradius <= radius and polarradius >=0 ):
+            rival.shoot(self)
+            print("Point (", x, ",", y, ") exist in the circle sector") 
+        else: 
+            print("Point (", x, ",", y, ") does not exist in the circle sector") 
+            pass
+
+ 
+class bulletss(object):
+    def __init__(self, x,y):
+        self.x = x
+        self.y = y
+        self.width = 10
+        self.height = 5
+        self.vel = 10
+        
+    def draw(self):
+        pygame.draw.rect(screen,(255, 215, 0), (self.x,self.y,self.width,self.height))
+        pygame.display.update()
+
+
 def maindraw():
     screen.blit(bg, (0,0))
     chad.draw()
@@ -200,11 +253,13 @@ def maindraw():
   
     pygame.display.flip()
 
+bullets = []
 
 #game loop
 lad = player(400,100,128,128)
 chad = rival(100,100,128,128,128,128,800,128)
 vlad = rival(100,200,128,128,256,256,256,800)
+
 running = True
 while running == True:
     clock.tick(30)
@@ -215,49 +270,35 @@ while running == True:
 
         if event.type == pygame.KEYUP:
 
-            lad.stand = True
-            lad.left = True
-            lad.up = False
-            lad.down = False
-            lad.right = False
+            lad.dir = None
+
+        for bullet in bullets:
+            if bullet.x < 500 and bullet.x > 0:
+                bullet.x += bullet.vel  
+            else:
+                bullets.pop(bullets.index(bullet))
 
     keys = pygame.key.get_pressed()
     
     if keys [pygame.K_LEFT] or keys [pygame.K_a] :
         lad.x -= lad.vel
-        lad.left = True
-        lad.up = False
-        lad.down = False
-        lad.right = False
-        lad.stand = False
+        lad.dir = "left"
         rest1 = pygame. transform. rotate(rest, 90)
 
 
     elif keys [pygame.K_RIGHT] or keys [pygame.K_d]  :
         lad.x += lad.vel
-        lad.right = True
-        lad.left = True
-        lad.up = False
-        lad.down = False
-        lad.stand = False
+        lad.dir = "right"
         rest1 = pygame. transform. rotate(rest, -90)
         
     elif keys [pygame.K_UP] or keys [pygame.K_w] :
         lad.y -= lad.vel
-        lad.up = True
-        lad.left = True
-        lad.down = False
-        lad.right = False
-        lad.stand = False
+        lad.dir = "up"
         rest1 = pygame. transform. rotate(rest, 0)
         
     elif keys [pygame.K_DOWN] or keys [pygame.K_s] :
         lad.y += lad.vel
-        lad.down = True
-        lad.left = True
-        lad.up = False
-        lad.right = False
-        lad.stand = False
+        lad.dir = "down"
         rest1 = pygame. transform. rotate(rest, 180)
         
     
@@ -281,3 +322,19 @@ while running == True:
 pygame.quit()
 
 COUNT = 0
+
+'''
+
+    if man.left:
+        facing = -1
+    else:
+        facing = 1
+
+    if len(bullets) < 5:  # This will make sure we cannot exceed 5 bullets on the screen at once
+        bullets.append(projectile(round(man.x+man.width//2), round(man.y + man.height//2), 6, (0,0,0), facing)) 
+
+'''
+
+
+
+  
