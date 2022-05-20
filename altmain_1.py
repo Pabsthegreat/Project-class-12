@@ -214,6 +214,7 @@ class rival(object):
 
 
     def checkPoint(self,radius, x, y, percent, startAngle): 
+
         endAngle = 360 * percent/100 + startAngle 
     
         if x >=0:
@@ -335,6 +336,32 @@ COUNT = 0
 
 '''
 
+def checkPoint(radius, x, y, percent, startAngle): 
+    endAngle = 360 * percent/100 + startAngle 
+  
+    if x >=0 and y>=0:
+        polarradius = math.sqrt(x * x + y * y)
+    elif x<0 and y>=0:
+        polarradius = math.sqrt(x * x + y * y)
 
+    else:
+        polarradius = radius + 1
+
+    if x == 0:
+        Angle = 90
+    elif x>0:
+        Angle = math.atan(y/x)
+    elif x<0:
+        Angle = 90 - math.atan(y / x)
+
+    if (Angle >= startAngle and Angle <= endAngle and polarradius <= radius and polarradius >=0 ):
+        print("Point (", x, ",", y, ") exist in the circle sector") 
+    else: 
+        print("Point (", x, ",", y, ") does not exist in the circle sector") 
+  
+radius, x, y = 8, 2, -2
+percent, startAngle = 50, 0
+  
+checkPoint(radius, x, y, percent, startAngle)
 
   
