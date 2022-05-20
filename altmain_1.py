@@ -193,7 +193,7 @@ class rival(object):
                         self.vely = self.vely * -1
                         self.COUNT =0
 
-        rival.checkPoint(self,100, lad.x, lad.y, 50, 0)
+        rival.checkPoint(self,100, lad.x, lad.y,self.x,self.y ,50, 0)
 
     def shoot(self):
         if self.dir== 'right':
@@ -213,24 +213,32 @@ class rival(object):
                 bulletss(self.x,self.y)
 
 
-    def checkPoint(self,radius, x, y, percent, startAngle): 
-
+    def checkPoint(self,radius, x, y, selfx ,selfy ,percent, startAngle): 
         endAngle = 360 * percent/100 + startAngle 
-    
-        if x >=0:
+
+        x = x - selfx
+        y = y - selfy
+
+        if x >=0 and y >= 0:
             polarradius = math.sqrt(x * x + y * y)
+        elif x < 0 and y >= 0:
+            polarradius = math.sqrt(x * x + y * y)
+
+        else:
+            polarradius = radius + 1
 
         if x == 0:
             Angle = 90
-        else:
-            Angle = math.atan(y / x)
+        elif x > 0:
+            Angle = math.atan(y/x)
+        elif x<0:
+            Angle = 90 - math.atan(y / x)
 
         if (Angle >= startAngle and Angle <= endAngle and polarradius <= radius and polarradius >=0 ):
-            rival.shoot(self)
             print("Point (", x, ",", y, ") exist in the circle sector") 
+            rival.shoot(self)
         else: 
             print("Point (", x, ",", y, ") does not exist in the circle sector") 
-            pass
 
  
 class bulletss(object):
@@ -336,32 +344,5 @@ COUNT = 0
 
 '''
 
-def checkPoint(radius, x, y, percent, startAngle): 
-    endAngle = 360 * percent/100 + startAngle 
-  
-    if x >=0 and y>=0:
-        polarradius = math.sqrt(x * x + y * y)
-    elif x<0 and y>=0:
-        polarradius = math.sqrt(x * x + y * y)
-
-    else:
-        polarradius = radius + 1
-
-    if x == 0:
-        Angle = 90
-    elif x>0:
-        Angle = math.atan(y/x)
-    elif x<0:
-        Angle = 90 - math.atan(y / x)
-
-    if (Angle >= startAngle and Angle <= endAngle and polarradius <= radius and polarradius >=0 ):
-        print("Point (", x, ",", y, ") exist in the circle sector") 
-    else: 
-        print("Point (", x, ",", y, ") does not exist in the circle sector") 
-  
-radius, x, y = 8, 2, -2
-percent, startAngle = 50, 0
-  
-checkPoint(radius, x, y, percent, startAngle)
 
   
