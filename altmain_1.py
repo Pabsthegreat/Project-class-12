@@ -193,7 +193,7 @@ class rival(object):
                         self.vely = self.vely * -1
                         self.COUNT =0
 
-        rival.checkPoint(self,300, lad.x, lad.y,self.x,self.y ,50, 0)
+        rival.checkPoint(self,200, lad.x, lad.y,self.x,self.y ,50, 0)
 
     def shoot(self):
         if self.dir== 'right':
@@ -238,7 +238,7 @@ class rival(object):
             print("Point (", x, ",", y, ") exist in the circle sector") 
             rival.shoot(self)
         else: 
-            print("Point (", x, ",", y, ") does not exist in the circle sector") 
+            pass
 
  
 class bulletss(object):
