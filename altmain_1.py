@@ -53,10 +53,7 @@ rest1 = rest
 icon = pygame.image.load("Hunter_Move/8a.png")
 pygame.display.set_icon(icon)
 
-bg =  pygame.image.load('bg.png')
-
-#enemy
-enemy = pygame.image.load("enemy.png")
+bg =  pygame.image.load('pics/bg.png')
 
 clock = pygame.time.Clock()
 
@@ -265,7 +262,7 @@ def maindraw():
 bullets = []
 
 #game loop
-lad = player(400,100,128,128)
+lad = player(512,128,128,128)
 chad = rival(100,100,128,128,128,128,800,128)
 vlad = rival(100,200,128,128,256,256,256,800)
 
@@ -329,10 +326,8 @@ while running == True:
     maindraw()
     
 pygame.quit()
-
-COUNT = 0
-
 '''
+COUNT = 0
 
     if man.left:
         facing = -1
@@ -341,8 +336,4 @@ COUNT = 0
 
     if len(bullets) < 5:  # This will make sure we cannot exceed 5 bullets on the screen at once
         bullets.append(projectile(round(man.x+man.width//2), round(man.y + man.height//2), 6, (0,0,0), facing)) 
-
 '''
-
-
-  
