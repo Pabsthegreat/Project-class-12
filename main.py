@@ -6,7 +6,7 @@ pygame.init()
 #creating the screen
 screen = pygame.display.set_mode((800,800))
 
-bg =  pygame.image.load('bg.png')
+bg =  pygame.image.load('pics/bg.png')
 pygame.display.set_caption("Hunter Assassin")
 
 icon = pygame.image.load("Hunter_Move/8a.png")
