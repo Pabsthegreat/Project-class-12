@@ -1,6 +1,8 @@
 from re import X
+
 import pygame
 import math
+
 
 
 pygame.init()
@@ -47,6 +49,8 @@ e15 = pygame.image.load('Enemy_Move/9b.png').convert_alpha()
 e16 = pygame.image.load('Enemy_Move/9c.png').convert_alpha() 
 
 Enemy_Walk = [e1,e2,e3,e4,e5,e6,e7,e8,REST,e10,e11,e12,e13,e14,e15,e16]
+
+bullets = pygame.image.load('pics/Bullet.png').convert_alpha() 
 
 rest = pygame.image.load("Hunter_Move/8a.png")
 rest1 = rest
@@ -193,22 +197,23 @@ class rival(object):
         rival.checkPoint(self,200, lad.x, lad.y,self.x,self.y ,50, 0)
 
     def shoot(self):
-        if self.dir== 'right':
-            if self.x - self.x <= 256:
-                bulletss(self.x,self.y)
+        #if self.dir== 'right':
+            #if self.x - self.x <= 256:
+                #bulletss(self.x,self.y) 
+                #bulletss.draw()
         
-        elif self.dir == 'left':
-            if self.x - self.x <= 256:
-                bulletss(self.x,self.y)
-
-        elif self.dir == 'down':
-            if self.y - self.y <= 256:
-                bulletss(self.x,self.y)
-
-        elif self.dir == 'up':
-            if self.y - self.y <= 256:
-                bulletss(self.x,self.y)
-
+        #elif self.dir == 'left':
+           # if self.x - self.x <= 256:
+                #bulletss(self.x,self.y)
+                #bulletss.draw()
+        #elif self.dir == 'down':
+           # if self.y - self.y <= 256:
+                #bulletss(self.x,self.y)
+                #bulletss.draw()
+       # elif self.dir == 'up':
+            #if self.y - self.y <= 256:
+        bulletss(self.x,self.y)
+        bulletss.draw(bull)
 
     def checkPoint(self,radius, x, y, selfx ,selfy ,percent, startAngle): 
         endAngle = 360 * percent/100 + startAngle 
@@ -242,29 +247,33 @@ class bulletss(object):
     def __init__(self, x,y):
         self.x = x
         self.y = y
-        self.width = 10
-        self.height = 5
+        self.width = 100
+        self.height = 23
         self.vel = 10
         
+            
     def draw(self):
-        pygame.draw.rect(screen,(255, 215, 0), (self.x,self.y,self.width,self.height))
+        screen.blit(bullets,(self.x,self.y))
+        print("fuck you")
         pygame.display.update()
-
+    
+    #update and draw  
 
 def maindraw():
     screen.blit(bg, (0,0))
     chad.draw()
     vlad.draw()
     lad.move()
+
   
     pygame.display.flip()
-
-bullets = []
 
 #game loop
 lad = player(512,128,128,128)
 chad = rival(100,100,128,128,128,128,800,128)
 vlad = rival(100,200,128,128,256,256,256,800)
+bull = bulletss(vlad.x,vlad.y)
+b = [bull]
 
 running = True
 while running == True:
@@ -278,11 +287,11 @@ while running == True:
 
             lad.dir = None
 
-        for bullet in bullets:
-            if bullet.x < 500 and bullet.x > 0:
-                bullet.x += bullet.vel  
+        for bull in b:
+            if bull.x < 500 and bull.x > 0:
+                bull.x += bull.vel
             else:
-                bullets.pop(bullets.index(bullet))
+                b.pop(b.index(bull))
 
     keys = pygame.key.get_pressed()
     
@@ -326,14 +335,14 @@ while running == True:
     maindraw()
     
 pygame.quit()
-'''
+
 COUNT = 0
 
-    if man.left:
-        facing = -1
-    else:
-        facing = 1
+#if vlad.dir == left:
+    #facing = -1
+#else:
+    #facing = 1
 
-    if len(bullets) < 5:  # This will make sure we cannot exceed 5 bullets on the screen at once
-        bullets.append(projectile(round(man.x+man.width//2), round(man.y + man.height//2), 6, (0,0,0), facing)) 
-'''
+#if len(b) < 5:  # This will make sure we cannot exceed 5 bullets on the screen at once
+   ## b.append((round(vlad.x+vlad.width//2), round(vlad.y + vlad.height//2), 6, (0,0,0), facing)) 
+#pygame.quit()
