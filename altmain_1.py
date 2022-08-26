@@ -253,7 +253,7 @@ class bulletss(object):
         
             
     def draw(self):
-        screen.blit(bullets,(self.x,self.y))
+        screen.blit(bullets,(self.x ,self.y ))
         print("fuck you")
         pygame.display.update()
     
