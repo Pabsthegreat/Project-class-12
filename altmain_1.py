@@ -123,7 +123,7 @@ class rival(object):
         self.COUNT = 0  
     
     def draw(self):
-        global screen
+        global screen,dir
         self.moveit()
         
         if self.COUNT >= 15:
@@ -133,26 +133,26 @@ class rival(object):
             left = pygame.transform.rotate(Enemy_Walk[self.COUNT], 90)
             screen.blit(left, (self.x, self.y))
             self.COUNT += 1
-            self.checkpoint("l")
+            dir = self.checkpoint("l")
             
 
         elif self.velx > 0:
             right  = pygame.transform.rotate(Enemy_Walk[self.COUNT], -90)
             screen.blit(right, (self.x, self.y))
             self.COUNT += 1
-            self.checkpoint("r")
+            dir =self.checkpoint("r")
 
         elif self.vely < 0:
             up = pygame.transform.rotate(Enemy_Walk[self.COUNT], 0)
             screen.blit(up, (self.x, self.y))
             self.COUNT += 1
-            self.checkpoint("u")
+            dir =self.checkpoint("u")
 
         elif self.vely > 0:
             down = pygame.transform.rotate(Enemy_Walk[self.COUNT], 180)
             screen.blit(down, (self.x, self.y))
             self.COUNT += 1
-            self.checkpoint("d")
+            dir =self.checkpoint("d")
 
 
         pygame.display.update()
@@ -199,63 +199,64 @@ class rival(object):
                         self.vely = self.vely * -1
                         self.COUNT =0
 
-        rival.checkPoint(self,200, lad.x, lad.y,self.x,self.y ,50, 0)
+        rival.checkPoint(self,200, lad.x, lad.y,self.x,self.y ,50, 0,lad.y,lad.x,dir)
 
     def shoot(self):
-        #if self.dir== 'right':
-            #if self.x - self.x <= 256:
-                #bulletss(self.x,self.y) 
-                #bulletss.draw()
+        if self.dir== 'right':
+            if self.x - self.x <= 256:
+                bulletss(self.x,self.y) 
+                bulletss.draw()
         
-        #elif self.dir == 'left':
-           # if self.x - self.x <= 256:
-                #bulletss(self.x,self.y)
-                #bulletss.draw()
-        #elif self.dir == 'down':
-           # if self.y - self.y <= 256:
-                #bulletss(self.x,self.y)
-                #bulletss.draw()
-       # elif self.dir == 'up':
-            #if self.y - self.y <= 256:
+        elif self.dir == 'left':
+            if self.x - self.x <= 256:
+                bulletss(self.x,self.y)
+                bulletss.draw()
+        elif self.dir == 'down':
+            if self.y - self.y <= 256:
+                bulletss(self.x,self.y)
+                bulletss.draw()
+        elif self.dir == 'up':
+            if self.y - self.y <= 256:
+                bulletss(self.x,self.y)
+                bulletss.draw()
 
         if self.startx - self.endx == 0:
             bulletss(self.x,self.y)
             bulletss.draw(bull)
-            bulletss(self.x,self.y+bulletss.vel)
+            bulletss(self.x,self.y+bull.vel)
         elif self.starty - self.endy == 0:
             bulletss(self.x,self.y)
             bulletss.draw(bull1)
-            bulletss(self.x + bulletss.vel,self.y)
+            bulletss(self.x + bull.vel,self.y)
 
-    def checkPoint(self,radius, x, y, selfx ,selfy ,percent, startAngle): 
+    def checkPoint(self,radius, x, y, selfx ,selfy ,percent, startAngle,rx,ry,dir): 
         endAngle = 360 * percent/100 + startAngle 
 
         x =  selfx - x 
         y =  selfy - y
 
-        dir = self.checkpoint()
         polarradius = math.sqrt(x * x + y * y)
-        '''
+
         if dir == 'u':
             
             if x == 0:
                 Angle = 90
             elif x > 0:
-                Angle = math.atan(y/x)
+                Angle = math.atan( ry-self.y/rx-self.x)
             
 
-            if (Angle >= startAngle and Angle <= endAngle and polarradius <= radius and polarradius >=0 ):
-                print("Point (", x, ",", y, ") exist in the circle sector") 
-                rival.shoot(self)
+                if (Angle >= startAngle and Angle <= endAngle and polarradius <= radius and polarradius >=0 ):
+                        print("Point (", x, ",", y, ") exist in the circle sector") 
+                        rival.shoot(self)
         
         
         elif dir == 'l':
             if x == 0:
                 Angle = 90
             elif x > 0:
-                Angle = math.atan(y/x)
+                Angle =  math.atan( ry-self.y/rx-self.x)
             elif x<0:
-                Angle = 90 - math.atan(y / x)
+                Angle = 90 -  math.atan( ry-self.y/rx-self.x)
 
             if (Angle >= startAngle and Angle <= endAngle and polarradius <= radius and polarradius >=0 ):
                 print("Point (", x, ",", y, ") exist in the circle sector") 
@@ -265,9 +266,9 @@ class rival(object):
             if x == 0:
                 Angle = 90
             elif x > 0:
-                Angle = math.atan(y/x)
+                Angle = math.atan( ry-self.y/rx-self.x)
             elif x<0:
-                Angle = 90 - math.atan(y / x)
+                Angle =  math.atan( ry-self.y/rx-self.x)
 
             if (Angle >= startAngle and Angle <= endAngle and polarradius <= radius and polarradius >=0 ):
                 print("Point (", x, ",", y, ") exist in the circle sector") 
@@ -277,16 +278,16 @@ class rival(object):
             if x == 0:
                 Angle = 90
             elif x > 0:
-                Angle = math.atan(y/x)
+                Angle =  math.atan( ry-self.y/rx-self.x)
             elif x<0:
-                Angle = 90 - math.atan(y / x)
+                Angle = 90 - math.atan( ry-self.y/rx-self.x)
 
             if (Angle >= startAngle and Angle <= endAngle and polarradius <= radius and polarradius >=0 ):
                 print("Point (", x, ",", y, ") exist in the circle sector") 
                 rival.shoot(self)
-        '''
+        
 
-    def checkpoint(dir):
+    def checkpoint(self,dir):
         return dir
  
 class bulletss(object):
@@ -299,12 +300,10 @@ class bulletss(object):
         
             
     def draw(self):
-#<<<<<<< HEAD
+
         screen.blit(bullets,(self.x ,self.y ))
-        print("fuck you")
-#=======
+        print("in")
         screen.blit(bullets,(self.x,self.y))
-#>>>>>>> d3385e825a7ce5d91d5ac84f6a1f86e1c8831a92
         pygame.display.update()
 
     
