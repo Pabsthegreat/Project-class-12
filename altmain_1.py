@@ -133,21 +133,26 @@ class rival(object):
             left = pygame.transform.rotate(Enemy_Walk[self.COUNT], 90)
             screen.blit(left, (self.x, self.y))
             self.COUNT += 1
+            self.checkpoint("l")
+            
 
         elif self.velx > 0:
             right  = pygame.transform.rotate(Enemy_Walk[self.COUNT], -90)
             screen.blit(right, (self.x, self.y))
             self.COUNT += 1
+            self.checkpoint("r")
 
         elif self.vely < 0:
             up = pygame.transform.rotate(Enemy_Walk[self.COUNT], 0)
             screen.blit(up, (self.x, self.y))
             self.COUNT += 1
+            self.checkpoint("u")
 
         elif self.vely > 0:
             down = pygame.transform.rotate(Enemy_Walk[self.COUNT], 180)
             screen.blit(down, (self.x, self.y))
             self.COUNT += 1
+            self.checkpoint("d")
 
 
         pygame.display.update()
@@ -212,8 +217,15 @@ class rival(object):
                 #bulletss.draw()
        # elif self.dir == 'up':
             #if self.y - self.y <= 256:
-        bulletss(self.x,self.y)
-        bulletss.draw(bull)
+
+        if self.startx - self.endx == 0:
+            bulletss(self.x,self.y)
+            bulletss.draw(bull)
+            bulletss(self.x,self.y+bulletss.vel)
+        elif self.starty - self.endy == 0:
+            bulletss(self.x,self.y)
+            bulletss.draw(bull1)
+            bulletss(self.x + bulletss.vel,self.y)
 
     def checkPoint(self,radius, x, y, selfx ,selfy ,percent, startAngle): 
         endAngle = 360 * percent/100 + startAngle 
@@ -221,41 +233,80 @@ class rival(object):
         x =  selfx - x 
         y =  selfy - y
 
-        if x >=0 and y >= 0:
-            polarradius = math.sqrt(x * x + y * y)
-        elif x < 0 and y >= 0:
-            polarradius = math.sqrt(x * x + y * y)
+        dir = self.checkpoint()
+        polarradius = math.sqrt(x * x + y * y)
+        '''
+        if dir == 'u':
+            
+            if x == 0:
+                Angle = 90
+            elif x > 0:
+                Angle = math.atan(y/x)
+            
 
-        else:
-            polarradius = radius + 1
+            if (Angle >= startAngle and Angle <= endAngle and polarradius <= radius and polarradius >=0 ):
+                print("Point (", x, ",", y, ") exist in the circle sector") 
+                rival.shoot(self)
+        
+        
+        elif dir == 'l':
+            if x == 0:
+                Angle = 90
+            elif x > 0:
+                Angle = math.atan(y/x)
+            elif x<0:
+                Angle = 90 - math.atan(y / x)
 
-        if x == 0:
-            Angle = 90
-        elif x > 0:
-            Angle = math.atan(y/x)
-        elif x<0:
-            Angle = 90 - math.atan(y / x)
+            if (Angle >= startAngle and Angle <= endAngle and polarradius <= radius and polarradius >=0 ):
+                print("Point (", x, ",", y, ") exist in the circle sector") 
+                rival.shoot(self)
 
-        if (Angle >= startAngle and Angle <= endAngle and polarradius <= radius and polarradius >=0 ):
-            print("Point (", x, ",", y, ") exist in the circle sector") 
-            rival.shoot(self)
-        else: 
-            pass
+        elif dir == 'd':
+            if x == 0:
+                Angle = 90
+            elif x > 0:
+                Angle = math.atan(y/x)
+            elif x<0:
+                Angle = 90 - math.atan(y / x)
 
+            if (Angle >= startAngle and Angle <= endAngle and polarradius <= radius and polarradius >=0 ):
+                print("Point (", x, ",", y, ") exist in the circle sector") 
+                rival.shoot(self)
+
+        elif dir == 'r':
+            if x == 0:
+                Angle = 90
+            elif x > 0:
+                Angle = math.atan(y/x)
+            elif x<0:
+                Angle = 90 - math.atan(y / x)
+
+            if (Angle >= startAngle and Angle <= endAngle and polarradius <= radius and polarradius >=0 ):
+                print("Point (", x, ",", y, ") exist in the circle sector") 
+                rival.shoot(self)
+        '''
+
+    def checkpoint(dir):
+        return dir
  
 class bulletss(object):
     def __init__(self, x,y):
-        self.x = x
+        self.x = x 
         self.y = y
-        self.width = 100
-        self.height = 23
-        self.vel = 10
+        self.width = 50
+        self.height = 20
+        self.vel = 30
         
             
     def draw(self):
+#<<<<<<< HEAD
         screen.blit(bullets,(self.x ,self.y ))
         print("fuck you")
+#=======
+        screen.blit(bullets,(self.x,self.y))
+#>>>>>>> d3385e825a7ce5d91d5ac84f6a1f86e1c8831a92
         pygame.display.update()
+
     
     #update and draw  
 
@@ -273,7 +324,8 @@ lad = player(512,128,128,128)
 chad = rival(100,100,128,128,128,128,800,128)
 vlad = rival(100,200,128,128,256,256,256,800)
 bull = bulletss(vlad.x,vlad.y)
-b = [bull]
+bull1 = bulletss(chad.x,chad.y)
+b = [bull, bull1]
 
 running = True
 while running == True:
