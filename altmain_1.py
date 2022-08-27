@@ -75,31 +75,32 @@ class player(object):
     def move(self):
         if self.dir == None:
             screen.blit(rest1, (self.x, self.y))
-            pygame.display.update()
+            
 
         elif self.COUNT <= 15:
 
             if self.dir == "up":
                 m = pygame.transform.rotate(Hunter_Walk[self.COUNT], 0)
                 screen.blit(m,(self.x,self.y))
-                pygame.display.update()
+                
 
             elif self.dir == "down":
                 m = pygame.transform.rotate(Hunter_Walk[self.COUNT], 180)
                 screen.blit(m,(self.x,self.y))
-                pygame.display.update()
+                
 
             elif self.dir == "right":
                 m = pygame.transform.rotate(Hunter_Walk[self.COUNT], -90)
                 screen.blit(m,(self.x,self.y))
-                pygame.display.update()
+                
 
             elif self.dir == "left":
                 m = pygame.transform.rotate(Hunter_Walk[self.COUNT], 90)
                 screen.blit(m,(self.x,self.y))
-                pygame.display.update()
-
+                
+            
             self.COUNT += 1
+
             
         else:
             self.COUNT = 0
@@ -146,7 +147,7 @@ class rival(object):
             up = pygame.transform.rotate(Enemy_Walk[self.COUNT], 0)
             screen.blit(up, (self.x, self.y))
             self.COUNT += 1
-            dir =self.checkpoint("u")
+            dir = self.checkpoint("u")
 
         elif self.vely > 0:
             down = pygame.transform.rotate(Enemy_Walk[self.COUNT], 180)
@@ -155,7 +156,7 @@ class rival(object):
             dir =self.checkpoint("d")
 
 
-        pygame.display.update()
+        
 
     def moveit(self):
         global lad 
@@ -242,7 +243,7 @@ class rival(object):
             if x == 0:
                 Angle = 90
             elif x > 0:
-                Angle = math.atan( ry-self.y/rx-self.x)
+                Angle = math.atan(ry-self.y/rx-self.x)
             
 
                 if (Angle >= startAngle and Angle <= endAngle and polarradius <= radius and polarradius >=0 ):
@@ -254,9 +255,9 @@ class rival(object):
             if x == 0:
                 Angle = 90
             elif x > 0:
-                Angle =  math.atan( ry-self.y/rx-self.x)
+                Angle =  math.atan(ry-self.y/rx-self.x)
             elif x<0:
-                Angle = 90 -  math.atan( ry-self.y/rx-self.x)
+                Angle = 90 -  math.atan(ry-self.y/rx-self.x)
 
             if (Angle >= startAngle and Angle <= endAngle and polarradius <= radius and polarradius >=0 ):
                 print("Point (", x, ",", y, ") exist in the circle sector") 
@@ -303,8 +304,8 @@ class bulletss(object):
 
         screen.blit(bullets,(self.x ,self.y ))
         print("in")
-        screen.blit(bullets,(self.x,self.y))
-        pygame.display.update()
+        
+        
 
     
     #update and draw  
@@ -314,9 +315,9 @@ def maindraw():
     chad.draw()
     vlad.draw()
     lad.move()
+    pygame.display.update()
 
-  
-    pygame.display.flip()
+    
 
 #game loop
 lad = player(512,128,128,128)
