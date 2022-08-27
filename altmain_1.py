@@ -153,7 +153,7 @@ class rival(object):
             down = pygame.transform.rotate(Enemy_Walk[self.COUNT], 180)
             screen.blit(down, (self.x, self.y))
             self.COUNT += 1
-            dir =self.checkpoint("d")
+            dir = self.checkpoint("d")
 
 
         
@@ -339,11 +339,7 @@ while running == True:
 
             lad.dir = None
 
-        for bull in b:
-            if bull.x < 500 and bull.x > 0:
-                bull.x += bull.vel
-            else:
-                b.pop(b.index(bull))
+        
 
     keys = pygame.key.get_pressed()
     
