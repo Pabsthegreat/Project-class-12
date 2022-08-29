@@ -214,50 +214,48 @@ class rival(object):
         rival.checkPoint(self, 256, lad.x, lad.y, self.x, self.y , self.angle, self.dir)
 
     def shoot(self):
-        
         if self.dir== 'right':
-            self.theta = self.angle - self.Angle
             self.velx = 0
-            self. vely = 0
-            
+            self.vely = 0
+            self.theta = self.angle - self.Angle        
             bulletss(self.x,self.y+bull.vel)
             bulletss.draw(bull)
 
         elif self.dir == 'left':
-            self.theta = self.angle - self.Angle
             self.velx = 0
-            self. vely = 0
-            
+            self.vely = 0
+            self.theta = self.angle - self.Angle
             bulletss(self.x,self.y+bull.vel)
             bulletss.draw(bull)
         
         elif self.dir == 'down':
-            self.theta = self.angle - self.Angle
             self.velx = 0
-            self. vely = 0
-            
+            self.vely = 0
+            self.theta = self.angle - self.Angle          
             bulletss(self.x + bull.vel,self.y)
             bulletss.draw(bull1)
         
         elif self.dir == 'up':
-            self.theta = self.angle - self.Angle
             self.velx = 0
-            self. vely = 0
-            
+            self.vely = 0
+            self.theta = self.angle - self.Angle
             bulletss(self.x + bull.vel,self.y)
             bulletss.draw(bull1)
         
-        if self.startx - self.endx == 0:
+        elif self.startx - self.endx == 0:
+            self.velx = 0
+            self.vely = 0
             bulletss(self.x,self.y)
             bulletss.draw(bull1)
             bulletss(self.x,self.y+bull.vel)
+
         elif self.starty - self.endy == 0:
+            self.velx = 0
+            self.vely = 0
             bulletss(self.x,self.y)
             bulletss.draw(bull1)
             bulletss(self.x + bull.vel,self.y)
-           
-
-        
+                 
 
     def checkPoint(self,radius, rx,ry , selfx ,selfy , startAngle, dir): 
         

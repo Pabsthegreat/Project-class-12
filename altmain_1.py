@@ -156,8 +156,6 @@ class rival(object):
             dir = self.checkpoint("d")
 
 
-        
-
     def moveit(self):
         global lad 
 
@@ -225,6 +223,7 @@ class rival(object):
             bulletss(self.x,self.y)
             bulletss.draw(bull)
             bulletss(self.x,self.y+bull.vel)
+
         elif self.starty - self.endy == 0:
             bulletss(self.x,self.y)
             bulletss.draw(bull1)
