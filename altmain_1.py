@@ -287,8 +287,7 @@ class rival(object):
                 rival.shoot(self)
         
 
-    def checkpoint(self,dir):
-        return dir
+    
  
 class bulletss(object):
     def __init__(self, x,y):

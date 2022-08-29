@@ -7,3 +7,8 @@ planning for enemy
 how to do collison 
 bullets
 enemy reactions
+
+
+right side guy not working
+function call change
+arcs are ulta for vlad and chad

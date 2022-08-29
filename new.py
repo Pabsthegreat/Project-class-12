@@ -137,6 +137,7 @@ class rival(object):
         elif self.velx < 0:
             left = pygame.transform.rotate(Enemy_Walk[self.COUNT], 90)
             screen.blit(left, (self.x, self.y))
+            print("turned")
             self.COUNT += 1
             self.dir = 'l'
             self.angle = 0
@@ -146,6 +147,7 @@ class rival(object):
 
             right  = pygame.transform.rotate(Enemy_Walk[self.COUNT], -90)
             screen.blit(right, (self.x, self.y))
+            print("turned")
             self.COUNT += 1
             self.dir = 'r'
             self.angle = self.a * 2
@@ -153,6 +155,7 @@ class rival(object):
         elif self.vely < 0:
             up = pygame.transform.rotate(Enemy_Walk[self.COUNT], 0)
             screen.blit(up, (self.x, self.y))
+            print("turned")
             self.COUNT += 1
             self.dir = 'u'
             self.angle = -self.a
@@ -160,6 +163,7 @@ class rival(object):
         elif self.vely > 0:
             down = pygame.transform.rotate(Enemy_Walk[self.COUNT], 180)
             screen.blit(down, (self.x, self.y))
+            print("turned")
             self.COUNT += 1
             self.dir = 'd'
             self.angle = self.a
@@ -167,6 +171,7 @@ class rival(object):
         else:
             shoot = pygame.transform.rotate(Enemy_Walk[8], self.theta)
             screen.blit(shoot, (self.x, self.y))
+            print("turned1")
         
 
     def moveit(self):
@@ -211,7 +216,7 @@ class rival(object):
                         self.vely = self.vely * -1
                         self.COUNT =0
 
-        rival.checkPoint(self, 256, lad.x, lad.y, self.x, self.y , self.angle, self.dir)
+        theta = rival.checkPoint(self, 256, lad.x, lad.y, self.x, self.y , self.angle, self.dir)
 
     def shoot(self):
         if self.dir== 'right':
@@ -312,7 +317,7 @@ class rival(object):
                 print("Point (", rx, ",", ry, ") exist in the circle sector") 
                 rival.shoot(self)
         
-        return self.angle
+        return self.Angle
 
     
  
