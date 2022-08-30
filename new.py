@@ -168,7 +168,6 @@ class rival(object):
             shoot = pygame.transform.rotate(Enemy_Walk[8], self.theta)
             screen.blit(shoot, (self.x, self.y))
         
-
     def moveit(self):
         global lad 
 
@@ -216,44 +215,35 @@ class rival(object):
     def shoot(self):
         self.velx = 0
         self.vely = 0
-        if self.dir== 'right':
-            
+        if self.dir== 'r':
+            print('right')
             self.theta = self.angle - self.Angle        
-            bulletss(self.x,self.y+bull.vel)
-            bulletss.draw(bull)
+            bull = bulletss(self.x,self.y)
+            bull = bulletss(self.x,self.y+bull.vel)
+            bulletss.draw(bull,self.theta)
 
-        elif self.dir == 'left':
-            
+        elif self.dir == 'l':
+            print('left')
             self.theta = self.angle - self.Angle
-            bulletss(self.x,self.y+bull.vel)
-            bulletss.draw(bull)
+            bull = bulletss(self.x,self.y)
+            bull = bulletss(self.x,self.y+bull.vel)
+            bulletss.draw(bull,self.theta)
         
-        elif self.dir == 'down':
+        elif self.dir == 'd':
+            print('down')
             self.theta = self.angle - self.Angle          
-            bulletss(self.x + bull.vel,self.y)
-            bulletss.draw(bull1)
+            bull = bulletss(self.x+self.width,self.y)
+            bull = bulletss(self.x,self.y+bull.vel)
+            bulletss.draw(bull,self.theta)
         
-        elif self.dir == 'up':
-            
+        elif self.dir == 'u':
+            print('up')
             self.theta = self.angle - self.Angle
-            bulletss(self.x + bull.vel,self.y)
-            bulletss.draw(bull1)
+            bull = bulletss(self.x ,self.y)
+            bull = bulletss(self.x,self.y+bull.vel)
+            bulletss.draw(bull,self.theta)
         
-        elif self.startx - self.endx == 0:
-            self.velx = 0
-            self.vely = 0
-            bulletss(self.x,self.y)
-            bulletss.draw(bull1)
-            bulletss(self.x,self.y+bull.vel)
-
-        elif self.starty - self.endy == 0:
-            self.velx = 0
-            self.vely = 0
-            bulletss(self.x,self.y)
-            bulletss.draw(bull1)
-            bulletss(self.x + bull.vel,self.y)
-                 
-
+            
     def checkPoint(self,radius, rx,ry , selfx ,selfy , startAngle, dir): 
         
         endAngle = math.degrees ( self.a * 2 / 3 + startAngle)
@@ -332,9 +322,6 @@ class rival(object):
             else:
                 pass
         
-
-    
- 
 class bulletss(object):
     def __init__(self,x,y):
         self.x = x
@@ -344,10 +331,10 @@ class bulletss(object):
         self.vel = 30
         
             
-    def draw(self):
-        self.x, self.y
-        print("shooting")
-        screen.blit(bullets,(self.x, self.y))
+    def draw(self,theta): 
+        down = pygame.transform.rotate(bullets, int(theta))
+        screen.blit(down, (self.x, self.y))
+
     
     #update and draw  
 
@@ -362,9 +349,6 @@ def maindraw():
 lad = player(512,128,128,128)
 chad = rival(100,100,128,128,128,128,800,128)
 vlad = rival(100,200,128,128,256,256,256,800)
-bull = bulletss(vlad.x,vlad.y)
-bull1 = bulletss(chad.x,chad.y)
-b = [bull,bull1]
 
 running = True
 while running == True:
