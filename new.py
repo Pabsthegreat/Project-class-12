@@ -139,7 +139,7 @@ class rival(object):
             screen.blit(left, (self.x, self.y))
             self.COUNT += 1
             self.dir = 'l'
-            self.angle = 30
+            self.angle = 0
             
 
         elif self.velx > 0:
@@ -148,21 +148,21 @@ class rival(object):
             screen.blit(right, (self.x, self.y))
             self.COUNT += 1
             self.dir = 'r'
-            self.angle = self.a + 30
+            self.angle = self.a 
 
         elif self.vely < 0:
             up = pygame.transform.rotate(Enemy_Walk[self.COUNT], 0)
             screen.blit(up, (self.x, self.y))
             self.COUNT += 1
             self.dir = 'u'
-            self.angle = -self.a + 30
+            self.angle = -self.a/2 
 
         elif self.vely > 0:
             down = pygame.transform.rotate(Enemy_Walk[self.COUNT], 180)
             screen.blit(down, (self.x, self.y))
             self.COUNT += 1
             self.dir = 'd'
-            self.angle = self.a/2 + 30
+            self.angle = self.a/2 
         
         else:
             shoot = pygame.transform.rotate(Enemy_Walk[8], self.theta)
@@ -216,42 +216,29 @@ class rival(object):
     def shoot(self):
         self.velx = 0
         self.vely = 0
-        if self.dir== 'right':
+        if self.dir== 'r':
             
             self.theta = self.angle - self.Angle        
             bulletss(self.x,self.y+bull.vel)
             bulletss.draw(bull)
 
-        elif self.dir == 'left':
+        elif self.dir == 'l':
             
             self.theta = self.angle - self.Angle
             bulletss(self.x,self.y+bull.vel)
             bulletss.draw(bull)
         
-        elif self.dir == 'down':
+        elif self.dir == 'd':
             self.theta = self.angle - self.Angle          
             bulletss(self.x + bull.vel,self.y)
             bulletss.draw(bull1)
         
-        elif self.dir == 'up':
+        elif self.dir == 'u':
             
             self.theta = self.angle - self.Angle
             bulletss(self.x + bull.vel,self.y)
             bulletss.draw(bull1)
         
-        elif self.startx - self.endx == 0:
-            self.velx = 0
-            self.vely = 0
-            bulletss(self.x,self.y)
-            bulletss.draw(bull1)
-            bulletss(self.x,self.y+bull.vel)
-
-        elif self.starty - self.endy == 0:
-            self.velx = 0
-            self.vely = 0
-            bulletss(self.x,self.y)
-            bulletss.draw(bull1)
-            bulletss(self.x + bull.vel,self.y)
                  
 
     def checkPoint(self,radius, rx,ry , selfx ,selfy , startAngle, dir): 
@@ -268,9 +255,9 @@ class rival(object):
             if x == 0:
                 self.Angle = 0
             elif x > 0:
-                self.Angle =  math.degrees (math.atan(x/y))
+                self.Angle =  270 - math.degrees (math.atan(x/y))
             else:
-                self.Angle =  math.degrees(math.atan(x/y))
+                self.Angle =  270 - math.degrees(math.atan(x/y))
 
             if (self.Angle >= startAngle and self.Angle <= endAngle and polarradius <= radius and polarradius >=0 ):
                     print("Point (", x, ",", y, ") exist in the circle sector") 
@@ -283,9 +270,9 @@ class rival(object):
             if x == 0:
                 self.Angle = 180
             elif x > 0:
-                self.Angle = 180 + math.degrees (math.atan(x/y))
+                self.Angle = 270 - math.degrees (math.atan(x/y))
             else:
-                self.Angle = 180 + math.degrees (math.atan(x/y))
+                self.Angle = 270 - math.degrees (math.atan(x/y))
 
             if (self.Angle >= startAngle and self.Angle <= endAngle and polarradius <= radius and polarradius >=0 ):
                 print("Point (", x, ",", y, ") exist in the circle sector") 
@@ -301,9 +288,9 @@ class rival(object):
             elif x == 0:
                 endAngle +=1
             elif y > 0:
-                self.Angle = 90 - math.degrees (math.atan(y/x))
+                self.Angle = 270 + math.degrees (math.atan(y/x))
             elif y < 0:
-                self.Angle = 90 - math.degrees (math.atan(y/x))
+                self.Angle = 270 + math.degrees (math.atan(y/x))
 
             if (self.Angle >= startAngle and self.Angle <= endAngle and polarradius <= radius and polarradius >=0 ):
                 print("Point (", x, ",", y, ") exist in the circle sector") 
@@ -321,9 +308,9 @@ class rival(object):
                 endAngle +=1
 
             elif y > 0:
-                self.Angle =  270 - math.degrees (math.atan(y/x))
+                self.Angle =  270 + math.degrees (math.atan(y/x))
             elif y < 0:
-                self.Angle = 270 - math.degrees (math.atan(y/x))
+                self.Angle = 270 + math.degrees (math.atan(y/x))
 
             if (self.Angle >= startAngle and self.Angle <= endAngle and polarradius <= radius and polarradius >=0 ):
                 print("Point (", x, ",", y, ") exist in the circle sector") 
