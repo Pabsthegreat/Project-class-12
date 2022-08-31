@@ -119,8 +119,8 @@ class rival(object):
         self.pathx = [self.x, self.startx, self.endx]                 #path taken by rival
         self.pathy = [self.y, self.starty, self.endy]
         self.COUNT = 0                                                #iterabe to go thru list of images
-        self.angle = 0                                                #
-        self.Angle = 0                                                #
+        self.angle = 0                                                #?
+        self.Angle = 0                                                #?
         self.theta = 0                                                #the angle by which rival must turn if player is in range
         self.a = math.degrees (math.pi)                               #angle = 180 deg, used in checkPoint()
 
@@ -140,20 +140,20 @@ class rival(object):
             self.angle = self.a/6                                                   #initial angle - to find field of view
         
         elif self.velx > 0:
-            right  = pygame.transform.rotate(Enemy_Walk[self.COUNT], -90)
+            right  = pygame.transform.rotate(Enemy_Walk[self.COUNT], -90)         #rightfacing
             screen.blit(right, (self.x, self.y))
             self.COUNT += 1
             self.dir = 'r'
             self.angle = self.a + self.a/6
 
-        elif self.vely < 0:
-            up = pygame.transform.rotate(Enemy_Walk[self.COUNT], 0)
+        elif self.vely < 0:                                                     #moving up
+            up = pygame.transform.rotate(Enemy_Walk[self.COUNT], 0) 
             screen.blit(up, (self.x, self.y))
             self.COUNT += 1
             self.dir = 'u'
             self.angle = -self.a + self.a/6
 
-        elif self.vely > 0:
+        elif self.vely > 0:                                                      #moving down
             down = pygame.transform.rotate(Enemy_Walk[self.COUNT], 180)
             screen.blit(down, (self.x, self.y))
             self.COUNT += 1
@@ -282,30 +282,30 @@ class rival(object):
             if self.dir== 'r':
                 print('right')
                 self.theta = self.angle - self.Angle
-                bx = self.x + self.width
-                by = self.y + self.height/2       
+                bx = self.x + 128
+                by = self.y                                  #bx,by are the coordinates of the gun, we use bx,by to get the bullet to start from the gun
                 bull = bulletss(bx,by)
                 bulletss.draw(bull,self.theta,self.dir)
 
             elif self.dir == 'l':
                 print('left')
                 bx = self.x
-                by = self.y + self.height/2
+                by = self.y 
                 self.theta = self.angle - self.Angle
                 bull = bulletss(bx,by)
                 bulletss.draw(bull,self.theta,self.dir)
             
             elif self.dir == 'd':
                 print('down')
-                bx = self.x + self.width/2
-                by = self.y + self.height
+                bx = self.x 
+                by = self.y 
                 self.theta = self.angle - self.Angle          
                 bull = bulletss(bx,by)
                 bulletss.draw(bull,self.theta,self.dir)
             
             elif self.dir == 'u':
                 print('up')
-                bx = self.x + self.width/2
+                bx = self.x 
                 by = self.y 
                 self.theta = self.angle - self.Angle
                 bull = bulletss(bx,by)
@@ -326,7 +326,7 @@ class bulletss(object):
     def draw(self,theta,dir):                                           #fn called in rival.shoot()
         dir = dir
         self.movebull(dir)                                              #moves bullet to attack player
-        down = pygame.transform.rotate(bullets, theta)             
+        down = pygame.transform.rotate(bullets, theta + 90)             
         screen.blit(down, (self.x, self.y))                             #displays bullet on screen
 
 
@@ -338,6 +338,7 @@ class bulletss(object):
 
         else:
             if dir == 'r':
+                print("moving")
                 self.x += self.velx
                 self.y += self.vely
 
