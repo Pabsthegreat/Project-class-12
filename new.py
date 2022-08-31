@@ -243,7 +243,8 @@ class rival(object):
 
     def checkPoint(self,radius, rx,ry , selfx ,selfy , startAngle, dir): 
         
-        endAngle = math.degrees ( self.a * 2 / 3 + startAngle)
+        endAngle1 = int(math.degrees ( + self.a /3 + startAngle))
+        endAngle2 = int(math.degrees ( - self.a / 3 + startAngle))
 
         x =  selfx - rx
         y =  selfy - ry
@@ -253,49 +254,50 @@ class rival(object):
         if dir == 'u':
             
             if x == 0:
-                self.Angle = 0
+                self.Angle = 270
             elif x > 0:
                 self.Angle =  270 - math.degrees (math.atan(x/y))
             else:
                 self.Angle =  270 - math.degrees(math.atan(x/y))
 
-            if (self.Angle >= startAngle and self.Angle <= endAngle and polarradius <= radius and polarradius >=0 ):
+            if (polarradius <= radius and polarradius >=0 ):
                     print("Point (", x, ",", y, ") exist in the circle sector") 
                     self.theta = self.Angle
                     rival.shoot(self)
+                    print(endAngle1,endAngle2,self.Angle)
             else:
                 pass
 
         elif dir == 'd':
             if x == 0:
-                self.Angle = 180
+                self.Angle = 270
             elif x > 0:
                 self.Angle = 270 - math.degrees (math.atan(x/y))
             else:
                 self.Angle = 270 - math.degrees (math.atan(x/y))
 
-            if (self.Angle >= startAngle and self.Angle <= endAngle and polarradius <= radius and polarradius >=0 ):
-                print("Point (", x, ",", y, ") exist in the circle sector") 
-                self.theta = self.Angle
-                rival.shoot(self)
+            if (self.Angle in range(endAngle1,endAngle2) and polarradius <= radius and polarradius >=0 ):
+                    print("Point (", x, ",", y, ") exist in the circle sector") 
+                    self.theta = self.Angle
+                    rival.shoot(self)
             else:
                 pass
         
         elif dir == 'l':
             if y == 0:
-                self.Angle = 90
+                self.Angle = 270
             
             elif x == 0:
-                endAngle +=1
+                endAngle1 +=1
             elif y > 0:
                 self.Angle = 270 + math.degrees (math.atan(y/x))
             elif y < 0:
                 self.Angle = 270 + math.degrees (math.atan(y/x))
 
-            if (self.Angle >= startAngle and self.Angle <= endAngle and polarradius <= radius and polarradius >=0 ):
-                print("Point (", x, ",", y, ") exist in the circle sector") 
-                self.theta = self.Angle
-                rival.shoot(self)
+            if (self.Angle in range(endAngle1,endAngle2) and polarradius <= radius and polarradius >=0 ):
+                    print("Point (", x, ",", y, ") exist in the circle sector") 
+                    self.theta = self.Angle
+                    rival.shoot(self)
             else:
                 pass
 
@@ -305,17 +307,17 @@ class rival(object):
             if y == 0:
                 self.Angle = 270
             elif x == 0:
-                endAngle +=1
+                endAngle1 +=1
 
             elif y > 0:
                 self.Angle =  270 + math.degrees (math.atan(y/x))
             elif y < 0:
                 self.Angle = 270 + math.degrees (math.atan(y/x))
 
-            if (self.Angle >= startAngle and self.Angle <= endAngle and polarradius <= radius and polarradius >=0 ):
-                print("Point (", x, ",", y, ") exist in the circle sector") 
-                self.theta = self.Angle
-                rival.shoot(self)
+            if (self.Angle in range(endAngle1,endAngle2) and polarradius <= radius and polarradius >=0 ):
+                    print("Point (", x, ",", y, ") exist in the circle sector") 
+                    self.theta = self.Angle
+                    rival.shoot(self)
             else:
                 pass
         
