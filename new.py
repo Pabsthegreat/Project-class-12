@@ -211,7 +211,7 @@ class rival(object):
                         self.vely = self.vely * -1
                         self.COUNT =0
 
-        rival.checkPoint(self, 256, lad.x, lad.y, self.x, self.y , self.angle, self.dir)
+        rival.checkPoint(self, 128, lad.x, lad.y, self.x, self.y , self.angle, self.dir)
 
     def shoot(self):
         self.velx = 0
@@ -246,8 +246,8 @@ class rival(object):
         endAngle1 = int(math.degrees ( + self.a /3 + startAngle))
         endAngle2 = int(math.degrees ( - self.a / 3 + startAngle))
 
-        x =  selfx - rx
-        y =  selfy - ry
+        x =  selfx - rx + 64
+        y =  selfy - ry + 64
         
         polarradius = math.sqrt(x * x + y * y)
 
@@ -276,7 +276,7 @@ class rival(object):
             else:
                 self.Angle = 270 - math.degrees (math.atan(x/y))
 
-            if (self.Angle in range(endAngle1,endAngle2) and polarradius <= radius and polarradius >=0 ):
+            if ( polarradius <= radius and polarradius >=0 ):
                     print("Point (", x, ",", y, ") exist in the circle sector") 
                     self.theta = self.Angle
                     rival.shoot(self)
@@ -294,7 +294,7 @@ class rival(object):
             elif y < 0:
                 self.Angle = 270 + math.degrees (math.atan(y/x))
 
-            if (self.Angle in range(endAngle1,endAngle2) and polarradius <= radius and polarradius >=0 ):
+            if ( polarradius <= radius and polarradius >=0 ):
                     print("Point (", x, ",", y, ") exist in the circle sector") 
                     self.theta = self.Angle
                     rival.shoot(self)
@@ -314,7 +314,7 @@ class rival(object):
             elif y < 0:
                 self.Angle = 270 + math.degrees (math.atan(y/x))
 
-            if (self.Angle in range(endAngle1,endAngle2) and polarradius <= radius and polarradius >=0 ):
+            if ( polarradius <= radius and polarradius >=0 ):
                     print("Point (", x, ",", y, ") exist in the circle sector") 
                     self.theta = self.Angle
                     rival.shoot(self)
@@ -335,7 +335,6 @@ class bulletss(object):
             
     def draw(self):
         self.x, self.y
-        print("shooting")
         screen.blit(bullets,(self.x, self.y))
     
     #update and draw  
