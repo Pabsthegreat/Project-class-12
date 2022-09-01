@@ -100,8 +100,10 @@ class player(object):
             self.COUNT += 1                                     #increment iterable to display next image
             
         else:
-            self.COUNT = 0                                      #resets iteration variable to prevent index out of range error
-
+            self.COUNT = 0  
+        color = (255,0,0)                                   #resets iteration variable to prevent index out of range error
+        pygame.draw.rect(screen, color, pygame.Rect(self.x, self.y, 60, 60),  2)
+        
 class rival(object):
     global Enemy_Walk                                           #list of enemy images
     def __init__(self,startx,starty ,endx, endy): 
@@ -257,10 +259,10 @@ class rival(object):
                 turn = math.degrees (math.atan(x/y))
                 if x > 0:
                     self.Angle =  startAngle - turn
-                    self.theta = self.Angle - 60
+                    self.theta = self.Angle + 90
                 else:
                     self.Angle =  startAngle - turn
-                    self.theta = self.Angle + 60
+                    self.theta = self.Angle - 90
                 if (self.Angle <= endAngle1 and self.Angle >= endAngle2):
                         rival.shoot(self)
                 else:
@@ -270,10 +272,10 @@ class rival(object):
                 turn = math.degrees (math.atan(x/y))
                 if x > 0:
                     self.Angle = startAngle - turn
-                    self.theta = self.Angle - 240
+                    self.theta = self.Angle - 150
                 else:
                     self.Angle = startAngle - turn
-                    self.theta = self.Angle - 240
+                    self.theta = self.Angle +150
 
                 if (self.Angle <= endAngle1 and self.Angle >= endAngle2): #print(self.Angle,startAngle ,endAngle1, endAngle2, dir)
                     self.theta = self.Angle
@@ -299,10 +301,11 @@ class rival(object):
                 turn = math.degrees (math.atan(y/x))
                 if y > 0:
                     self.Angle =  startAngle - turn
-                    self.theta = self.Angle + 270
+                    self.theta = self.Angle + 210
                 else:
                     self.Angle =  -turn + startAngle
-                    self.theta = self.Angle + 270
+                    self.theta = self.Angle - 210
+  
                 if (self.Angle <= endAngle1 and self.Angle >= endAngle2):
                         self.theta = self.Angle
                         rival.shoot(self)
