@@ -164,7 +164,7 @@ class rival(object):
         
         else:                                                                   #rival stops moving in order to shoot
             shoot = pygame.transform.rotate(Enemy_Walk[8], self.theta)
-            print(self.theta)          #turns by theta angle
+          #turns by theta angle
             screen.blit(shoot, (self.x, self.y))                                #displayed on screen
 
 
@@ -288,7 +288,7 @@ class rival(object):
   
                 if (self.Angle <= endAngle1 and self.Angle >= endAngle2):
                     rival.shoot(self)
-                    self.theta = self.Angle - 60
+                    self.theta = self.Angle - 90
                 else:
                     pass
 
