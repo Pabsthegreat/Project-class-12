@@ -265,28 +265,24 @@ class rival(object):
                 self.vely = 0
 
                 if self.dir== 'r':
-                    print('right')
                     bx = self.x
                     by = self.y                                  #bx,by are the coordinates of the gun, we use bx,by to get the bullet to start from the gun
                     bull = bulletss(bx,by)
                     bulletss.draw(bull,self.theta,self.dir)
 
                 elif self.dir == 'l':
-                    print('left')
                     bx = self.x
                     by = self.y 
                     bull = bulletss(bx,by)
                     bulletss.draw(bull,self.theta,self.dir)
                 
                 elif self.dir == 'd':
-                    print('down')
                     bx = self.x 
                     by = self.y      
                     bull = bulletss(bx,by)
                     bulletss.draw(bull,self.theta,self.dir)
                 
                 elif self.dir == 'u':
-                    print('up')
                     bx = self.x 
                     by = self.y 
                     bull = bulletss(bx,by)
@@ -300,15 +296,15 @@ class bulletss(object):
         self.height = 20
         self.velx = 30
         self.vely = 30
-        self.endbx = 800 - self.width
+        self.endbx = 1200 - self.width
         self.endby = 800 - self.height
 
             
     def draw(self,theta,dir):                                           #fn called in rival.shoot()
         dir = dir
         self.movebull(dir)                                              #moves bullet to attack player
-        down = pygame.transform.rotate(bullets, theta + 90)             
-        screen.blit(down, (self.x, self.y))                             #displays bullet on screen
+        dishoom = pygame.transform.rotate(bullets, rival.theta + 90)             
+        screen.blit(dishoom, (self.x, self.y))                             #displays bullet on screen
 
 
     def movebull(self,dir):                                             #fn called in draw()
