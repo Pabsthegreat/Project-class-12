@@ -10,7 +10,7 @@ import math
 pygame.init()
 
 #creating the screen
-screen = pygame.display.set_mode((800,800))
+screen = pygame.display.set_mode((1200,800))
 pygame.display.set_caption("Hunter Assassin")
 
 # loading all images of player
@@ -57,7 +57,7 @@ rest1 = rest
 bullets = pygame.image.load('pics/Bullet.png').convert_alpha() 
 pygame.display.set_icon(rest)
 
-bg =  pygame.image.load('pics/bg.png')
+bg =  pygame.image.load('pics/1200x800.png')
 
 clock = pygame.time.Clock()
 
@@ -107,8 +107,8 @@ class rival(object):
     def __init__(self,startx,starty ,endx, endy): 
         self.x = startx                                              #rival co-ordinates
         self.y = starty
-        self.width = 256                                             #image size
-        self.height = 256
+        self.width = 128                                             #image size
+        self.height = 128
         self.velx = 2.5
         self.vely = 2.5
         self.startx = startx                                         #initial and final x & y co-ordinates since
@@ -137,31 +137,32 @@ class rival(object):
             screen.blit(left, (self.x, self.y))                                     #display change on screen
             self.COUNT += 1                                                  #increment iterable variables which goes thru images
             self.dir = 'l'                                                          #facing left
-            self.angle = self.a/6                                                   #initial angle - to find field of view
+                                                  #initial angle - to find field of view
         
         elif self.velx > 0:
             right  = pygame.transform.rotate(Enemy_Walk[self.COUNT], -90)         #rightfacing
             screen.blit(right, (self.x, self.y))
             self.COUNT += 1
             self.dir = 'r'
-            self.angle = self.a + self.a/6
+
 
         elif self.vely < 0:                                                     #moving up
             up = pygame.transform.rotate(Enemy_Walk[self.COUNT], 0) 
             screen.blit(up, (self.x, self.y))
             self.COUNT += 1
             self.dir = 'u'
-            self.angle = -self.a + self.a/6
+
 
         elif self.vely > 0:                                                      #moving down
             down = pygame.transform.rotate(Enemy_Walk[self.COUNT], 180)
             screen.blit(down, (self.x, self.y))
             self.COUNT += 1
             self.dir = 'd'
-            self.angle = self.a/2 + self.a/6
+
         
         else:                                                                   #rival stops moving in order to shoot
-            shoot = pygame.transform.rotate(Enemy_Walk[8], self.theta)          #turns by theta angle
+            shoot = pygame.transform.rotate(Enemy_Walk[8], self.theta)
+            print(self.theta)          #turns by theta angle
             screen.blit(shoot, (self.x, self.y))                                #displayed on screen
 
 
@@ -199,117 +200,114 @@ class rival(object):
                 else:
                     self.vely = self.vely * -1          
 
-        rival.checkPoint(self, lad.x, lad.y, self.x, self.y , self.angle, self.dir)     #checks if player is in rival's field
-
-
-    def checkPoint(self,rx, ry , selfx ,selfy , startAngle, dir):                       #fn called in moveit()
-        
-        endAngle = math.degrees ( self.a * 2 / 3 + startAngle)                      #gives 120 deg arc which is field of view of rival
-        radius = 128                                                                #radius of field of view
-        x =  selfx - rx
-        y =  selfy - ry
-        polarradius = math.sqrt(x * x + y * y)                                      #distance between rival and player
-
-        if dir == 'u':                                                              #if rival is moving upwards
-            
-            if x == 0:                                                              #and the player is directly in front of him,
-                self.Angle = 0                                                              #then the angle is 0
-            elif x > 0:                                                             #or if player 
-                self.Angle =  math.degrees (math.atan(x/y))
-            else:
-                self.Angle =  math.degrees(math.atan(x/y))
-
-            if (self.Angle >= startAngle and self.Angle <= endAngle and polarradius <= radius and polarradius >=0 ):        #if player is in field of view
-                    print("Point (", x, ",", y, ") exist in the circle sector") 
-                    self.theta = self.Angle                                         #turn by theta angle to face player
-                    rival.shoot(self)                                               #shoot bullet at player
-            else:                                                                                                           #if not, continue along original path
-                pass
-
-        elif dir == 'd':
-            if x == 0:
-                self.Angle = 180 
-            elif x > 0:
-                self.Angle = 180 + math.degrees (math.atan(x/y))
-            else:
-                self.Angle = 180 + math.degrees (math.atan(x/y))
-
-            if (self.Angle >= startAngle and self.Angle <= endAngle and polarradius <= radius and polarradius >=0 ):
-                print("Point (", x, ",", y, ") exist in the circle sector") 
-                self.theta = self.Angle
-                rival.shoot(self)
-            else:
-                pass
-        
-        elif dir == 'l':
-            if y == 0:
-                self.Angle = 90
-            elif x == 0:
-                endAngle +=1
-            elif y > 0:
-                self.Angle = 90 - math.degrees (math.atan(y/x))
-            elif y < 0:
-                self.Angle = 90 - math.degrees (math.atan(y/x))
-
-            if (self.Angle >= startAngle and self.Angle <= endAngle and polarradius <= radius and polarradius >=0 ):
-                print("Point (", x, ",", y, ") exist in the circle sector") 
-                self.theta = self.Angle
-                rival.shoot(self)
-            else:
-                pass
-
-        elif dir == 'r':
-            if y == 0:
-                self.Angle = 270
-            elif x == 0:
-                endAngle +=1
-            elif y > 0:
-                self.Angle =  270 - math.degrees (math.atan(y/x))
-            elif y < 0:
-                self.Angle = 270 - math.degrees (math.atan(y/x))
-
-            if (self.Angle >= startAngle and self.Angle <= endAngle and polarradius <= radius and polarradius >=0 ):
-                print("Point (", x, ",", y, ") exist in the circle sector") 
-                self.theta = self.Angle
-                rival.shoot(self)
-            else:
-                pass
-
+        rival.checkPoint(self, lad.x, lad.y, self.x, self.y , self.dir)     #checks if player is in rival's field
 
     def shoot(self):                                                        #fn called in checkPoint()
-            self.velx = 0
-            self.vely = 0
-            if self.dir== 'r':
-                print('right')
-                self.theta = self.angle - self.Angle
-                bx = self.x + 128
-                by = self.y                                  #bx,by are the coordinates of the gun, we use bx,by to get the bullet to start from the gun
-                bull = bulletss(bx,by)
-                bulletss.draw(bull,self.theta,self.dir)
+                self.velx = 0
+                self.vely = 0
 
-            elif self.dir == 'l':
-                print('left')
-                bx = self.x
-                by = self.y 
-                self.theta = self.angle - self.Angle
-                bull = bulletss(bx,by)
-                bulletss.draw(bull,self.theta,self.dir)
-            
-            elif self.dir == 'd':
-                print('down')
-                bx = self.x 
-                by = self.y 
-                self.theta = self.angle - self.Angle          
-                bull = bulletss(bx,by)
-                bulletss.draw(bull,self.theta,self.dir)
-            
-            elif self.dir == 'u':
-                print('up')
-                bx = self.x 
-                by = self.y 
-                self.theta = self.angle - self.Angle
-                bull = bulletss(bx,by)
-                bulletss.draw(bull,self.theta,self.dir)
+                if self.dir== 'r':
+                    print('right')
+                    self.theta = self.angle - self.Angle
+                    bx = self.x
+                    by = self.y                                  #bx,by are the coordinates of the gun, we use bx,by to get the bullet to start from the gun
+                    bull = bulletss(bx,by)
+                    bulletss.draw(bull,self.theta,self.dir)
+
+                elif self.dir == 'l':
+                    print('left')
+                    bx = self.x
+                    by = self.y 
+                    bull = bulletss(bx,by)
+                    bulletss.draw(bull,self.theta,self.dir)
+                
+                elif self.dir == 'd':
+                    print('down')
+                    bx = self.x 
+                    by = self.y      
+                    bull = bulletss(bx,by)
+                    bulletss.draw(bull,self.theta,self.dir)
+                
+                elif self.dir == 'u':
+                    print('up')
+                    bx = self.x 
+                    by = self.y 
+                    bull = bulletss(bx,by)
+                    bulletss.draw(bull,self.theta,self.dir)
+
+    def checkPoint(self,playerx, playery , selfx ,selfy , dir):                       #fn called in moveit()
+
+        startAngle = 0
+        radius = 200
+        #idts startangle matters anymore, if it does then put self.a in degrees only, radians gives very large angle values and it is hadrd to handle
+        #we will add or subtract to theta to turn them
+        endAngle1 =  + 60
+        endAngle2 =  - 60
+
+        x =  selfx - playerx  #dist btw player and rival
+        y =  selfy - playery 
+        
+        polarradius = math.sqrt(x * x + y * y)
+
+        if polarradius > radius:
+            pass
+#onlu up works decently
+        else:
+            if dir == 'u' and y > 0 :
+                turn = math.degrees (math.atan(x/y))
+                if x > 0:
+                    self.Angle =  startAngle - turn
+                    self.theta = self.Angle - 60
+                else:
+                    self.Angle =  startAngle - turn
+                    self.theta = self.Angle + 60
+                if (self.Angle <= endAngle1 and self.Angle >= endAngle2):
+                        rival.shoot(self)
+                else:
+                    pass
+#get the angle subtraction right here
+            elif dir == 'd' and y < 0:
+                turn = math.degrees (math.atan(x/y))
+                if x > 0:
+                    self.Angle = startAngle - turn
+                    self.theta = self.Angle - 240
+                else:
+                    self.Angle = startAngle - turn
+                    self.theta = self.Angle - 240
+
+                if (self.Angle <= endAngle1 and self.Angle >= endAngle2): #print(self.Angle,startAngle ,endAngle1, endAngle2, dir)
+                    self.theta = self.Angle
+                    rival.shoot(self)                                      #print("Point (", lad.x, ",", lad.y, ") exist in the circle sector") 
+                else:                                                      
+                    pass
+#this also           
+            elif dir == 'l' and x > 0:
+                turn = math.degrees (math.atan(y/x))
+                if y > 0:
+                    self.Angle = startAngle + turn
+                    self.theta = self.Angle - 60
+                else:
+                    self.Angle = turn + startAngle
+                    self.theta = self.Angle - 60
+                if (self.Angle <= endAngle1 and self.Angle >= endAngle2):
+                        self.theta = self.Angle
+                        rival.shoot(self)
+                else:
+                    pass
+#check this also boss
+            elif dir == 'r' and x < 0:
+                turn = math.degrees (math.atan(y/x))
+                if y > 0:
+                    self.Angle =  startAngle - turn
+                    self.theta = self.Angle + 270
+                else:
+                    self.Angle =  -turn + startAngle
+                    self.theta = self.Angle + 270
+                if (self.Angle <= endAngle1 and self.Angle >= endAngle2):
+                        self.theta = self.Angle
+                        rival.shoot(self)
+                else:
+                    pass
 
 class bulletss(object):
     def __init__(self,x,y):
@@ -368,7 +366,7 @@ def maindraw():                                 #draws all characters on screen
 #assigning values and co-ordinates to player and rivals
 lad = player(512,128)
 chad = rival(128,128,800,128)
-vlad = rival(256,256,256,800)
+vlad = rival(128,128,128,800)
 
 running = True
 while running == True:                                                 #game loop
