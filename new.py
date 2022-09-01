@@ -256,55 +256,39 @@ class rival(object):
         else:
             if dir == 'u' and y > 0 :
                 turn = math.degrees (math.atan(x/y))
-                if x > 0:
-                    self.Angle =  startAngle - turn
-                    self.theta = -self.Angle 
-                else:
-                    self.Angle =  startAngle - turn
-                    self.theta = -self.Angle
+                self.Angle =  startAngle - turn
                 if (self.Angle <= endAngle1 and self.Angle >= endAngle2):
-                        rival.shoot(self)
+                    rival.shoot(self)
+                    self.theta = -self.Angle
                 else:
                     pass
 #get the angle subtraction right here
             elif dir == 'd' and y < 0:
                 turn = math.degrees (math.atan(x/y))
-                if x > 0:
-                    self.Angle = startAngle - turn
-                    self.theta = -self.Angle + 180
-                else:
-                    self.Angle = startAngle - turn
-                    self.theta = -self.Angle + 180
+                self.Angle = startAngle - turn
 
                 if (self.Angle <= endAngle1 and self.Angle >= endAngle2): #print(self.Angle,startAngle ,endAngle1, endAngle2, dir)
-                    rival.shoot(self)                                      #print("Point (", lad.x, ",", lad.y, ") exist in the circle sector") 
+                    rival.shoot(self)
+                    self.theta = -self.Angle + 180                                      #print("Point (", lad.x, ",", lad.y, ") exist in the circle sector") 
                 else:                                                      
                     pass
 #this also           
             elif dir == 'l' and x > 0:
                 turn = math.degrees (math.atan(y/x))
-                if y > 0:
-                    self.Angle = startAngle + turn
-                    self.theta = -self.Angle +  60
-                else:
-                    self.Angle = turn + startAngle
-                    self.theta = -self.Angle + 60
+                self.Angle = turn + startAngle
                 if (self.Angle <= endAngle1 and self.Angle >= endAngle2):
-                        rival.shoot(self)
+                    rival.shoot(self)
+                    self.theta = -self.Angle + 60
                 else:
                     pass
 #check this also boss
             elif dir == 'r' and x < 0:
                 turn = math.degrees (math.atan(y/x))
-                if y > 0:
-                    self.Angle =  startAngle - turn
-                    self.theta = self.Angle - 60
-                else:
-                    self.Angle =  -turn + startAngle
-                    self.theta = self.Angle - 60
+                self.Angle =  -turn + startAngle
   
                 if (self.Angle <= endAngle1 and self.Angle >= endAngle2):
-                        rival.shoot(self)
+                    rival.shoot(self)
+                    self.theta = self.Angle - 60
                 else:
                     pass
 
