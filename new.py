@@ -202,41 +202,8 @@ class rival(object):
 
         rival.checkPoint(self, lad.x, lad.y, self.x, self.y , self.dir)     #checks if player is in rival's field
 
-    def shoot(self):                                                        #fn called in checkPoint()
-                self.velx = 0
-                self.vely = 0
 
-                if self.dir== 'r':
-                    print('right')
-                    bx = self.x
-                    by = self.y                                  #bx,by are the coordinates of the gun, we use bx,by to get the bullet to start from the gun
-                    bull = bulletss(bx,by)
-                    bulletss.draw(bull,self.theta,self.dir)
-
-                elif self.dir == 'l':
-                    print('left')
-                    bx = self.x
-                    by = self.y 
-                    bull = bulletss(bx,by)
-                    bulletss.draw(bull,self.theta,self.dir)
-                
-                elif self.dir == 'd':
-                    print('down')
-                    bx = self.x 
-                    by = self.y      
-                    bull = bulletss(bx,by)
-                    bulletss.draw(bull,self.theta,self.dir)
-                
-                elif self.dir == 'u':
-                    print('up')
-                    bx = self.x 
-                    by = self.y 
-                    bull = bulletss(bx,by)
-                    bulletss.draw(bull,self.theta,self.dir)
-
-    def checkPoint(self,playerx, playery , selfx ,selfy , dir):
-        print(lad.x,lad.y,self.x,self.y)
-        print(playerx,playery,selfx,selfy)                       #fn called in moveit()
+    def checkPoint(self,playerx, playery , selfx ,selfy , dir):                  #fn called in moveit()
 
         startAngle = 0
         radius = 200
@@ -279,7 +246,7 @@ class rival(object):
                 self.Angle = turn + startAngle
                 if (self.Angle <= endAngle1 and self.Angle >= endAngle2):
                     rival.shoot(self)
-                    self.theta = -self.Angle + 60
+                    self.theta = -self.Angle + 90
                 else:
                     pass
 #check this also boss
@@ -292,6 +259,38 @@ class rival(object):
                     self.theta = self.Angle - 90
                 else:
                     pass
+
+    def shoot(self):                                                        #fn called in checkPoint()
+                self.velx = 0
+                self.vely = 0
+
+                if self.dir== 'r':
+                    print('right')
+                    bx = self.x
+                    by = self.y                                  #bx,by are the coordinates of the gun, we use bx,by to get the bullet to start from the gun
+                    bull = bulletss(bx,by)
+                    bulletss.draw(bull,self.theta,self.dir)
+
+                elif self.dir == 'l':
+                    print('left')
+                    bx = self.x
+                    by = self.y 
+                    bull = bulletss(bx,by)
+                    bulletss.draw(bull,self.theta,self.dir)
+                
+                elif self.dir == 'd':
+                    print('down')
+                    bx = self.x 
+                    by = self.y      
+                    bull = bulletss(bx,by)
+                    bulletss.draw(bull,self.theta,self.dir)
+                
+                elif self.dir == 'u':
+                    print('up')
+                    bx = self.x 
+                    by = self.y 
+                    bull = bulletss(bx,by)
+                    bulletss.draw(bull,self.theta,self.dir)
 
 class bulletss(object):
     def __init__(self,x,y):
@@ -320,7 +319,6 @@ class bulletss(object):
 
         else:
             if dir == 'r':
-                print("moving")
                 self.x += self.velx
                 self.y += self.vely
 
