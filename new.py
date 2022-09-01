@@ -67,8 +67,6 @@ class player(object):
         self.y = y
         self.width = 128            #image size
         self.height = 128
-        self.cx = x + 64            #centre of the player - to be used for killing (not sure if this works)
-        self.cy = y + 64
         self.vel = 5
         self.dir = None             #used to change directions as arrow keys/ wasd is pressed
         self.COUNT = 0              #variable used to iterate thru the list of player images 
@@ -102,15 +100,15 @@ class player(object):
         else:
             self.COUNT = 0  
         color = (255,0,0)                                   #resets iteration variable to prevent index out of range error
-        pygame.draw.rect(screen, color, pygame.Rect(self.x, self.y, 60, 60),  2)
+        pygame.draw.rect(screen, color, pygame.Rect(self.x, self.y, 64, 64),  2)
         
 class rival(object):
     global Enemy_Walk                                           #list of enemy images
     def __init__(self,startx,starty ,endx, endy): 
         self.x = startx                                              #rival co-ordinates
         self.y = starty
-        self.width = 128                                             #image size
-        self.height = 128
+        self.width = 64                                             #image size
+        self.height = 64
         self.velx = 2.5
         self.vely = 2.5
         self.startx = startx                                         #initial and final x & y co-ordinates since
@@ -123,7 +121,7 @@ class rival(object):
         self.COUNT = 0                                                #iterabe to go thru list of images
         self.angle = 0                                                #?
         self.Angle = 0                                                #?
-        self.theta = 0                                                #the angle by which rival must turn if player is in range
+        self.theta = 0                                             #the angle by which rival must turn if player is in range
         self.a = math.degrees (math.pi)                               #angle = 180 deg, used in checkPoint()
 
 
@@ -236,7 +234,9 @@ class rival(object):
                     bull = bulletss(bx,by)
                     bulletss.draw(bull,self.theta,self.dir)
 
-    def checkPoint(self,playerx, playery , selfx ,selfy , dir):                       #fn called in moveit()
+    def checkPoint(self,playerx, playery , selfx ,selfy , dir):
+        print(lad.x,lad.y,self.x,self.y)
+        print(playerx,playery,selfx,selfy)                       #fn called in moveit()
 
         startAngle = 0
         radius = 200
@@ -249,7 +249,8 @@ class rival(object):
         y =  selfy - playery 
         
         polarradius = math.sqrt(x * x + y * y)
-
+        
+        
         if polarradius > radius:
             pass
 #onlu up works decently
