@@ -115,7 +115,7 @@ class rival(object):
         self.starty = starty                                         #character moves in a fixed path (straight line)
         self.endx = endx
         self.endy = endy
-        self.dir = ''                                                 #acts as flag variable used in checkPoint()
+        self.dir = ''                                                #acts as flag variable used in checkPoint()
         self.pathx = [self.x, self.startx, self.endx]                 #path taken by rival
         self.pathy = [self.y, self.starty, self.endy]
         self.COUNT = 0                                                #iterabe to go thru list of images
@@ -302,8 +302,9 @@ class bulletss(object):
             
     def draw(self,theta,dir):                                           #fn called in rival.shoot()
         dir = dir
+        self.theta=theta
         self.movebull(dir)                                              #moves bullet to attack player
-        dishoom = pygame.transform.rotate(bullets, rival.theta + 90)             
+        dishoom = pygame.transform.rotate(bullets, self.theta + 90)             
         screen.blit(dishoom, (self.x, self.y))                             #displays bullet on screen
 
 
