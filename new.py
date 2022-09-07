@@ -207,8 +207,6 @@ class rival(object):
 
         startAngle = 0
         radius = 200
-        #idts startangle matters anymore, if it does then put self.a in degrees only, radians gives very large angle values and it is hadrd to handle
-        #we will add or subtract to theta to turn them
         endAngle1 =  + 60
         endAngle2 =  - 60
 
@@ -220,7 +218,7 @@ class rival(object):
         
         if polarradius > radius:
             pass
-#onlu up works decently
+
         else:
             if dir == 'u' and y > 0 :
                 turn = math.degrees (math.atan(x/y))
@@ -230,7 +228,7 @@ class rival(object):
                     self.theta = -self.Angle
                 else:
                     pass
-#get the angle subtraction right here
+
             elif dir == 'd' and y < 0:
                 turn = math.degrees (math.atan(x/y))
                 self.Angle = startAngle - turn
@@ -240,7 +238,7 @@ class rival(object):
                     self.theta = -self.Angle + 180                                      #print("Point (", lad.x, ",", lad.y, ") exist in the circle sector") 
                 else:                                                      
                     pass
-#this also           
+        
             elif dir == 'l' and x > 0:
                 turn = math.degrees (math.atan(y/x))
                 self.Angle = turn + startAngle
@@ -249,7 +247,7 @@ class rival(object):
                     self.theta = -self.Angle + 90
                 else:
                     pass
-#check this also boss
+
             elif dir == 'r' and x < 0:
                 turn = math.degrees (math.atan(y/x))
                 self.Angle =  -turn + startAngle
