@@ -338,9 +338,9 @@ class bulletss(object):
 #put calc end value instead of pmx,pmy
 
         rad = math.atan2(plx-self.y,ply-self.y)
-        dist = math.hypot(plx-self.x, ply-self.y)/3
-        dx = math.cos(rad)*3
-        dy = math.sin(rad)*3
+        dist = math.hypot(plx-self.x, ply-self.y)
+        dx = math.cos(rad)*2
+        dy = math.sin(rad)*2
         dist = int(dist)
 
         while dist:
