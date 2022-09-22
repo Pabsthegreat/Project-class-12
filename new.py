@@ -119,10 +119,8 @@ class rival(object):
         self.pathx = [self.x, self.startx, self.endx]                 #path taken by rival
         self.pathy = [self.y, self.starty, self.endy]
         self.COUNT = 0                                                #iterabe to go thru list of images
-        self.angle = 0                                                #?
-        self.Angle = 0                                                #?
-        self.theta = 0                                             #the angle by which rival must turn if player is in range
-        self.a = math.degrees (math.pi)                               #angle = 180 deg, used in checkPoint()
+        self.Angle = 0                                                #Angle by which rival is supposed to turn 
+        self.theta = 0                                        #The angle by which rival must turn if player is in range wrt his initial posn
 
 
     def draw(self):                                                   #fn called in maindraw()
@@ -137,7 +135,7 @@ class rival(object):
             screen.blit(left, (self.x, self.y))                                     #display change on screen
             self.COUNT += 1                                                  #increment iterable variables which goes thru images
             self.dir = 'l'                                                          #facing left
-                                                  #initial angle - to find field of view
+
         
         elif self.velx > 0:
             right  = pygame.transform.rotate(Enemy_Walk[self.COUNT], -90)         #rightfacing
@@ -205,7 +203,7 @@ class rival(object):
 
     def checkPoint(self,playerx, playery , selfx ,selfy , dir):                  #fn called in moveit()
 
-        startAngle = 0
+       
         radius = 200
         endAngle1 =  + 60
         endAngle2 =  - 60
@@ -213,35 +211,35 @@ class rival(object):
         x =  selfx - playerx  #dist btw player and rival
         y =  selfy - playery 
         
-        polarradius = math.sqrt(x * x + y * y)
+        rivalradius = math.sqrt(x * x + y * y)
         
         
-        if polarradius > radius:
+        if rivalradius > radius:
             pass
 
         else:
             if dir == 'u' and y > 0 :
                 turn = math.degrees (math.atan(x/y))
-                self.Angle =  startAngle - turn
+                self.Angle = turn
                 if (self.Angle <= endAngle1 and self.Angle >= endAngle2):
                     rival.shoot(self)
-                    self.theta = -self.Angle
+                    self.theta = self.Angle
                 else:
                     pass
 
             elif dir == 'd' and y < 0:
                 turn = math.degrees (math.atan(x/y))
-                self.Angle = startAngle - turn
+                self.Angle =  turn
 
-                if (self.Angle <= endAngle1 and self.Angle >= endAngle2): #print(self.Angle,startAngle ,endAngle1, endAngle2, dir)
+                if (self.Angle <= endAngle1 and self.Angle >= endAngle2): #print(self.Angle, ,endAngle1, endAngle2, dir)
                     rival.shoot(self)
-                    self.theta = -self.Angle + 180                                      #print("Point (", lad.x, ",", lad.y, ") exist in the circle sector") 
+                    self.theta = self.Angle + 180                                      #print("Point (", lad.x, ",", lad.y, ") exist in the circle sector") 
                 else:                                                      
                     pass
         
             elif dir == 'l' and x > 0:
                 turn = math.degrees (math.atan(y/x))
-                self.Angle = turn + startAngle
+                self.Angle = turn 
                 if (self.Angle <= endAngle1 and self.Angle >= endAngle2):
                     rival.shoot(self)
                     self.theta = -self.Angle + 90
@@ -250,7 +248,7 @@ class rival(object):
 
             elif dir == 'r' and x < 0:
                 turn = math.degrees (math.atan(y/x))
-                self.Angle =  -turn + startAngle
+                self.Angle =  -turn 
   
                 if (self.Angle <= endAngle1 and self.Angle >= endAngle2):
                     rival.shoot(self)
