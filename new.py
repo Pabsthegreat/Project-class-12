@@ -335,10 +335,10 @@ class bulletss(object):
 
         if dir == 'd':
             pass
-#put calc end value instead of pmx,pmy
+#put calc end value instead of plx,ply
 
         rad = math.atan2(plx-self.y,ply-self.y)
-        dist = math.hypot(plx-self.x, ply-self.y)
+        dist = math.hypot(plx-self.x, ply-self.y)/2
         dx = math.cos(rad)*2
         dy = math.sin(rad)*2
         dist = int(dist)
