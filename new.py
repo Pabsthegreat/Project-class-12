@@ -308,47 +308,46 @@ class bulletss(object):
     def draw(self,theta,dir):                                           #fn called in rival.shoot()
         dir = dir
         self.theta = theta   
-        self.movebull(lad.x,lad.y)                                         #moves bullet to attack player
+        self.movebull(dir,lad.x,lad.y)                                         #moves bullet to attack player
         dishoom = pygame.transform.rotate(bullets, self.theta + 90)             
         screen.blit(dishoom, (self.x, self.y))                             #displays bullet on screen
 
  
-    def movebull(self,plx,ply): 
+    def movebull(self,dir,plx,ply): 
+        dir = dir                          
+            
+        #fn called in draw()
+        #if self.x == self.endbx or self.y == self.endby:
+                #self.vely = 0
+                #self.velx = 0
+                #kill sprite
+
+        
+        if dir == 'r':
+            pass
+
+        if dir == 'l':
+            pass
+
+        if dir == 'u':
+            pass
+
+
+        if dir == 'd':
+            pass
+#put calc end value instead of pmx,pmy
+
         rad = math.atan2(plx-self.y,ply-self.y)
-        dist = math.hypot(plx-self.x, ply-self.y)/self.vel
-        dx = math.cos(rad)*self.vel      
-        dy = math.sin(rad)*self.vel
+        dist = math.hypot(plx-self.x, ply-self.y)/3
+        dx = math.cos(rad)*3
+        dy = math.sin(rad)*3
         dist = int(dist)
 
         while dist:
             dist -= 1
             self.x += dx
             self.y += dy
-            print(self.x,self.y,dist)                             
-            
-                                           #fn called in draw()
-        '''if self.x == self.endbx or self.y == self.endby:
-                self.vely = 0
-                self.velx = 0
-                #kill sprite
-
-        else:
-            if dir == 'r':
-                self.x += self.velx
-                self.y += self.vely
-
-            if dir == 'l':
-                self.x -= self.velx
-                self.y += self.vely
-
-            if dir == 'u':
-                self.x += self.velx
-                self.y -= self.vely
-
-            if dir == 'd':
-                self.x += self.velx
-                self.y += self.vely'''
-
+            print(self.x,self.y,dist)   
 
     
     #update and draw  
