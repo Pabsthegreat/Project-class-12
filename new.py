@@ -3,6 +3,8 @@ Co-ordinate systems work differently in pygame as in real math. The origin is in
 and +x-axis is towards right & +y-axis is towards down. Also up is taken as 0 deg and angles are measured counter-clockwise.
 '''
 from re import X
+from tokenize import maybe
+from xml.dom.expatbuilder import theDOMImplementation
 
 import pygame
 import math
@@ -298,21 +300,33 @@ class bulletss(object):
         self.y = y
         self.width = 50
         self.height = 20
-        self.velx = 30
-        self.vely = 30
+        self.vel = 30
         self.endbx = 1200 - self.width
         self.endby = 800 - self.height
 
             
     def draw(self,theta,dir):                                           #fn called in rival.shoot()
         dir = dir
-        self.theta=theta
-        self.movebull(dir)                                              #moves bullet to attack player
+        self.theta = theta   
+        self.movebull(lad.x,lad.y)                                         #moves bullet to attack player
         dishoom = pygame.transform.rotate(bullets, self.theta + 90)             
         screen.blit(dishoom, (self.x, self.y))                             #displays bullet on screen
 
+ 
+    def movebull(self,plx,ply): 
+        rad = math.atan2(plx-self.y,ply-self.y)
+        dist = math.hypot(plx-self.x, ply-self.y)/self.vel
+        dx = math.cos(rad)*self.vel      
+        dy = math.sin(rad)*self.vel
+        dist = int(dist)
 
-    def movebull(self,dir):                                             #fn called in draw()
+        while dist:
+            dist -= 1
+            self.x += dx
+            self.y += dy
+            print(self.x,self.y,dist)                             
+            
+                                           #fn called in draw()
         '''if self.x == self.endbx or self.y == self.endby:
                 self.vely = 0
                 self.velx = 0
