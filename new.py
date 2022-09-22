@@ -121,6 +121,7 @@ class rival(object):
         self.COUNT = 0                                                #iterabe to go thru list of images
         self.Angle = 0                                                #Angle by which rival is supposed to turn 
         self.theta = 0                                        #The angle by which rival must turn if player is in range wrt his initial posn
+        self.move = True
 
 
     def draw(self):                                                   #fn called in maindraw()
@@ -166,37 +167,37 @@ class rival(object):
 
     def moveit(self):                                                           #fn called in draw()
         global lad 
+        if self.move:
+            if self.starty == self.endy:                                  #if y co-ordinates are same => rival moves along x-axis
+                self.vely = 0                                                   #no movement along y-axis
 
-        if self.starty == self.endy:                                  #if y co-ordinates are same => rival moves along x-axis
-            self.vely = 0                                                   #no movement along y-axis
-
-            if self.velx > 0:                                               #if rival is moving forward (towards right)
-                if self.x + self.velx < self.pathx[2] - self.height:        #check if character has reached the end
-                    self.x += self.velx                                     #if no, move right with velx speed
-                else:                                                       #if yes, make velx negative so it enters next condn.
-                    self.velx = self.velx * -1
+                if self.velx > 0:                                               #if rival is moving forward (towards right)
+                    if self.x + self.velx < self.pathx[2] - self.height:        #check if character has reached the end
+                        self.x += self.velx                                     #if no, move right with velx speed
+                    else:                                                       #if yes, make velx negative so it enters next condn.
+                        self.velx = self.velx * -1
+                        
+                else :                                                          #rival is moving backwards
+                    if self.x- self.velx >  self.pathx[1]:                      #check if character has reached the beginning
+                        self.x += self.velx                                     #if no, move left with velx speed(move right with -velx speed)
+                    else:                                                       #if yes, make velx positive so it enters prev condn.
+                        self.velx = self.velx * -1
                     
-            else :                                                          #rival is moving backwards
-                if self.x- self.velx >  self.pathx[1]:                      #check if character has reached the beginning
-                    self.x += self.velx                                     #if no, move left with velx speed(move right with -velx speed)
-                else:                                                       #if yes, make velx positive so it enters prev condn.
-                    self.velx = self.velx * -1
-                
-        elif self.startx == self.endx:
-            self.velx = 0
+            elif self.startx == self.endx:
+                self.velx = 0
 
-            if self.vely > 0:
-                if self.y + self.vely < self.pathy[2] - self.height:
-                    self.y += self.vely
-                else:
-                    self.vely = self.vely * -1
-                    
+                if self.vely > 0:
+                    if self.y + self.vely < self.pathy[2] - self.height:
+                        self.y += self.vely
+                    else:
+                        self.vely = self.vely * -1
+                        
 
-            else:
-                if self.y - self.vely >  self.pathy[1]:
-                    self.y += self.vely
                 else:
-                    self.vely = self.vely * -1          
+                    if self.y - self.vely >  self.pathy[1]:
+                        self.y += self.vely
+                    else:
+                        self.vely = self.vely * -1          
 
         rival.checkPoint(self, lad.x, lad.y, self.x, self.y , self.dir)     #checks if player is in rival's field
 
@@ -215,7 +216,7 @@ class rival(object):
         
         
         if rivalradius > radius:
-            pass
+            self.move = True
 
         else:
             if dir == 'u' and y > 0 :
@@ -225,7 +226,8 @@ class rival(object):
                     rival.shoot(self)
                     self.theta = self.Angle
                 else:
-                    pass
+                    self.move = True
+                    self.vely = -2.5
 
             elif dir == 'd' and y < 0:
                 turn = math.degrees (math.atan(x/y))
@@ -235,7 +237,9 @@ class rival(object):
                     rival.shoot(self)
                     self.theta = self.Angle + 180                                      #print("Point (", lad.x, ",", lad.y, ") exist in the circle sector") 
                 else:                                                      
-                    pass
+                    self.move = True
+                    self.vely = 2.5
+
         
             elif dir == 'l' and x > 0:
                 turn = math.degrees (math.atan(y/x))
@@ -244,7 +248,9 @@ class rival(object):
                     rival.shoot(self)
                     self.theta = -self.Angle + 90
                 else:
-                    pass
+                    self.move = True
+                    self.velx = -2.5
+
 
             elif dir == 'r' and x < 0:
                 turn = math.degrees (math.atan(y/x))
@@ -254,35 +260,37 @@ class rival(object):
                     rival.shoot(self)
                     self.theta = self.Angle - 90
                 else:
-                    pass
+                    self.move = True
+                    self.velx = 2.5
+
 
     def shoot(self):                                                        #fn called in checkPoint()
-                self.velx = 0
-                self.vely = 0
+        self.velx = 0
+        self.vely = 0
 
-                if self.dir== 'r':
-                    bx = self.x
-                    by = self.y                                  #bx,by are the coordinates of the gun, we use bx,by to get the bullet to start from the gun
-                    bull = bulletss(bx,by)
-                    bulletss.draw(bull,self.theta,self.dir)
+        if self.dir== 'r':
+            bx = self.x
+            by = self.y                                  #bx,by are the coordinates of the gun, we use bx,by to get the bullet to start from the gun
+            bull = bulletss(bx,by)
+            bulletss.draw(bull,self.theta,self.dir)
 
-                elif self.dir == 'l':
-                    bx = self.x
-                    by = self.y 
-                    bull = bulletss(bx,by)
-                    bulletss.draw(bull,self.theta,self.dir)
-                
-                elif self.dir == 'd':
-                    bx = self.x 
-                    by = self.y      
-                    bull = bulletss(bx,by)
-                    bulletss.draw(bull,self.theta,self.dir)
-                
-                elif self.dir == 'u':
-                    bx = self.x 
-                    by = self.y 
-                    bull = bulletss(bx,by)
-                    bulletss.draw(bull,self.theta,self.dir)
+        elif self.dir == 'l':
+            bx = self.x
+            by = self.y 
+            bull = bulletss(bx,by)
+            bulletss.draw(bull,self.theta,self.dir)
+        
+        elif self.dir == 'd':
+            bx = self.x 
+            by = self.y      
+            bull = bulletss(bx,by)
+            bulletss.draw(bull,self.theta,self.dir)
+        
+        elif self.dir == 'u':
+            bx = self.x 
+            by = self.y 
+            bull = bulletss(bx,by)
+            bulletss.draw(bull,self.theta,self.dir)
 
 class bulletss(object):
     def __init__(self,x,y):
@@ -305,7 +313,7 @@ class bulletss(object):
 
 
     def movebull(self,dir):                                             #fn called in draw()
-        if self.x == self.endbx or self.y == self.endby:
+        '''if self.x == self.endbx or self.y == self.endby:
                 self.vely = 0
                 self.velx = 0
                 #kill sprite
@@ -325,7 +333,7 @@ class bulletss(object):
 
             if dir == 'd':
                 self.x += self.velx
-                self.y += self.vely
+                self.y += self.vely'''
 
 
     
