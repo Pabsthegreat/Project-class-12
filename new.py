@@ -262,7 +262,6 @@ class rival(object):
             else:
                 self.move = True
                 self.velx = 2.5
-                self.bullcount = 0
 
 
     def shoot(self):                                                        #fn called in checkPoint()
