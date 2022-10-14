@@ -1,7 +1,11 @@
 '''
 Co-ordinate systems work differently in pygame as in real math. The origin is in the top-left corner 
-and +x-axis is towards right & +y-axis is towards down.
+and +x-axis is towards right & +y-axis is towards down. Also up is taken as 0 deg and angles are measured counter-clockwise.
 '''
+from re import X
+from tokenize import maybe
+from xml.dom.expatbuilder import theDOMImplementation
+
 import pygame
 import math
 
@@ -52,7 +56,7 @@ e16 = pygame.image.load('Enemy_Move/9c.png').convert_alpha()
 Enemy_Walk = [e1,e2,e3,e4,e5,e6,e7,e8,REST,e10,e11,e12,e13,e14,e15,e16]
 
 rest1 = rest
-bullet = pygame.image.load('pics/Bullet.png').convert_alpha() 
+bullets = pygame.image.load('pics/Bullet.png').convert_alpha() 
 pygame.display.set_icon(rest)
 
 bg =  pygame.image.load('pics/1200x800.png')
@@ -98,13 +102,7 @@ class player(object):
         else:
             self.COUNT = 0  
         color = (255,0,0)                                   #resets iteration variable to prevent index out of range error
-        pygame.draw.rect(screen, color, pygame.Rect(self.x, self.y, 128, 128),  2)
-
-    
-    
-    def die():
-        pass
-
+        pygame.draw.rect(screen, color, pygame.Rect(self.x, self.y, 64, 64),  2)
         
 class rival(object):
     global Enemy_Walk                                           #list of enemy images
@@ -162,7 +160,7 @@ class rival(object):
             self.COUNT += 1
             self.dir = 'd'
 
-
+        
         else:                                                                   #rival stops moving in order to shoot
             shoot = pygame.transform.rotate(Enemy_Walk[8], self.theta)
           #turns by theta angle
@@ -201,16 +199,11 @@ class rival(object):
                     if self.y - self.vely >  self.pathy[1]:
                         self.y += self.vely
                     else:
-                        self.vely = self.vely * -1     
+                        self.vely = self.vely * -1          
 
-            
-            elif lad.x == self.x and lad.y == self.y:
-                print("im on")
-                  
-        pygame.draw.rect(screen, (255,0,0), pygame.Rect(self.x, self.y, 128, 128),  2)
         rival.checkPoint(self, lad.x, lad.y, self.x, self.y , self.dir)     #checks if player is in rival's field
-    
-    
+
+
     def checkPoint(self,playerx, playery , selfx ,selfy , dir):                  #fn called in moveit()
 
        
@@ -223,94 +216,143 @@ class rival(object):
         
         rivalradius = math.sqrt(x * x + y * y)
         
+        
+        if rivalradius > radius:
+            self.move = True
 
-        if dir == 'u' and y > 0 :
-            turn = math.degrees (math.atan(x/y))
-            self.Angle = turn
-            if (self.Angle <= endAngle1 and self.Angle >= endAngle2) and (rivalradius < radius):
-                rival.shoot(self)
-                del self
-                self.theta = self.Angle
-            else:
-                self.move = True
-                self.vely = -2.5
+        else:
+            if dir == 'u' and y > 0 :
+                turn = math.degrees (math.atan(x/y))
+                self.Angle = turn
+                if (self.Angle <= endAngle1 and self.Angle >= endAngle2):
+                    rival.shoot(self)
+                    self.theta = self.Angle
+                else:
+                    self.move = True
+                    self.vely = -2.5
 
-        elif dir == 'd' and y < 0:
-            turn = math.degrees (math.atan(x/y))
-            self.Angle =  turn
+            elif dir == 'd' and y < 0:
+                turn = math.degrees (math.atan(x/y))
+                self.Angle =  turn
 
-            if (self.Angle <= endAngle1 and self.Angle >= endAngle2) and (rivalradius < radius): 
-                rival.shoot(self)
-                self.theta = self.Angle + 180                                      
-            else:                                                      
-                self.move = True
-                self.vely = 2.5
+                if (self.Angle <= endAngle1 and self.Angle >= endAngle2): #print(self.Angle, ,endAngle1, endAngle2, dir)
+                    rival.shoot(self)
+                    self.theta = self.Angle + 180                                      #print("Point (", lad.x, ",", lad.y, ") exist in the circle sector") 
+                else:                                                      
+                    self.move = True
+                    self.vely = 2.5
 
-    
-        elif dir == 'l' and x > 0:
-            turn = math.degrees (math.atan(y/x))
-            self.Angle = turn 
-            if (self.Angle <= endAngle1 and self.Angle >= endAngle2)and (rivalradius < radius):
-                rival.shoot(self)
-                self.theta = -self.Angle + 90
-            else:
-                self.move = True
-                self.velx = -2.5
+        
+            elif dir == 'l' and x > 0:
+                turn = math.degrees (math.atan(y/x))
+                self.Angle = turn 
+                if (self.Angle <= endAngle1 and self.Angle >= endAngle2):
+                    rival.shoot(self)
+                    self.theta = -self.Angle + 90
+                else:
+                    self.move = True
+                    self.velx = -2.5
 
 
-        elif dir == 'r' and x < 0:
-            turn = math.degrees (math.atan(y/x))
-            self.Angle =  -turn 
-
-            if (self.Angle <= endAngle1 and self.Angle >= endAngle2) and (rivalradius < radius):
-                rival.shoot(self)
-                self.theta = self.Angle - 90
-            else:
-                self.move = True
-                self.velx = 2.5
+            elif dir == 'r' and x < 0:
+                turn = math.degrees (math.atan(y/x))
+                self.Angle =  -turn 
+  
+                if (self.Angle <= endAngle1 and self.Angle >= endAngle2):
+                    rival.shoot(self)
+                    self.theta = self.Angle - 90
+                else:
+                    self.move = True
+                    self.velx = 2.5
 
 
     def shoot(self):                                                        #fn called in checkPoint()
         self.velx = 0
         self.vely = 0
-        bx = self.x 
-        by = self.y 
-        bull = bulletss(bx,by,self.theta)
-        bulletss.draw(bull)
-    
-    def __del__(self):
-        print("dead")
 
+        if self.dir== 'r':
+            bx = self.x
+            by = self.y                                  #bx,by are the coordinates of the gun, we use bx,by to get the bullet to start from the gun
+            bull = bulletss(bx,by)
+            bulletss.draw(bull,self.theta,self.dir)
 
+        elif self.dir == 'l':
+            bx = self.x
+            by = self.y 
+            bull = bulletss(bx,by)
+            bulletss.draw(bull,self.theta,self.dir)
+        
+        elif self.dir == 'd':
+            bx = self.x 
+            by = self.y      
+            bull = bulletss(bx,by)
+            bulletss.draw(bull,self.theta,self.dir)
+        
+        elif self.dir == 'u':
+            bx = self.x 
+            by = self.y 
+            bull = bulletss(bx,by)
+            bulletss.draw(bull,self.theta,self.dir)
 
 class bulletss(object):
-    def __init__(self,x,y,theta):
-        self.x = x + 64
-        self.y = y + 64
+    def __init__(self,x,y):
+        self.x = x
+        self.y = y
         self.width = 50
         self.height = 20
-        self.velx = 10
-        self.vely = 10
-        self.theta = theta
-        self.endbx = 1200
-        self.endby = 800 
-        self.theta = theta
-        #mx = (self.endbx-self.x) 
-        #my = self.endby - self.y
-        #self.dist = math.sqrt(mx * mx + my * my)
-            
-    def draw(self):                                           #fn called in rival.shoot()
-        dishoom = pygame.transform.rotate(bullet, self.theta + 90)             
-        screen.blit(dishoom, (self.x, self.y))                             #displays bullet on screen
-        self.movebull()                                         #moves bullet to attack player
-        self.x += self.velx
-        self.y += self.vely
-        pygame.draw.rect(screen, (255,0,0), pygame.Rect(self.x, self.y, 50, 20),  2)
+        self.vel = 30
+        self.endbx = 1200 - self.width
+        self.endby = 800 - self.height
 
-    def movebull(self): 
-        pass        
+            
+    def draw(self,theta,dir):                                           #fn called in rival.shoot()
+        dir = dir
+        self.theta = theta   
+        self.movebull(dir,lad.x,lad.y)                                         #moves bullet to attack player
+        dishoom = pygame.transform.rotate(bullets, self.theta + 90)             
+        screen.blit(dishoom, (self.x, self.y))                             #displays bullet on screen
+
+ 
+    def movebull(self,dir,plx,ply): 
+        dir = dir                          
+            
+        #fn called in draw()
+        #if self.x == self.endbx or self.y == self.endby:
+                #self.vely = 0
+                #self.velx = 0
+                #kill sprite
+
         
-        
+        if dir == 'r':
+            pass
+
+        if dir == 'l':
+            pass
+
+        if dir == 'u':
+            pass
+
+
+        if dir == 'd':
+            pass
+#put calc end value instead of pmx,pmy
+#put calc end value instead of plx,ply
+
+        rad = math.atan2(plx-self.y,ply-self.y)
+        dist = math.hypot(plx-self.x, ply-self.y)
+        dist = math.hypot(plx-self.x, ply-self.y)/2
+        dx = math.cos(rad)*2
+        dy = math.sin(rad)*2
+        dist = int(dist)
+
+        while dist:
+            dist -= 1
+            self.x += dx
+            self.y += dy
+            print(self.x,self.y,dist)   
+
+    
+    #update and draw  
 
 def maindraw():                                 #draws all characters on screen
     screen.blit(bg, (0,0))
@@ -358,8 +400,7 @@ while running == True:                                                 #game loo
         lad.y += lad.vel
         lad.dir = "down"
         rest1 = pygame. transform. rotate(rest, 180)
-    
-    
+        
     
 #character does not go out of bounds 
     if lad.x <= 0 :                                                     
@@ -368,8 +409,8 @@ while running == True:                                                 #game loo
     if lad.y <= 0:
         lad.y = 0
 
-    if lad.x >= 1072:
-        lad.x = 1072
+    if lad.x >= 672:
+        lad.x = 672
 
     if lad.y >= 672:
         lad.y = 672   
@@ -386,7 +427,7 @@ COUNT = 0
 #pygame.quit()
 
 #for bull in b:
-    #if bull.x < 500 and bull.x > 0:
-        #bull.x += bull.vel
-    #else:
-        #b.pop(b.index(bull))
+            #if bull.x < 500 and bull.x > 0:
+                #bull.x += bull.vel
+            #else:
+                #b.pop(b.index(bull))
