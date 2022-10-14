@@ -264,7 +264,6 @@ class rival(object):
             self.Angle = turn
             if (self.Angle <= endAngle1 and self.Angle >= endAngle2) and (rivalradius < radius):
                 rival.shoot(self)
-                del self
                 self.theta = self.Angle
                 self.shoot_cooldown -= 1
             else:
@@ -324,33 +323,29 @@ class rival(object):
         if lad.x == self.x and lad.y == self.y and keys[pygame.K_SPACE]:
             score += 100'''
 
-    def __del__(self):
-        print("dead")
-    def __del__(self):
-        print("dead")
+    
 
 
 
 class bulletss(object):
+    bullet_list = []
     def __init__(self,x,y,theta):
-        self.x = x + 64
-        self.y = y + 64
+        if len(self.bullet_list) <= 5:
+            self.bullet_list.append([x,y,theta + 90])
+        else:
+            self.bullet_list.pop()
         self.width = 50
         self.height = 20
         self.vel = 10
-        self.theta = theta 
-        self.bullet_list = []
-        if len (self.bullet_list) <= 5:
-            self.bullet_list.append([self.x,self.y])
+        
+        self.draw()
 
     def draw(self):                                           #fn called in rival.shoot()
         for i in self.bullet_list:
-            dishoom = pygame.transform.rotate(bullet, self.theta + 90)             
+            dishoom = pygame.transform.rotate(bullet, i[2] + 90)             
             screen.blit(dishoom, (i[0], i[1]))                             #displays bullet on screen
-            pygame.draw.rect(screen, (255,0,0), pygame.Rect(i[0], i[1], 50, 20), 2)
             self.movebull(i)                                         #moves bullet to attack player
-            print(i)
-
+        print(self.bullet_list)
 
     def movebull(self,i): 
         i[0] += self.vel
@@ -360,7 +355,7 @@ class bulletss(object):
         
 
     def delete(self,i):
-        if self.x > 1200 or self.y > 800 or self.y < 0 or self.x < 0:
+        if i[0] > 1200 or i[1] > 800 or i[1] < 0 or i[0] < 0:
             self.bullet_list.remove(i)
     
     
