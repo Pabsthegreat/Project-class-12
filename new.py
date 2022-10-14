@@ -2,11 +2,12 @@
 Co-ordinate systems work differently in pygame as in real math. The origin is in the top-left corner 
 and +x-axis is towards right & +y-axis is towards down.
 '''
+from textwrap import fill
 import pygame
 import math
 
 pygame.init()
-
+pygame.font.init()
 #creating the screen
 screen = pygame.display.set_mode((1200,800))
 pygame.display.set_caption("Hunter Assassin")
@@ -59,16 +60,19 @@ bg =  pygame.image.load('pics/1200x800.png')
 
 clock = pygame.time.Clock()
 
+score = 0
+
 class player(object):
     def __init__(self, x, y): 
         self.x = x                  #player co-ordinates
-        self.y = y
+        self.y = y  
         self.width = 128            #image size
         self.height = 128
         self.vel = 5
         self.dir = None             #used to change directions as arrow keys/ wasd is pressed
         self.COUNT = 0              #variable used to iterate thru the list of player images 
-
+        self.health = 100
+        self.hit = 0
 
     def draw(self):                                                             #called in maindraw
 
@@ -94,21 +98,51 @@ class player(object):
                 screen.blit(m,(self.x,self.y))
 
             self.COUNT += 1                                     #increment iterable to display next image
-            
+
         else:
             self.COUNT = 0  
         color = (255,0,0)                                   #resets iteration variable to prevent index out of range error
         pygame.draw.rect(screen, color, pygame.Rect(self.x, self.y, 128, 128),  2)
 
-    
-    
-    def die():
+    def health(self):
+        pygame.draw.rect(screen, (0,0,0), pygame.Rect(80, 50, 100, 20))
+
+        if self.x >= 800:
+            self.hit += 1
+        
+        if self.hit == 0:
+            color = (0,255,0)
+            pygame.draw.rect(screen, color, pygame.Rect(80,50, self.health, 20))
+
+        elif self.hit >= 10 and self.hit < 20:
+            color = (255, 255, 0)
+            self.health = 75
+            pygame.draw.rect(screen,color, pygame.Rect(80,50, self.health, 20))
+            
+        elif self.hit >= 20 and self.hit < 30:
+            self.health = 50
+            color = (255,165,0)
+            pygame.draw.rect(screen,color, pygame.Rect(80,50, self.health, 20))
+
+        elif self.hit >= 30 and self.hit < 40:
+            self.health = 25
+            color = (255,0,0)
+            pygame.draw.rect(screen,color, pygame.Rect(80,50, self.health, 20))
+
+        elif self.hit >= 40:
+            color = (0,0,0)
+            self.health = 0
+            pygame.draw.rect(screen,color, pygame.Rect(80,50, self.health, 20))
+
+            self.die()
+
+    def die(self):
         pass
 
-        
+
 class rival(object):
     global Enemy_Walk                                           #list of enemy images
-    def __init__(self,startx,starty ,endx, endy): 
+    def __init__(self, startx, starty, endx, endy): 
         self.x = startx                                              #rival co-ordinates
         self.y = starty
         self.width = 64                                             #image size
@@ -126,7 +160,8 @@ class rival(object):
         self.Angle = 0                                                #Angle by which rival is supposed to turn 
         self.theta = 0                                        #The angle by which rival must turn if player is in range wrt his initial posn
         self.move = True
-
+        self.shoot_cooldown = 0
+        
 
     def draw(self):                                                   #fn called in maindraw()
         global screen
@@ -231,6 +266,7 @@ class rival(object):
                 rival.shoot(self)
                 del self
                 self.theta = self.Angle
+                self.shoot_cooldown -= 1
             else:
                 self.move = True
                 self.vely = -2.5
@@ -241,7 +277,8 @@ class rival(object):
 
             if (self.Angle <= endAngle1 and self.Angle >= endAngle2) and (rivalradius < radius): 
                 rival.shoot(self)
-                self.theta = self.Angle + 180                                      
+                self.theta = self.Angle + 180  
+                self.shoot_cooldown -= 1                                    
             else:                                                      
                 self.move = True
                 self.vely = 2.5
@@ -253,6 +290,7 @@ class rival(object):
             if (self.Angle <= endAngle1 and self.Angle >= endAngle2)and (rivalradius < radius):
                 rival.shoot(self)
                 self.theta = -self.Angle + 90
+                self.shoot_cooldown -= 1
             else:
                 self.move = True
                 self.velx = -2.5
@@ -265,19 +303,29 @@ class rival(object):
             if (self.Angle <= endAngle1 and self.Angle >= endAngle2) and (rivalradius < radius):
                 rival.shoot(self)
                 self.theta = self.Angle - 90
+                self.shoot_cooldown -= 1
             else:
                 self.move = True
                 self.velx = 2.5
 
 
     def shoot(self):                                                        #fn called in checkPoint()
+        self.move = False
         self.velx = 0
         self.vely = 0
-        bx = self.x 
-        by = self.y 
-        bull = bulletss(bx,by,self.theta)
-        bulletss.draw(bull)
+        if self.shoot_cooldown == 0:
+            self.shoot_cooldown = 20
+            bulletss(self.x,self.y,self.theta + 90)
+            
     
+
+    '''def die(self):
+        global score
+        if lad.x == self.x and lad.y == self.y and keys[pygame.K_SPACE]:
+            score += 100'''
+
+    def __del__(self):
+        print("dead")
     def __del__(self):
         print("dead")
 
@@ -289,36 +337,49 @@ class bulletss(object):
         self.y = y + 64
         self.width = 50
         self.height = 20
-        self.velx = 10
-        self.vely = 10
-        self.theta = theta
-        self.endbx = 1200
-        self.endby = 800 
-        self.theta = theta
-        #mx = (self.endbx-self.x) 
-        #my = self.endby - self.y
-        #self.dist = math.sqrt(mx * mx + my * my)
-            
-    def draw(self):                                           #fn called in rival.shoot()
-        dishoom = pygame.transform.rotate(bullet, self.theta + 90)             
-        screen.blit(dishoom, (self.x, self.y))                             #displays bullet on screen
-        self.movebull()                                         #moves bullet to attack player
-        self.x += self.velx
-        self.y += self.vely
-        pygame.draw.rect(screen, (255,0,0), pygame.Rect(self.x, self.y, 50, 20),  2)
+        self.vel = 10
+        self.theta = theta 
+        self.bullet_list = []
+        if len (self.bullet_list) <= 5:
+            self.bullet_list.append([self.x,self.y])
 
-    def movebull(self): 
-        pass        
+    def draw(self):                                           #fn called in rival.shoot()
+        for i in self.bullet_list:
+            dishoom = pygame.transform.rotate(bullet, self.theta + 90)             
+            screen.blit(dishoom, (i[0], i[1]))                             #displays bullet on screen
+            pygame.draw.rect(screen, (255,0,0), pygame.Rect(i[0], i[1], 50, 20), 2)
+            self.movebull(i)                                         #moves bullet to attack player
+            print(i)
+
+
+    def movebull(self,i): 
+        i[0] += self.vel
+        i[1] += self.vel
+        print(i[0],i[1])
+        self.delete(i)      
         
-        
+
+    def delete(self,i):
+        if self.x > 1200 or self.y > 800 or self.y < 0 or self.x < 0:
+            self.bullet_list.remove(i)
+    
+    
+    
+
+font = pygame.font.SysFont('Arial', 25)
+score_text = font.render('Score: {}'.format(score), False, (0, 0, 0),(122,122,122))
+health_text = font.render('Health: ', False, (0, 0, 0),(122,122,122))
 
 def maindraw():                                 #draws all characters on screen
     screen.blit(bg, (0,0))
     chad.draw()
     vlad.draw()
     lad.draw()
+    player.health(lad)
+    screen.blit(score_text, (0,0))
+    screen.blit(health_text, (0,40))
     pygame.display.update()                     #updates screen to show all characters 
-
+    
 #assigning values and co-ordinates to player and rivals
 lad = player(512,128)
 chad = rival(128,128,800,128)
@@ -379,14 +440,3 @@ while running == True:                                                 #game loo
     
 pygame.quit()                                                          #closes pygame
 
-COUNT = 0
-
-#if len(b) < 5:  # This will make sure we cannot exceed 5 bullets on the screen at once
-   ## b.append((round(vlad.x+vlad.width//2), round(vlad.y + vlad.height//2), 6, (0,0,0), facing)) 
-#pygame.quit()
-
-#for bull in b:
-    #if bull.x < 500 and bull.x > 0:
-        #bull.x += bull.vel
-    #else:
-        #b.pop(b.index(bull))
