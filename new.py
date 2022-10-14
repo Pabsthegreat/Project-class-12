@@ -318,20 +318,16 @@ class rival(object):
             bulletss(self.x,self.y,self.theta + 90)
             
     
-<<<<<<< HEAD
-<<<<<<< HEAD
+
     '''def die(self):
         global score
         if lad.x == self.x and lad.y == self.y and keys[pygame.K_SPACE]:
             score += 100'''
-=======
+
     def __del__(self):
         print("dead")
->>>>>>> cf1b06e402885b5eff84f4aeed6dbd6c989db57a
-=======
     def __del__(self):
         print("dead")
->>>>>>> cf1b06e402885b5eff84f4aeed6dbd6c989db57a
 
 
 
