@@ -329,11 +329,14 @@ class rival(object):
 
 class bulletss(object):
     bullet_list = []
+    initlist = []
     def __init__(self,x,y,theta):
         if len(self.bullet_list) <= 5:
             self.bullet_list.append([x,y,theta + 90])
+            self.initlist.append([x,y,theta + 90])
         else:
             self.bullet_list.pop()
+            self.initlist.pop()
         self.width = 50
         self.height = 20
         self.vel = 10
@@ -341,16 +344,24 @@ class bulletss(object):
         self.draw()
 
     def draw(self):                                           #fn called in rival.shoot()
-        for i in self.bullet_list:
-            dishoom = pygame.transform.rotate(bullet, i[2] + 90)             
-            screen.blit(dishoom, (i[0], i[1]))                             #displays bullet on screen
-            self.movebull(i)                                         #moves bullet to attack player
-        print(self.bullet_list)
+            bul = self.bullet_list[0]
+            dishoom = pygame.transform.rotate(bullet, bul[2] + 90)             
+            screen.blit(dishoom, (bul[0], bul[1]))                             #displays bullet on screen
+            self.movebull(bul)                                         #moves bullet to attack player
+            #print(self.bullet_list)
 
     def movebull(self,i): 
-        i[0] += self.vel
-        i[1] += self.vel
-        print(i[0],i[1])
+        rad = math.atan2(lad.x- i[0], lad.y -i[1])
+        dist = math.hypot(lad.x- i[0], lad.y -i[1])/2
+        dx = math.cos(rad)*2
+        dy = math.sin(rad)*2
+        dist = int(dist)
+
+        while dist:
+            dist -= -1 
+            i[0] += 5
+            i[1] += 5
+            print(i[0],i[1],dist)
         self.delete(i)      
         
 
