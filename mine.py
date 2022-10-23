@@ -409,11 +409,11 @@ while running == True:                                                 #game loo
     if lad.y <= 0:
         lad.y = 0
 
-    if lad.x >= 672:
-        lad.x = 672
+    if lad.x >= 1072:
+        lad.x = 1072
 
-    if lad.y >= 672:
-        lad.y = 672   
+    if lad.y >= 1072:
+        lad.y = 1072   
 
     screen.fill((0,0,0))
     maindraw()                                                         #all draw functions are called here
