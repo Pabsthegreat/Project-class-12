@@ -108,9 +108,6 @@ class player(object):
 
     def health(self):
         pygame.draw.rect(screen, (0,0,0), pygame.Rect(100, 45, 100, 20))
-
-        if self.x >= 800:
-            self.hit += 1
         
         if self.hit == 0:
             color = (0,255,0)
@@ -310,7 +307,7 @@ class rival(object):
         self.vely = 0
         if self.shoot_cooldown == 0:
             self.shoot_cooldown = 20
-            bulletss(self.x,self.y,self.theta + 90, self.Angle)
+            bulletss(self.x,self.y,self.theta, self.Angle)
 
     '''def die(self):
         global score
@@ -325,31 +322,39 @@ class bulletss(object):
     bullet_list = []
     def __init__(self,x,y,theta,quadrant):
         
-        if len(self.bullet_list) <= 5:
-            self.bullet_list.append([x + 64 ,y + 64,round(theta + 90,2),round(quadrant,2)])
+        if len(self.bullet_list) < 5:
+            self.bullet_list.append([x + 64 ,y + 64, theta, round(quadrant,2)])
 
         else:
-            self.bullet_list.pop()
+            self.bullet_list.pop(0)
         self.vel = 10
     
 
-    def movebull(self,i): 
+    def movebull(self,i,plx,ply): 
+        rad = math.atan2(plx-i[0] ,ply-i[1])
+        dist = math.hypot(plx-i[0], ply-i[1])
+        dist = math.hypot(plx-i[0], ply-i[1])/2
+        dx = math.cos(rad)*2
+        dy = math.sin(rad)*2
+        dist = int(dist)
+
         if i[3] > 0 and i[3] < 90 :
-            i[0] += 10
-            i[1] -= 10
+            i[0] += 10 + dx
+            i[1] -= 10 + dy
             
         elif i[3] > 90 and i[3] < 180 :
-            i[0] -= 10
-            i[1] -= 10
+            i[0] -= 10 + dx
+            i[1] -= 10 + dy
 
         elif i[3] > 180 and i[3] < 270 :
-            i[0] -= 10
-            i[1] += 10
+            i[0] -= 10 + dx
+            i[1] += 10 + dy
 
         elif i[3] >= 270 and i[3] < 360 :
-            i[0] += 10
-            i[1] += 10
+            i[0] += 10 + dx
+            i[1] += 10 + dy
 
+        print(i, i[0],i[1])
         bulletss.delete(self,i)
         
 
@@ -379,9 +384,10 @@ def maindraw():                                 #draws all characters on screen
 
     if len(bulletss.bullet_list) != 0:
         i = bulletss.bullet_list[j]
+        bulletss.movebull(bulletss,i, lad.x,lad.y)
+
         dishoom = pygame.transform.rotate(bullet, i[2]+90)             
         screen.blit(dishoom, (i[0], i[1]))                             #displays bullet on screen
-        bulletss.movebull(bulletss,i)
 
     pygame.display.update()                     #updates screen to show all characters 
     
@@ -402,9 +408,9 @@ while running:                                                 #game loop
         if event.type == pygame.KEYUP:                                 #if no key is pressed
             lad.dir = None
         
-    if lad.die == True:
+    if lad.health == 0:
         running = False
-        break
+        
 
     if j < len(bulletss.bullet_list) - 1:
         j += 1
