@@ -73,6 +73,8 @@ class player(object):
         self.COUNT = 0              #variable used to iterate thru the list of player images 
         self.health = 100
         self.hit = 0
+        self.die = False
+
 
     def draw(self):                                                             #called in maindraw
 
@@ -105,44 +107,42 @@ class player(object):
         pygame.draw.rect(screen, color, pygame.Rect(self.x, self.y, 128, 128),  2)
 
     def health(self):
-        pygame.draw.rect(screen, (0,0,0), pygame.Rect(80, 50, 100, 20))
+        pygame.draw.rect(screen, (0,0,0), pygame.Rect(100, 45, 100, 20))
 
         if self.x >= 800:
             self.hit += 1
         
         if self.hit == 0:
             color = (0,255,0)
-            pygame.draw.rect(screen, color, pygame.Rect(80,50, self.health, 20))
+            pygame.draw.rect(screen, color, pygame.Rect(100, 45, self.health, 20))
 
         elif self.hit >= 10 and self.hit < 20:
             color = (255, 255, 0)
             self.health = 75
-            pygame.draw.rect(screen,color, pygame.Rect(80,50, self.health, 20))
+            pygame.draw.rect(screen,color, pygame.Rect(100, 45, self.health, 20))
             
         elif self.hit >= 20 and self.hit < 30:
             self.health = 50
             color = (255,165,0)
-            pygame.draw.rect(screen,color, pygame.Rect(80,50, self.health, 20))
+            pygame.draw.rect(screen,color, pygame.Rect(100, 45, self.health, 20))
 
         elif self.hit >= 30 and self.hit < 40:
             self.health = 25
             color = (255,0,0)
-            pygame.draw.rect(screen,color, pygame.Rect(80,50, self.health, 20))
+            pygame.draw.rect(screen,color, pygame.Rect(100, 45, self.health, 20))
 
         elif self.hit >= 40:
             color = (0,0,0)
             self.health = 0
-            pygame.draw.rect(screen,color, pygame.Rect(80,50, self.health, 20))
+            pygame.draw.rect(screen,color, pygame.Rect(100, 45, self.health, 20))
 
-            self.die()
-
-    def die(self):
-        pass
+            self.die = True
+        
 
 
 class rival(object):
     global Enemy_Walk                                           #list of enemy images
-    def __init__(self, startx, starty, endx, endy): 
+    def __init__(self,startx,starty ,endx, endy): 
         self.x = startx                                              #rival co-ordinates
         self.y = starty
         self.width = 64                                             #image size
@@ -197,7 +197,7 @@ class rival(object):
             self.COUNT += 1
             self.dir = 'd'
 
-
+        
         else:                                                                   #rival stops moving in order to shoot
             shoot = pygame.transform.rotate(Enemy_Walk[8], self.theta)
           #turns by theta angle
@@ -236,11 +236,7 @@ class rival(object):
                     if self.y - self.vely >  self.pathy[1]:
                         self.y += self.vely
                     else:
-                        self.vely = self.vely * -1     
-
-            
-            elif lad.x == self.x and lad.y == self.y:
-                print("im on")
+                        self.vely = self.vely * -1                     
                   
         pygame.draw.rect(screen, (255,0,0), pygame.Rect(self.x, self.y, 128, 128),  2)
         rival.checkPoint(self, lad.x, lad.y, self.x, self.y , self.dir)     #checks if player is in rival's field
@@ -314,9 +310,8 @@ class rival(object):
         self.vely = 0
         if self.shoot_cooldown == 0:
             self.shoot_cooldown = 20
-            bulletss(self.x,self.y,self.theta + 90)
-            
-    
+            bull = bulletss(self.x,self.y,self.theta + 90, self.Angle)
+            bulletss.draw(bull)
 
     '''def die(self):
         global score
@@ -329,50 +324,57 @@ class rival(object):
 
 class bulletss(object):
     bullet_list = []
-    initlist = []
-    def __init__(self,x,y,theta):
+    def __init__(self,x,y,theta,quadrant):
+        
         if len(self.bullet_list) <= 5:
-            self.bullet_list.append([x,y,theta + 90])
-            self.initlist.append([x,y,theta + 90])
+            self.bullet_list.append([x + 64 ,y + 64,round(theta + 90,2),round(quadrant,2)])
+
         else:
             self.bullet_list.pop()
-            self.initlist.pop()
-        self.width = 50
-        self.height = 20
         self.vel = 10
-        
-        self.draw()
+    
 
     def draw(self):                                           #fn called in rival.shoot()
-            bul = self.bullet_list[0]
-            dishoom = pygame.transform.rotate(bullet, bul[2] + 90)             
-            screen.blit(dishoom, (bul[0], bul[1]))                             #displays bullet on screen
-            self.movebull(bul)                                         #moves bullet to attack player
-            #print(self.bullet_list)
+        if len(bulletss.bullet_list) != 0:
+            global j
+            i = bulletss.bullet_list[j]
+            dishoom = pygame.transform.rotate(bullet, i[2]+90)             
+            screen.blit(dishoom, (i[0], i[1]))                             #displays bullet on screen
+            pygame.display.update(i)
+            bulletss.movebull(self,i)                                         #moves bullet to attack player
 
     def movebull(self,i): 
-        rad = math.atan2(lad.x- i[0], lad.y -i[1])
-        dist = math.hypot(lad.x- i[0], lad.y -i[1])/2
-        dx = math.cos(rad)*2
-        dy = math.sin(rad)*2
-        dist = int(dist)
+        if i[3] > 0 and i[3] < 90 :
+            i[0] += self.vel
+            i[1] -= self.vel
+            
+        elif i[3] > 90 and i[3] < 180 :
+            i[0] -= self.vel
+            i[1] -= self.vel
 
-        while dist:
-            dist -= -1 
-            i[0] += 5
-            i[1] += 5
-            print(i[0],i[1],dist)
-        self.delete(i)      
+        elif i[3] > 180 and i[3] < 270 :
+            i[0] -= self.vel
+            i[1] += self.vel
+
+        elif i[3] >= 270 and i[3] < 360 :
+            i[0] += self.vel
+            i[1] += self.vel
+
+        self.delete(i)
         
 
     def delete(self,i):
+        
         if i[0] > 1200 or i[1] > 800 or i[1] < 0 or i[0] < 0:
             self.bullet_list.remove(i)
-    
+
+        elif (i[0] > lad.x) and (i[0] < lad.x + 128)  and (i[1] > lad.y) and (i[1] < lad.y + 128):
+            lad.health -= 25            
+
     
     
 
-font = pygame.font.SysFont('Arial', 25)
+font = pygame.font.SysFont('Georgia', 25)
 score_text = font.render('Score: {}'.format(score), False, (0, 0, 0),(122,122,122))
 health_text = font.render('Health: ', False, (0, 0, 0),(122,122,122))
 
@@ -391,8 +393,9 @@ lad = player(512,128)
 chad = rival(128,128,800,128)
 vlad = rival(128,128,128,800)
 
+j = 0
 running = True
-while running == True:                                                 #game loop
+while running:                                                 #game loop
     clock.tick(30)                                                     #30 ms delay for better accuracy
 
     for event in pygame.event.get():                                
@@ -401,7 +404,15 @@ while running == True:                                                 #game loo
 
         if event.type == pygame.KEYUP:                                 #if no key is pressed
             lad.dir = None
+        
+    if lad.die == True:
+        running = False
+        break
 
+    if j < len(bulletss.bullet_list) - 1:
+        j += 1
+    else:
+        j = 0
 
     keys = pygame.key.get_pressed()                                    #list of all keys on keyboard
     
