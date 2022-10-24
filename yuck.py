@@ -310,8 +310,7 @@ class rival(object):
         self.vely = 0
         if self.shoot_cooldown == 0:
             self.shoot_cooldown = 20
-            bull = bulletss(self.x,self.y,self.theta + 90, self.Angle)
-            bulletss.draw(bull)
+            bulletss(self.x,self.y,self.theta + 90, self.Angle)
 
     '''def die(self):
         global score
@@ -334,33 +333,24 @@ class bulletss(object):
         self.vel = 10
     
 
-    def draw(self):                                           #fn called in rival.shoot()
-        if len(bulletss.bullet_list) != 0:
-            global j
-            i = bulletss.bullet_list[j]
-            dishoom = pygame.transform.rotate(bullet, i[2]+90)             
-            screen.blit(dishoom, (i[0], i[1]))                             #displays bullet on screen
-            pygame.display.update(i)
-            bulletss.movebull(self,i)                                         #moves bullet to attack player
-
     def movebull(self,i): 
         if i[3] > 0 and i[3] < 90 :
-            i[0] += self.vel
-            i[1] -= self.vel
+            i[0] += 10
+            i[1] -= 10
             
         elif i[3] > 90 and i[3] < 180 :
-            i[0] -= self.vel
-            i[1] -= self.vel
+            i[0] -= 10
+            i[1] -= 10
 
         elif i[3] > 180 and i[3] < 270 :
-            i[0] -= self.vel
-            i[1] += self.vel
+            i[0] -= 10
+            i[1] += 10
 
         elif i[3] >= 270 and i[3] < 360 :
-            i[0] += self.vel
-            i[1] += self.vel
+            i[0] += 10
+            i[1] += 10
 
-        self.delete(i)
+        bulletss.delete(self,i)
         
 
     def delete(self,i):
@@ -386,6 +376,13 @@ def maindraw():                                 #draws all characters on screen
     player.health(lad)
     screen.blit(score_text, (0,0))
     screen.blit(health_text, (0,40))
+
+    if len(bulletss.bullet_list) != 0:
+        i = bulletss.bullet_list[j]
+        dishoom = pygame.transform.rotate(bullet, i[2]+90)             
+        screen.blit(dishoom, (i[0], i[1]))                             #displays bullet on screen
+        bulletss.movebull(bulletss,i)
+
     pygame.display.update()                     #updates screen to show all characters 
     
 #assigning values and co-ordinates to player and rivals
