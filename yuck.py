@@ -252,6 +252,8 @@ class rival(object):
         
         rivalradius = math.sqrt(x * x + y * y)
         
+        if rivalradius > radius:
+            self.move = True
 
         if dir == 'u' and y > 0 :
             turn = math.degrees (math.atan(x/y))
@@ -280,7 +282,7 @@ class rival(object):
         elif dir == 'l' and x > 0:
             turn = math.degrees (math.atan(y/x))
             self.Angle = turn 
-            if (self.Angle <= endAngle1 and self.Angle >= endAngle2)and (rivalradius < radius):
+            if (self.Angle <= endAngle1 and self.Angle >= endAngle2) and (rivalradius < radius):
                 rival.shoot(self)
                 self.theta = -self.Angle + 90
                 self.shoot_cooldown -= 1
@@ -301,34 +303,33 @@ class rival(object):
                 self.move = True
                 self.velx = 2.5
 
-
     def shoot(self):                                                        #fn called in checkPoint()
-        self.move = False
+        
         self.velx = 0
         self.vely = 0
         if self.shoot_cooldown == 0:
             self.shoot_cooldown = 20
-            bulletss(self.x,self.y,lad.x,lad.y)
+            bulletss(self.x,self.y,lad.x,lad.y,self.theta)
 
     '''def die(self):
         global score
         if lad.x == self.x and lad.y == self.y and keys[pygame.K_SPACE]:
             score += 100'''
 
-    
-
+        
+        
 
 
 class bulletss(object):
     bullet_list = []
-    vel = 10
-    def __init__(self,ex,ey,px,py):
-        
+    vel = 40
+    def __init__(self,ex,ey,px,py,theta1):
+        self.thetaa = theta1
         if len(self.bullet_list) < 5:
             dist = math.hypot((px-ex),(py-ey))
-            theta = round(math.atan2((py-ey),(px-ex)),2)
-            sin = round(math.sin(theta),2)
-            cos = round(math.cos(theta),2)
+            theta = math.atan2((py - ey),(px + 64 -ex))
+            sin = math.sin(theta)
+            cos = math.cos(theta)
             
             if sin >= 0 and cos >= 0:
                 Q = 1
@@ -342,14 +343,13 @@ class bulletss(object):
             elif sin <= 0 and cos >= 0:
                 Q = 4
 
-            self.bullet_list.append([ex + 64 ,ey + 64, Q, sin, cos, theta])
+            self.bullet_list.append([ex + 64 ,ey + 64, Q, sin, cos, self.thetaa])
 
         else:
             self.bullet_list.pop()
     
 
     def movebull(self,i): 
-
         i[0] += self.vel * i[4]
         i[1] += self.vel * i[3]
 
@@ -382,7 +382,7 @@ def maindraw():                                 #draws all characters on screen
 
     if len(bulletss.bullet_list) != 0:
         i = bulletss.bullet_list[j]
-        dishoom = pygame.transform.rotate(bullet,math.degrees(90 - i[5]))  
+        dishoom = pygame.transform.rotate(bullet,math.degrees(i[5]))  
         screen.blit(dishoom, (i[0], i[1]))                             #displays bullet on screen
         bulletss.movebull(bulletss,i)
     pygame.display.update()                     #updates screen to show all characters 
