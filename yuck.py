@@ -133,7 +133,7 @@ class player(object):
             self.health = 0
             pygame.draw.rect(screen,color, pygame.Rect(100, 45, self.health, 20))
 
-            self.die = True
+
         
 
 
@@ -320,14 +320,14 @@ class rival(object):
 
 class bulletss(object):
     bullet_list = []
+    vel = 10
     def __init__(self,x,y,theta,quadrant):
         
         if len(self.bullet_list) < 5:
             self.bullet_list.append([x + 64 ,y + 64, theta, round(quadrant,2)])
 
         else:
-            self.bullet_list.pop(0)
-        self.vel = 10
+            self.bullet_list.pop()
     
 
     def movebull(self,i,plx,ply): 
@@ -339,20 +339,20 @@ class bulletss(object):
         dist = int(dist)
 
         if i[3] > 0 and i[3] < 90 :
-            i[0] += 10 + dx
-            i[1] -= 10 + dy
+            i[0] += self.vel
+            i[1] -= self.vel
             
-        elif i[3] > 90 and i[3] < 180 :
-            i[0] -= 10 + dx
-            i[1] -= 10 + dy
+        elif i[3] >= 90 and i[3] < 180 :
+            i[0] -= self.vel
+            i[1] -= self.vel
 
-        elif i[3] > 180 and i[3] < 270 :
-            i[0] -= 10 + dx
-            i[1] += 10 + dy
+        elif i[3] >= 180 and i[3] < 270 :
+            i[0] -= self.vel
+            i[1] += self.vel
 
         elif i[3] >= 270 and i[3] < 360 :
-            i[0] += 10 + dx
-            i[1] += 10 + dy
+            i[0] += self.vel
+            i[1] += self.vel
 
         print(i, i[0],i[1])
         bulletss.delete(self,i)
