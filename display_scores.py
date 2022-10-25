@@ -1,18 +1,20 @@
 from tkinter import *
 from scoring import lst
-rows = []
+def d_table():
 
-for i in range (len(lst)):
-    columns = []
-    for j in range(4):
-        e = Entry(relief = GROOVE, font = 'Georgia', justify='center')
+    rows = []
 
-        e.grid(row=i, column=j)
+    for i in range (len(lst)):
+        columns = []
+        for j in range(4):
+            e = Entry(relief = GROOVE, font = 'Georgia', justify='center')
 
-        e.insert(END, lst[i][j])
+            e.grid(row=i, column=j)
 
-        columns.append(e)
+            e.insert(END, lst[i][j])
 
-    rows.append(columns)
+            columns.append(e)
 
-mainloop()
+        rows.append(columns)
+
+    mainloop()

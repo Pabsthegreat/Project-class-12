@@ -1,6 +1,7 @@
 '''
 Co-ordinate systems work differently in pygame as in real math. The origin is in the top-left corner 
-and +x-axis is towards right & +y-axis is towards down.
+and +x-axis is towards right & +y-axis is towards down. Quadrant 1 is bottom right, Quadrant 2 is bottom left,
+Quadrant 3 is top left, and Quadrant 4 is top right.
 '''
 from textwrap import fill
 import pygame
@@ -113,22 +114,22 @@ class player(object):
             color = (0,255,0)
             pygame.draw.rect(screen, color, pygame.Rect(100, 45, self.health, 20))
 
-        elif self.hit >= 10 and self.hit < 20:
+        elif self.hit >= 40 and self.hit < 80:
             color = (255, 255, 0)
             self.health = 75
             pygame.draw.rect(screen,color, pygame.Rect(100, 45, self.health, 20))
             
-        elif self.hit >= 20 and self.hit < 30:
+        elif self.hit >= 80 and self.hit < 120:
             self.health = 50
             color = (255,165,0)
             pygame.draw.rect(screen,color, pygame.Rect(100, 45, self.health, 20))
 
-        elif self.hit >= 30 and self.hit < 40:
+        elif self.hit >= 120 and self.hit < 160:
             self.health = 25
             color = (255,0,0)
             pygame.draw.rect(screen,color, pygame.Rect(100, 45, self.health, 20))
 
-        elif self.hit >= 40:
+        elif self.hit >= 160:
             color = (0,0,0)
             self.health = 0
             pygame.draw.rect(screen,color, pygame.Rect(100, 45, self.health, 20))
@@ -307,7 +308,7 @@ class rival(object):
         self.vely = 0
         if self.shoot_cooldown == 0:
             self.shoot_cooldown = 20
-            bulletss(self.x,self.y,self.theta, self.Angle)
+            bulletss(self.x,self.y,lad.x,lad.y)
 
     '''def die(self):
         global score
@@ -321,40 +322,37 @@ class rival(object):
 class bulletss(object):
     bullet_list = []
     vel = 10
-    def __init__(self,x,y,theta,quadrant):
+    def __init__(self,ex,ey,px,py):
         
         if len(self.bullet_list) < 5:
-            self.bullet_list.append([x + 64 ,y + 64, theta, round(quadrant,2)])
+            dist = math.hypot((px-ex),(py-ey))
+            theta = round(math.atan2((py-ey),(px-ex)),2)
+            sin = round(math.sin(theta),2)
+            cos = round(math.cos(theta),2)
+            
+            if sin >= 0 and cos >= 0:
+                Q = 1
+
+            elif sin >= 0 and cos <= 0:
+                Q = 2
+            
+            elif sin <= 0 and cos <= 0:
+                Q = 3
+            
+            elif sin <= 0 and cos >= 0:
+                Q = 4
+
+            self.bullet_list.append([ex + 64 ,ey + 64, Q, sin, cos, theta])
 
         else:
             self.bullet_list.pop()
     
 
-    def movebull(self,i,plx,ply): 
-        rad = math.atan2(plx-i[0] ,ply-i[1])
-        dist = math.hypot(plx-i[0], ply-i[1])
-        dist = math.hypot(plx-i[0], ply-i[1])/2
-        dx = math.cos(rad)*2
-        dy = math.sin(rad)*2
-        dist = int(dist)
+    def movebull(self,i): 
 
-        if i[3] > 0 and i[3] < 90 :
-            i[0] += self.vel
-            i[1] -= self.vel
-            
-        elif i[3] >= 90 and i[3] < 180 :
-            i[0] -= self.vel
-            i[1] -= self.vel
+        i[0] += self.vel * i[4]
+        i[1] += self.vel * i[3]
 
-        elif i[3] >= 180 and i[3] < 270 :
-            i[0] -= self.vel
-            i[1] += self.vel
-
-        elif i[3] >= 270 and i[3] < 360 :
-            i[0] += self.vel
-            i[1] += self.vel
-
-        print(i, i[0],i[1])
         bulletss.delete(self,i)
         
 
@@ -364,7 +362,7 @@ class bulletss(object):
             self.bullet_list.remove(i)
 
         elif (i[0] > lad.x) and (i[0] < lad.x + 128)  and (i[1] > lad.y) and (i[1] < lad.y + 128):
-            lad.health -= 25            
+            lad.health -= 5            
 
     
     
@@ -384,11 +382,9 @@ def maindraw():                                 #draws all characters on screen
 
     if len(bulletss.bullet_list) != 0:
         i = bulletss.bullet_list[j]
-        bulletss.movebull(bulletss,i, lad.x,lad.y)
-
-        dishoom = pygame.transform.rotate(bullet, i[2]+90)             
+        dishoom = pygame.transform.rotate(bullet,math.degrees(90 - i[5]))  
         screen.blit(dishoom, (i[0], i[1]))                             #displays bullet on screen
-
+        bulletss.movebull(bulletss,i)
     pygame.display.update()                     #updates screen to show all characters 
     
 #assigning values and co-ordinates to player and rivals
