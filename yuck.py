@@ -251,58 +251,59 @@ class rival(object):
         
         rivalradius = math.sqrt(x * x + y * y)
         
+        if rivalradius > radius:
+            self.move = True
         
+        else:
+            if dir == 'u' and y > 0 :
+                turn = math.degrees (math.atan(x/y))
+                self.Angle = turn
+                if (self.Angle <= endAngle1 and self.Angle >= endAngle2) and (rivalradius < radius):
+                    rival.shoot(self)
+                    self.theta = self.Angle
+                    self.shoot_cooldown -= 1
+                else:
+                    self.move = True
+                    self.vely = -2.5
 
-        if dir == 'u' and y > 0 :
-            turn = math.degrees (math.atan(x/y))
-            self.Angle = turn
-            if (self.Angle <= endAngle1 and self.Angle >= endAngle2) and (rivalradius < radius):
-                rival.shoot(self)
-                self.theta = self.Angle
-                self.shoot_cooldown -= 1
-            else:
-                self.move = True
-                self.vely = -2.5
+            elif dir == 'd' and y < 0:
+                turn = math.degrees (math.atan(x/y))
+                self.Angle =  turn
 
-        elif dir == 'd' and y < 0:
-            turn = math.degrees (math.atan(x/y))
-            self.Angle =  turn
+                if (self.Angle <= endAngle1 and self.Angle >= endAngle2) and (rivalradius < radius): 
+                    rival.shoot(self)
+                    self.theta = self.Angle + 180  
+                    self.shoot_cooldown -= 1                                    
+                else:                                                      
+                    self.move = True
+                    self.vely = 2.5
 
-            if (self.Angle <= endAngle1 and self.Angle >= endAngle2) and (rivalradius < radius): 
-                rival.shoot(self)
-                self.theta = self.Angle + 180  
-                self.shoot_cooldown -= 1                                    
-            else:                                                      
-                self.move = True
-                self.vely = 2.5
-
-    
-        elif dir == 'l' and x > 0:
-            turn = math.degrees (math.atan(y/x))
-            self.Angle = turn 
-            if (self.Angle <= endAngle1 and self.Angle >= endAngle2) and (rivalradius < radius):
-                rival.shoot(self)
-                self.theta = -self.Angle + 90
-                self.shoot_cooldown -= 1
-            else:
-                self.move = True
-                self.velx = -2.5
+        
+            elif dir == 'l' and x > 0:
+                turn = math.degrees (math.atan(y/x))
+                self.Angle = turn 
+                if (self.Angle <= endAngle1 and self.Angle >= endAngle2) and (rivalradius < radius):
+                    rival.shoot(self)
+                    self.theta = -self.Angle + 90
+                    self.shoot_cooldown -= 1
+                else:
+                    self.move = True
+                    self.velx = -2.5
 
 
-        elif dir == 'r' and x < 0:
-            turn = math.degrees (math.atan(y/x))
-            self.Angle =  -turn 
+            elif dir == 'r' and x < 0:
+                turn = math.degrees (math.atan(y/x))
+                self.Angle =  -turn 
 
-            if (self.Angle <= endAngle1 and self.Angle >= endAngle2) and (rivalradius < radius):
-                rival.shoot(self)
-                self.theta = self.Angle - 90
-                self.shoot_cooldown -= 1
-            else:
-                self.move = True
-                self.velx = 2.5
+                if (self.Angle <= endAngle1 and self.Angle >= endAngle2) and (rivalradius < radius):
+                    rival.shoot(self)
+                    self.theta = self.Angle - 90
+                    self.shoot_cooldown -= 1
+                else:
+                    self.move = True
+                    self.velx = 2.5
 
     def shoot(self):                                                        #fn called in checkPoint()
-        
         self.velx = 0
         self.vely = 0
         if self.shoot_cooldown == 0:
@@ -392,13 +393,19 @@ def maindraw():                                 #draws all characters on screen
     pygame.display.update()                     #updates screen to show all characters 
     
 #assigning values and co-ordinates to player and rivals
-lad = player(512,128)
-chad = rival(308,300,1072,300,'chad')
-vlad = rival(128,128,128,800,'vlad')
-mad = rival(700,600,1072,600,'mad')
-thug = rival(900,400,900,800,'thug')
-not_running_dict = {'mad': mad,'thug':thug}
-enemy_dict = {'chad':chad,'vlad':vlad}
+lad = player(1072,0)
+#horizontal
+jealousy = rival(300,600,900,600,'jealousy')
+anger = rival(550,200,1150,200,'anger')
+ego = rival(0,400,600, 400,'ego')
+wrath = rival(250,0,850,0,'wrath')
+#vertical
+greed = rival(50,128,50,736,'greed')
+lust = rival(1000,200,1000,736,'lust')
+hatred = rival(750, 400, 750, 736, 'hatred')
+sloth = rival(300,300,300,736,'sloth')
+not_running_dict = {}
+enemy_dict = {'lust':lust,'jealousy':jealousy, 'anger': anger,'greed':greed, 'hatred':hatred, 'ego':ego, 'wrath':wrath, 'sloth':sloth}
 
 milliseconds = 0
 seconds = 0
@@ -457,7 +464,7 @@ while running:                                                 #game loop
         new_guy_timer += 1
         milliseconds -= 150
 
-    if new_guy_timer == 10:
+    if new_guy_timer == 5 :
 
         if len(not_running_dict) != 0:
             x = not_running_dict.popitem()
