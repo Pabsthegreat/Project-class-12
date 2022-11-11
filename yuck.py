@@ -3,7 +3,6 @@ Co-ordinate systems work differently in pygame as in real math. The origin is in
 and +x-axis is towards right & +y-axis is towards down. Quadrant 1 is bottom right, Quadrant 2 is bottom left,
 Quadrant 3 is top left, and Quadrant 4 is top right.
 '''
-from textwrap import fill
 import pygame
 import math
 
@@ -70,25 +69,24 @@ class player(object):
         self.y = y  
         self.width = 128            #image size
         self.height = 128
-        self.vel = 5
+        self.vel = 5                #player velocity
         self.dir = None             #used to change directions as arrow keys/ wasd is pressed
         self.COUNT = 0              #variable used to iterate thru the list of player images 
-        self.health = 100
-        self.hit = 0
-        self.die = False
+        self.health = 100           #initial health
+        self.die = False            #flag variable to check if player is alive or dead
 
 
-    def draw(self):                                                             #called in maindraw
+    def draw(self):                                             #called in maindraw
 
-        if self.dir == None:
-            screen.blit(rest1, (self.x, self.y))
+        if self.dir == None:                                    #if player is not moving
+            screen.blit(rest1, (self.x, self.y))                                
 
-        elif self.COUNT <= 15:                                                  #no. of images in list = 16, => max index = 15
+        elif self.COUNT <= 15:                                  #no. of images in list = 16, => max index = 15
 
             if self.dir == "up":
 
-                m = pygame.transform.rotate(Hunter_Walk[self.COUNT], 0)                 #turns player to reqd direction
-                screen.blit(m,(self.x,self.y))                                          #displays character onto screen
+                m = pygame.transform.rotate(Hunter_Walk[self.COUNT], 0)             #turns player to reqd direction
+                screen.blit(m,(self.x,self.y))                                      #displays character onto screen
             
             elif self.dir == "down":
 
@@ -105,43 +103,37 @@ class player(object):
                 m = pygame.transform.rotate(Hunter_Walk[self.COUNT], 90)
                 screen.blit(m,(self.x,self.y))
 
-            self.COUNT += 1                                     #increment iterable to display next image
+            self.COUNT += 1                 #increment iterable to display next image
 
         else:
-            self.COUNT = 0  #resets iteration variable to prevent index out of range error
+            self.COUNT = 0                  #resets iteration variable to prevent index out of range error
         
     #health bar which shows how much health is left, with each bullet hit, it reduces health
-    def health(self):               
+    def health(self):                       #called in maindraw
 
         pygame.draw.rect(screen, (0,0,0), pygame.Rect(100, 45, 100, 20))
-        
-        if self.hit == 0:
-
+        if self.health == 100:
             color = (0,255,0)
             pygame.draw.rect(screen, color, pygame.Rect(100, 45, self.health, 20))
 
-        elif self.hit >= 40 and self.hit < 80:
+        elif self.health == 75:
 
             color = (255, 255, 0)
-            self.health = 75
             pygame.draw.rect(screen,color, pygame.Rect(100, 45, self.health, 20))
             
-        elif self.hit >= 80 and self.hit < 120:
+        elif self.health == 50:
 
-            self.health = 50
             color = (255,165,0)
             pygame.draw.rect(screen,color, pygame.Rect(100, 45, self.health, 20))
 
-        elif self.hit >= 120 and self.hit < 160:
+        elif self.health == 25:
 
-            self.health = 25
             color = (255,0,0)
             pygame.draw.rect(screen,color, pygame.Rect(100, 45, self.health, 20))
 
-        elif self.hit >= 160:
+        elif self.health == 0:
 
             color = (0,0,0)
-            self.health = 0
             pygame.draw.rect(screen,color, pygame.Rect(100, 45, self.health, 20))
 
 
@@ -158,15 +150,21 @@ class rival(object):
         self.y = starty                                              #starting coordinates
         self.width = 64                                              #image width
         self.height = 64                                             #image height
-        self.velx = 2.5                                              #velocity in the horizonatal direction
-        self.vely = 2.5                                              #velocity in vertical direction
         self.startx = startx                                         #initial and final x & y co-ordinates since
         self.starty = starty                                         #character moves in a fixed path (straight line)
-        self.endx = endx                                             #enf coordinates
+        self.endx = endx                                             #end coordinates
         self.endy = endy
+
+        if self.startx > self.endx and self.starty == self.endy:
+            self.velx = -2.5
+        elif self.startx < self.endx and self.starty == self.endy:
+            self.velx = 2.5
+        elif self.starty > self.endy and self.startx == self.endx:
+            self.vely = -2.5
+        elif self.starty < self.endy and self.startx == self.endx:
+            self.vely = 2.5
+        
         self.dir = ''                                                #acts as flag variable used in checkPoint()
-        self.pathx = [self.x, self.startx, self.endx]                #path taken by rival
-        self.pathy = [self.y, self.starty, self.endy]
         self.COUNT = 0                                               #iterabe to go thru list of images
         self.Angle = 0                                               #Angle by which rival is supposed to turn 
         self.theta = 0                                               #The angle by which rival must turn if player is in range wrt his initial posn
@@ -221,40 +219,82 @@ class rival(object):
         if self.move:
 
             if self.starty == self.endy:   
-                                               #if y co-ordinates are same => rival moves along x-axis
+            #if y co-ordinates are same => rival moves along x-axis
                 self.vely = 0                                                   #no movement along y-axis
 
-                if self.velx > 0:             
-                                                      #if rival is moving forward (towards right)
-                    if self.x + self.velx < self.pathx[2] - self.height:
-                                #check if character has reached the end
-                        self.x += self.velx                                     #if no, move right with velx speed
-                    else:             
-                                                                  #if yes, make velx negative so it enters next condn.
-                        self.velx = self.velx * -1
+                if self.startx < self.endx:
+
+                    if self.velx > 0:             
+                    #if rival is moving forward (towards right)
+                        if self.x <= self.endx - self.height:
+                        #check if character has reached the end
+                            self.x += self.velx                         #if no, move right with velx speed
+                        else:             
+                                                                        #if yes, make velx negative so it enters next condn.
+                            self.velx = self.velx * -1
                         
-                else : 
-                                                                             #rival is moving backwards
-                    if self.x- self.velx >  self.pathx[1]:                      #check if character has reached the beginning
-                        self.x += self.velx                                     #if no, move left with velx speed(move right with -velx speed)
-                    else:                                                       #if yes, make velx positive so it enters prev condn.
-                        self.velx = self.velx * -1
+                    elif self.velx < 0: 
+                        #rival is moving backwards
+                        if self.x + self.velx >= self.startx:                       #check if character has reached the beginning
+                            self.x += self.velx                                     #if no, move left with velx speed(move right with -velx speed)
+                        else:                                                       #if yes, make velx positive so it enters prev condn.
+                            self.velx = self.velx * -1
                     
+                elif self.startx > self.endx: 
+                    if self.velx < 0: 
+                        #rival is moving backwards
+                        if self.x >= self.endx:                       #check if character has reached the beginning
+                            self.x += self.velx                                     #if no, move left with velx speed(move right with -velx speed)
+                        else:                                                       #if yes, make velx positive so it enters prev condn.
+                            self.velx = self.velx * -1
+
+                    elif self.velx > 0:             
+                    #if rival is moving forward (towards right)
+                        if self.x <= self.startx - self.height:
+                        #check if character has reached the end
+                            self.x += self.velx                         #if no, move right with velx speed
+                        else:             
+                                                                        #if yes, make velx negative so it enters next condn.
+                            self.velx = self.velx * -1
+            
             elif self.startx == self.endx:
-                self.velx = 0
+                self.velx = 0                                                   #no movement along y-axis
 
-                if self.vely > 0:
-                    if self.y + self.vely < self.pathy[2] - self.height:
-                        self.y += self.vely
-                    else:
-                        self.vely = self.vely * -1
+                if self.starty < self.endy:
+
+                    if self.vely > 0:             
+                    #if rival is moving forward (towards right)
+                        if self.y <= self.endy - self.height:
+                        #check if character has reached the end
+                            self.y += self.vely                         #if no, move right with vely speed
+                        else:             
+                                                                        #if yes, make vely negative so it enters next condn.
+                            self.vely = self.vely * -1
                         
+                    elif self.vely < 0: 
+                        #rival is moving backwards
+                        if self.y + self.vely >= self.starty:                       #check if character has reached the beginning
+                            self.y += self.vely                                     #if no, move left with vely speed(move right with -vely speed)
+                        else:                                                       #if yes, make vely positive so it enters prev condn.
+                            self.vely = self.vely * -1
+                    
+                elif self.starty > self.endy: 
+                    if self.vely < 0: 
+                        #rival is moving backwards
+                        if self.y >= self.endy:                       #check if character has reached the beginning
+                            self.y += self.vely                                     #if no, move left with vely speed(move right with -vely speed)
+                        else:                                                       #if yes, make vely positive so it enters prev condn.
+                            self.vely = self.vely * -1
 
-                else:
-                    if self.y - self.vely >  self.pathy[1]:
-                        self.y += self.vely
-                    else:
-                        self.vely = self.vely * -1                     
+                    elif self.vely > 0:             
+                    #if rival is moving forward (towards right)
+                        if self.y <= self.starty - self.height:
+                        #check if character has reached the end
+                            self.y += self.vely                         #if no, move right with vely speed
+                        else:             
+                                                                        #if yes, make vely negative so it enters next condn.
+                            self.vely = self.vely * -1
+                                 
                   
         rival.checkPoint(self, lad.x, lad.y, self.x, self.y , self.dir)     #checks if player is in rival's field
     
@@ -271,72 +311,69 @@ class rival(object):
         
         rivalradius = math.sqrt(x * x + y * y)
         
-        if rivalradius > radius:
-            self.move = True
-        
-        else:
-            
-            if dir == 'u' and y > 0 :
-                turn = math.degrees (math.atan(x/y))
-                self.Angle = turn
-                if (self.Angle <= endAngle1 and self.Angle >= endAngle2) and (rivalradius < radius):
-                    rival.shoot(self)
-                    self.theta = self.Angle
-                    self.shoot_cooldown -= 1
-                else:
-                    self.move = True
-                    self.vely = -2.5
+        if dir == 'u' and y > 0 :
+            turn = math.degrees (math.atan(x/y))
+            self.Angle = turn
+            if (self.Angle <= endAngle1 and self.Angle >= endAngle2) and (rivalradius < radius):
+                rival.shoot(self)
+                self.theta = self.Angle
+                self.shoot_cooldown -= 1
+            else:
+                self.move = True
+                self.vely = -2.5
 
-            elif dir == 'd' and y < 0:
-                turn = math.degrees (math.atan(x/y))
-                self.Angle =  turn
+        elif dir == 'd' and y < 0:
+            turn = math.degrees (math.atan(x/y))
+            self.Angle =  turn
 
-                if (self.Angle <= endAngle1 and self.Angle >= endAngle2) and (rivalradius < radius): 
-                    rival.shoot(self)
-                    self.theta = self.Angle + 180  
-                    self.shoot_cooldown -= 1                                    
-                else:                                                      
-                    self.move = True
-                    self.vely = 2.5
+            if (self.Angle <= endAngle1 and self.Angle >= endAngle2) and (rivalradius < radius): 
+                rival.shoot(self)
+                self.theta = self.Angle + 180  
+                self.shoot_cooldown -= 1                                    
+            else:                                                      
+                self.move = True
+                self.vely = 2.5
 
-        
-            elif dir == 'l' and x > 0:
-                turn = math.degrees (math.atan(y/x))
-                self.Angle = turn 
-                if (self.Angle <= endAngle1 and self.Angle >= endAngle2) and (rivalradius < radius):
-                    rival.shoot(self)
-                    self.theta = -self.Angle + 90
-                    self.shoot_cooldown -= 1
-                else:
-                    self.move = True
-                    self.velx = -2.5
+    
+        elif dir == 'l' and x > 0:
+            turn = math.degrees (math.atan(y/x))
+            self.Angle = -turn 
+            if (self.Angle <= endAngle1 and self.Angle >= endAngle2) and (rivalradius < radius):
+                rival.shoot(self)
+                self.theta = self.Angle + 90
+                self.shoot_cooldown -= 1
+            else:
+                self.move = True
+                self.velx = -2.5
 
 
-            elif dir == 'r' and x < 0:
-                turn = math.degrees (math.atan(y/x))
-                self.Angle =  -turn 
+        elif dir == 'r' and x < 0:
+            turn = math.degrees (math.atan(y/x))
+            self.Angle =  -turn 
 
-                if (self.Angle <= endAngle1 and self.Angle >= endAngle2) and (rivalradius < radius):
-                    rival.shoot(self)
-                    self.theta = self.Angle - 90
-                    self.shoot_cooldown -= 1
-                else:
-                    self.move = True
-                    self.velx = 2.5
+            if (self.Angle <= endAngle1 and self.Angle >= endAngle2) and (rivalradius < radius):
+                rival.shoot(self)
+                self.theta = self.Angle - 90
+                self.shoot_cooldown -= 1
+            else:
+                self.move = True
+                self.velx = 2.5
 
     def shoot(self):                                                        #fn called in checkPoint()
         self.velx = 0
         self.vely = 0
         if self.shoot_cooldown == 0:
             self.shoot_cooldown = 20
-            bulletss(self.x,self.y,lad.x,lad.y,self.theta)
+            bulletss(self.x, self.y, lad.x, lad.y, self.theta)
 
     def die(self):
-        global score, enemy_dict
+        global score, enemy_dict, killcount
 
-        if (self.x < lad.x + 64 < self.x + 128) and (self.y < lad.y + 64 < self.y + 128) and keys[pygame.K_SPACE]:
+        if (self.x < lad.x + 64 < self.x + 128) and (self.y < lad.y + 64 < self.y + 128) and keys [pygame.K_SPACE]:
             enemy_dict [self.name] = None
             score += 100
+            killcount += 1
+
         
         
 
@@ -344,7 +381,7 @@ class rival(object):
 class bulletss(object):
     bullet_list = []
     vel = 30
-    def __init__(self,ex,ey,px,py,theta1):
+    def __init__(self, ex, ey, px, py, theta1):
         self.thetaa = theta1
         if len(self.bullet_list) < 5:
             theta = math.atan2((py - ey),(px - ex))
@@ -374,7 +411,7 @@ class bulletss(object):
         i[1] += self.vel * i[3]
 
         bulletss.delete(self,i)
-        
+      
 
     def delete(self,i):
         
@@ -382,15 +419,15 @@ class bulletss(object):
             self.bullet_list.remove(i)
 
         elif (i[0] > lad.x) and (i[0] < lad.x + 128)  and (i[1] > lad.y) and (i[1] < lad.y + 128):
-            lad.health -= 20
+            lad.health -= 25
             self.bullet_list.remove(i)            
 
     
     
 
-font = pygame.font.SysFont('Georgia', 25)
+font = pygame.font.SysFont('Calibri', 30)
 
-health_text = font.render('Health: ', False, (0, 0, 0),(122,122,122))
+health_text = font.render('Health: ', False, (0, 0, 0), (122,122,122))
 
 def maindraw():                                 #draws all characters on screen
     screen.blit(bg, (0,0))
@@ -403,7 +440,7 @@ def maindraw():                                 #draws all characters on screen
     screen.blit(score_text, (0,0))
     screen.blit(health_text, (0,40))
     timelabel = font.render("Time - {} s".format(seconds), False, (0,0,0), (122,122,122))
-    screen.blit(timelabel,(1050,0))
+    screen.blit(timelabel, (1050,0))
     
 
     if len(bulletss.bullet_list) != 0:
@@ -416,28 +453,30 @@ def maindraw():                                 #draws all characters on screen
 #assigning values and co-ordinates to player and rivals
 lad = player(1072,0)
 #horizontal
-jealousy = rival(300,600,900,600,'jealousy')
-anger = rival(550,200,1150,200,'anger')
-ego = rival(0,400,600, 400,'ego')
-wrath = rival(250,0,850,0,'wrath')
+rival_1= rival(300,600,900,600,'rival_1')
+rival_2 = rival(1072,300,550,300,'rival_2')
+rival_3 = rival(600,150,0, 150,'rival_3')
+rival_4 = rival(250,0,850,0,'rival_4')
+rival_5 = rival(800, 460, 200, 460, 'rival_5')
 #vertical
-greed = rival(50,128,50,736,'greed')
-lust = rival(1000,200,1000,736,'lust')
-hatred = rival(750, 400, 750, 736, 'hatred')
-sloth = rival(300,300,300,736,'sloth')
-not_running_dict = {}
-enemy_dict = {'lust':lust,'jealousy':jealousy, 'anger': anger,'greed':greed, 'hatred':hatred, 'ego':ego, 'wrath':wrath, 'sloth':sloth}
+rival_6 = rival(50,128,50,672,'rival_6')
+rival_7 = rival(1000,672,1000,200,'rival_7')
+rival_8 = rival(750, 400, 750, 672,'rival_8')
+rival_9= rival(300,672,300,300,'rival_9')
+rival_10 = rival(500,600,500,0,'rival_10')
+not_running_dict = {'rival_4':rival_4,'rival_8':rival_8, 'rival_5':rival_5, 'rival_10':rival_10,
+'rival_2': rival_2,'rival_9':rival_9,'rival_6':rival_6}
+enemy_dict = {'rival_1':rival_1,'rival_3':rival_3,'rival_7': rival_7}
 
 milliseconds = 0
 seconds = 0
 new_guy_timer = 0
 minutes = 0
-
-
 j = 0
+killcount = 0
 running = True
 while running:                                                 #game loop
-    clock.tick(60)                                                     #30 ms delay for better accuracy
+    clock.tick(32)                                                     #30 ms delay for better accuracy
 
     for event in pygame.event.get():                                
         if event.type == pygame.QUIT:                                  #if game is closed
@@ -447,8 +486,12 @@ while running:                                                 #game loop
             lad.dir = None
         
     if lad.health == 0:
+        print('\nLmao dead\n')
         running = False
-        
+
+    if killcount == len(enemy_dict):
+        print("\nYou win!!!\n")
+        running = False
 
     if j < len(bulletss.bullet_list) - 1:
         j += 1
@@ -493,6 +536,13 @@ while running:                                                 #game loop
         
         new_guy_timer = 0
     
+    for key in enemy_dict:
+        count = 0
+        if enemy_dict[key] == None:
+            count += 1
+    if count == len(enemy_dict):
+        print('You win!!!')
+        running = False
 #character does not go out of bounds 
     if lad.x <= 0 :                                                     
         lad.x = 0
@@ -505,6 +555,8 @@ while running:                                                 #game loop
 
     if lad.y >= 672:
         lad.y = 672   
+
+    
 
     screen.fill((0,0,0))
     maindraw()                                                         #all draw functions are called here
