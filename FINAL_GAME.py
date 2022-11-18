@@ -3,7 +3,7 @@ Co-ordinate systems work differently in pygame as in real math. The origin is in
 and +x-axis is towards right & +y-axis is towards down. Quadrant 1 is bottom right, Quadrant 2 is bottom left,
 Quadrant 3 is top left, and Quadrant 4 is top right.
 '''
-def cs_fuck_you():
+def game_loop():
     import pygame
     import math
     pygame.init()
@@ -142,7 +142,7 @@ def cs_fuck_you():
 
     class rival(object):
         #initialising rival object
-        global Enemy_Walk                                           #list of enemy images
+        nonlocal Enemy_Walk                                           #list of enemy images
         def __init__(self,startx,starty ,endx, endy,name): 
             #all variables/ attributes of the rival
             self.name = name
@@ -172,7 +172,7 @@ def cs_fuck_you():
             self.shoot_cooldown = 0                                      #time counter of shpootingwwd
 
         def draw(self):                                                   #fn called in maindraw()
-            global screen            
+            nonlocal screen            
             self.moveit()                                                 #moves the player
 
             if self.COUNT > 15:                                           #no. of images in list = 16, => max index = 15
@@ -214,7 +214,7 @@ def cs_fuck_you():
 
         def moveit(self):                     
                                                 #fn called in draw()
-            global lad 
+            nonlocal lad 
             self.die()
             if self.move:
 
@@ -371,7 +371,7 @@ def cs_fuck_you():
                 bulletss(self.x, self.y, lad.x, lad.y, self.theta)
 
         def die(self):                                                         #fn called in moveit()
-            global score, enemy_dict, killcount
+            nonlocal score, enemy_dict, killcount
 
             if (self.x < lad.x + 64 < self.x + 128) and (self.y < lad.y + 64 < self.y + 128) and keys [pygame.K_SPACE]:
                 enemy_dict [self.name] = None
@@ -552,4 +552,4 @@ def cs_fuck_you():
         
     pygame.quit()                                                          #closes pygame
 
-cs_fuck_you()
+    return score, seconds

@@ -21,12 +21,12 @@ def startgame():
         win1.destroy()
         SQL_Scoring.run_game(name)
     
-    label=Label(win1, text= "Enter name:", font=("Calibri",14))
+    label=Label(win1, text= "Enter name:", font=("Calibri",14)).grid(column=0, row = 0)
     textBox=Text(win1, height=2, width=10)
-    textBox.pack()
+    textBox.grid(column=1,row = 0)
     buttonCommit=Button(win1, height=1, width=10, text="Enter", command=lambda: retrieve_input())
     #command=lambda: retrieve_input() >>> just means do this when i press the button
-    buttonCommit.pack()
+    buttonCommit.grid(column=1,row = 1)
 
     
 #---------------------------------------------------------------------------
