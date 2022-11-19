@@ -57,7 +57,7 @@ if __name__ != '__main__':
         bullet = pygame.image.load('pics/Bullet.png').convert_alpha() 
         pygame.display.set_icon(rest)
 
-        bg =  pygame.image.load('pics/1200x800.png')
+        bg =  pygame.image.load('pics/bg-2.jpg')
 
         clock = pygame.time.Clock()
 

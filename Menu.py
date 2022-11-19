@@ -21,7 +21,7 @@ def startgame():
         win1.destroy()
         SQL_Scoring.run_game(name)
     
-    label=Label(win1, text= "Enter name:", font=("Calibri",14)).grid(column=0, row = 0)
+    Label(win1, text= "Enter name:", font=("Calibri",14)).grid(column=0, row = 0)
     textBox=Text(win1, height=2, width=10)
     textBox.grid(column=1,row = 0)
     buttonCommit=Button(win1, height=1, width=10, text="Enter", command=lambda: retrieve_input())
@@ -67,7 +67,7 @@ def endgame():
 
 def leaderboard():
     win3 = Tk()
-    win3.geometry('1000x600')
+    win3.geometry('1000x400')
     win3.grid()
     win3.title("Leaderboard")
     tree = ttk.Treeview(win3,column = ('c1','c2','c3','c4'), show = 'headings')
@@ -79,7 +79,8 @@ def leaderboard():
     tree.heading('#3', text = 'Score')
     tree.column('#4',anchor = CENTER)
     tree.heading('#4', text = 'Time')
-    tree.pack()
+    tree.anchor(CENTER)
+    tree.grid(columnspan=5, rowspan= 6)
     con = m.connect(host = 'localhost', username = 'root', passwd = 'fab4', db = 'project')
     mycursor = con.cursor()
     query = 'select * from leaderboard'
@@ -90,8 +91,7 @@ def leaderboard():
     con.close()
     def back():
         win3.destroy()
-    #goback=Button(win3, text= "Back", font=("Calibri",14), command=back, bg="#cdcdcd", fg='black').grid(column=10, row=1)
-    #goback.pack()
+    goback=Button(win3, text= "Back", font=("Calibri",14), command=back, bg="#cdcdcd", fg='black').grid(column= 10, row=16)
 #---------------------------------------------------------------------------
 
 Startgame = Button(root, text="Start Game", command=startgame, padx= 30 , pady= 30)
