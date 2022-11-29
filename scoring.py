@@ -62,6 +62,7 @@ try:
 
 
 except Exception as e:
+    print(e)
 
 else:
     lst.insert(0,lst1[0])
