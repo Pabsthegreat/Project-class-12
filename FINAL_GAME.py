@@ -55,7 +55,7 @@ if __name__ != '__main__':
 
         rest1 = rest
         bullet = pygame.image.load('pics/Bullet.png').convert_alpha() 
-        pygame.display.set_icon(rest)
+        pygame.display.set_icon(rest1)
 
         bg =  pygame.image.load('pics/bg-2.jpg')
 
@@ -427,6 +427,24 @@ if __name__ != '__main__':
         font = pygame.font.SysFont('Calibri', 30)
         health_text = font.render('Health: ', False, (0, 0, 0), (122,122,122))
 
+        #assigning values and co-ordinates to player and rivals
+        lad = player(1072,0)
+        #horizontal moving rivals
+        rival_1= rival(300,600,900,600,'rival_1')
+        rival_2 = rival(1072,300,550,300,'rival_2')
+        rival_3 = rival(600,150,0, 150,'rival_3')
+        rival_4 = rival(250,0,850,0,'rival_4')
+        rival_5 = rival(800, 460, 200, 460, 'rival_5')
+        #vertical moving rivals
+        rival_6 = rival(50,128,50,672,'rival_6')
+        rival_7 = rival(1000,672,1000,200,'rival_7')
+        rival_8 = rival(750, 400, 750, 672,'rival_8')
+        rival_9= rival(300,672,300,300,'rival_9')
+        rival_10 = rival(500,600,500,0,'rival_10')
+        not_running_dict = {'rival_4':rival_4,'rival_8':rival_8, 'rival_5':rival_5, 'rival_10':rival_10,
+        'rival_2': rival_2,'rival_9':rival_9,'rival_6':rival_6}                             #rivals not yet displayed on screen
+        enemy_dict = {'rival_1':rival_1,'rival_3':rival_3,'rival_7': rival_7}               #rivals present on screen
+        
         def maindraw():                                 #draws all characters on screen
             screen.blit(bg, (0,0))
             for enemy in enemy_dict:
@@ -448,7 +466,6 @@ if __name__ != '__main__':
                 bulletss.movebull(bulletss,i)                                  #fn to move bullet
             pygame.display.update()                     #updates screen to show all characters 
 
-        assign = False
         milliseconds = 0                            
         seconds = 0                                 #time in seconds
         new_guy_timer = 0                           #time in 
@@ -458,26 +475,6 @@ if __name__ != '__main__':
 
         while running:                                                 #game loop
             clock.tick(32)                                                     #32 ms delay for better accuracy
-
-            if assign == False:
-                #assigning values and co-ordinates to player and rivals
-                lad = player(1072,0)
-                #horizontal moving rivals
-                rival_1= rival(300,600,900,600,'rival_1')
-                rival_2 = rival(1072,300,550,300,'rival_2')
-                rival_3 = rival(600,150,0, 150,'rival_3')
-                rival_4 = rival(250,0,850,0,'rival_4')
-                rival_5 = rival(800, 460, 200, 460, 'rival_5')
-                #vertical moving rivals
-                rival_6 = rival(50,128,50,672,'rival_6')
-                rival_7 = rival(1000,672,1000,200,'rival_7')
-                rival_8 = rival(750, 400, 750, 672,'rival_8')
-                rival_9= rival(300,672,300,300,'rival_9')
-                rival_10 = rival(500,600,500,0,'rival_10')
-                not_running_dict = {'rival_4':rival_4,'rival_8':rival_8, 'rival_5':rival_5, 'rival_10':rival_10,
-                'rival_2': rival_2,'rival_9':rival_9,'rival_6':rival_6}                             #rivals not yet displayed on screen
-                enemy_dict = {'rival_1':rival_1,'rival_3':rival_3,'rival_7': rival_7}               #rivals present on screen
-                assign = True
                 
             for event in pygame.event.get():                                
                 if event.type == pygame.QUIT:                                  #if game is closed
@@ -487,11 +484,9 @@ if __name__ != '__main__':
                     lad.dir = None                                             #moving in no direction
                 
             if lad.health == 0:                                                #if the player has no health
-                print('Lmao dead\n')
                 running = False                                                #stop the game
 
             if killcount == len(enemy_dict):                                   #if the player has killed all rivals
-                print("You win!!!\n")
                 running = False                                                #stop the game
 
             if j < len(bulletss.bullet_list) - 1:                              #so that index does not go out of range
