@@ -9,10 +9,9 @@ if __name__ != '__main__':
                 for i in range(1,length):
                     temp = lst[i]
                     j = i-1
-                    while j >= 0 and temp[2] >= lst[j][2]:
-                        if temp[2] > lst[j][2] or (temp[2] == lst[j][2] and temp[3] < lst[j][3]):
-                            lst[j+1] = lst[j]
-                            j = j-1
+                    while j >= 0 and temp[2] > lst[j][2]:
+                        lst[j+1] = lst[j]
+                        j = j -1
                     else :
                         lst[j+1] = temp
 
@@ -35,15 +34,13 @@ if __name__ != '__main__':
                             lst.append(a)
                             if player[2] > a[2] and lst.count(player) == 0:
                                 lst.insert(i,player)
-                            elif player[2] == a[2] and (player[3]>a[3]) and lst.count(player) == 0:
-                                lst.insert(i+1,player)
-                            elif player[2] == a[2] and (player[3]<a[3]) and lst.count(player) == 0:
-                                lst.insert(i,player)
+
                         if lst.count(player) == 0 and len(lst) < 5:
                             lst.append(player)
                             lst[len(lst)-1][0] = len(lst) 
 
                         insertion_sort(lst)
+
                         for i in range(len(lst)):
                             lst[i][0] = i+1
                             lst[i] = tuple(lst[i])
