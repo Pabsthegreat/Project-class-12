@@ -83,27 +83,22 @@ if __name__ != '__main__':
                     screen.blit(rest1, (self.x, self.y))                                
 
                 elif self.COUNT <= 15:                                  #no. of images in list = 16, => max index = 15
-
                     if self.dir == "up":
-
                         m = pygame.transform.rotate(Hunter_Walk[self.COUNT], 0)             #turns player to reqd direction
                         screen.blit(m,(self.x,self.y))                                      #displays character onto screen
                     
                     elif self.dir == "down":
-
                         m = pygame.transform.rotate(Hunter_Walk[self.COUNT], 180)
                         screen.blit(m,(self.x,self.y))
                         
                     elif self.dir == "right":
-
                         m = pygame.transform.rotate(Hunter_Walk[self.COUNT], -90)
                         screen.blit(m,(self.x,self.y))
                         
                     elif self.dir == "left":
-
                         m = pygame.transform.rotate(Hunter_Walk[self.COUNT], 90)
                         screen.blit(m,(self.x,self.y))
-
+                    
                     self.COUNT += 1                 #increment iterable to display next image
 
                 else:
@@ -113,38 +108,32 @@ if __name__ != '__main__':
             def health(self):                       #called in maindraw
 
                 pygame.draw.rect(screen, (0,0,0), pygame.Rect(100, 45, 100, 20))
+                
                 if self.health == 100:
                     color = (0,255,0)
                     pygame.draw.rect(screen, color, pygame.Rect(100, 45, self.health, 20))
 
                 elif self.health == 75:
-
                     color = (255, 255, 0)
                     pygame.draw.rect(screen,color, pygame.Rect(100, 45, self.health, 20))
                     
                 elif self.health == 50:
-
                     color = (255,165,0)
                     pygame.draw.rect(screen,color, pygame.Rect(100, 45, self.health, 20))
 
                 elif self.health == 25:
-
                     color = (255,0,0)
                     pygame.draw.rect(screen,color, pygame.Rect(100, 45, self.health, 20))
 
                 elif self.health == 0:
-
                     color = (0,0,0)
-                    pygame.draw.rect(screen,color, pygame.Rect(100, 45, self.health, 20))
-
-
-                
+                    pygame.draw.rect(screen,color, pygame.Rect(100, 45, self.health, 20))               
 
 
         class rival(object):
             #initialising rival object
             nonlocal Enemy_Walk                                           #list of enemy images
-            def __init__(self,startx,starty ,endx, endy,name): 
+            def __init__(self, startx, starty, endx, endy, name): 
                 #all variables/ attributes of the rival
                 self.name = name
                 self.x = startx                                              #rival co-ordinates
@@ -184,7 +173,6 @@ if __name__ != '__main__':
                     screen.blit(left, (self.x, self.y))                                     #display change on screen
                     self.COUNT += 1                                                  #increment iterable variables which goes thru images
                     self.dir = 'l'                                                          #facing left
-
                 
                 elif self.velx > 0:
                     right  = pygame.transform.rotate(Enemy_Walk[self.COUNT], -90)         #rightfacing
@@ -192,29 +180,24 @@ if __name__ != '__main__':
                     self.COUNT += 1
                     self.dir = 'r'
 
-
                 elif self.vely < 0:                                                     #moving up
                     up = pygame.transform.rotate(Enemy_Walk[self.COUNT], 0) 
                     screen.blit(up, (self.x, self.y))
                     self.COUNT += 1
                     self.dir = 'u'
 
-
                 elif self.vely > 0:                                                      #moving down
                     down = pygame.transform.rotate(Enemy_Walk[self.COUNT], 180)
                     screen.blit(down, (self.x, self.y))
                     self.COUNT += 1
                     self.dir = 'd'
-
                 
                 else:                                                                   #rival stops moving in order to shoot
-                    shoot = pygame.transform.rotate(Enemy_Walk[8], self.theta)
-                #turns by theta angle
+                    shoot = pygame.transform.rotate(Enemy_Walk[8], self.theta)          #turns by theta angle
                     screen.blit(shoot, (self.x, self.y))                                #displayed on screen
 
 
-            def moveit(self):                     
-                                                    #fn called in draw()
+            def moveit(self):                                                           #fn called in draw()
                 nonlocal lad 
                 self.die()
                 if self.move:
@@ -225,37 +208,29 @@ if __name__ != '__main__':
 
                         if self.startx < self.endx:
 
-                            if self.velx > 0:             
-                            #if rival is moving forward (towards right)
-                                if self.x <= self.endx - self.height:
-                                #check if character has reached the end
+                            if self.velx > 0:                                   #if rival is moving forward (towards right)
+                                if self.x <= self.endx - self.height:           #check if character has reached the end
                                     self.x += self.velx                         #if no, move right with velx speed
-                                else:             
-                                                                                #if yes, make velx negative so it enters next condn.
+                                else:                                           #if yes, make velx negative so it enters next condn.
                                     self.velx = self.velx * -1
                                 
-                            elif self.velx < 0: 
-                                #rival is moving backwards
+                            elif self.velx < 0:                                 #rival is moving backwards
                                 if self.x + self.velx >= self.startx:           #check if character has reached the beginning
                                     self.x += self.velx                         #if no, move left with velx speed(move right with -velx speed)
                                 else:                                           #if yes, make velx positive so it enters prev condn.
                                     self.velx = self.velx * -1
                             
                         elif self.startx > self.endx: 
-                            if self.velx < 0: 
-                                                                                #rival is moving backwards
+                            if self.velx < 0:                                   #rival is moving backwards
                                 if self.x >= self.endx:                         #check if character has reached the beginning
                                     self.x += self.velx                         #if no, move left with velx speed(move right with -velx speed)
                                 else:                                           #if yes, make velx positive so it enters prev condn.
                                     self.velx = self.velx * -1
 
-                            elif self.velx > 0:             
-                                                                                #if rival is moving forward (towards right)
-                                if self.x <= self.startx - self.height:
-                                                                                #check if character has reached the end
+                            elif self.velx > 0:                                 #if rival is moving forward (towards right)
+                                if self.x <= self.startx - self.height:         #check if character has reached the end
                                     self.x += self.velx                         #if no, move right with velx speed
-                                else:             
-                                                                                #if yes, make velx negative so it enters next condn.
+                                else:                                           #if yes, make velx negative so it enters next condn.
                                     self.velx = self.velx * -1
                     
                     elif self.startx == self.endx:
@@ -263,42 +238,34 @@ if __name__ != '__main__':
 
                         if self.starty < self.endy:
 
-                            if self.vely > 0:             
-                                                                                #if rival is moving forward (towards right)
-                                if self.y <= self.endy - self.height:
-                                                                                #check if character has reached the end
+                            if self.vely > 0:                                   #if rival is moving forward (towards right)
+                                if self.y <= self.endy - self.height:           #check if character has reached the end
                                     self.y += self.vely                         #if no, move right with vely speed
-                                else:             
-                                                                                #if yes, make vely negative so it enters next condn.
+                                else:                                           #if yes, make vely negative so it enters next condn.
                                     self.vely = self.vely * -1
                                 
-                            elif self.vely < 0: 
-                                                                                #rival is moving backwards
+                            elif self.vely < 0:                                 #rival is moving backwards
                                 if self.y + self.vely >= self.starty:           #check if character has reached the beginning
                                     self.y += self.vely                         #if no, move left with vely speed(move right with -vely speed)
                                 else:                                           #if yes, make vely positive so it enters prev condn.
                                     self.vely = self.vely * -1
                             
                         elif self.starty > self.endy: 
-                            if self.vely < 0: 
-                                                                                #rival is moving backwards
+                            if self.vely < 0:                                   #rival is moving backwards
                                 if self.y >= self.endy:                         #check if character has reached the beginning
                                     self.y += self.vely                         #if no, move left with vely speed(move right with -vely speed)
                                 else:                                           #if yes, make vely positive so it enters prev condn.
                                     self.vely = self.vely * -1
 
-                            elif self.vely > 0:             
-                                                                                #if rival is moving forward (towards right)
-                                if self.y <= self.starty - self.height:
-                                                                                #check if character has reached the end
+                            elif self.vely > 0:                                 #if rival is moving forward (towards right)
+                                if self.y <= self.starty - self.height:         #check if character has reached the end
                                     self.y += self.vely                         #if no, move right with vely speed
-                                else:             
-                                                                                #if yes, make vely negative so it enters next condn.
+                                else:                                           #if yes, make vely negative so it enters next condn.
                                     self.vely = self.vely * -1
                                         
                 rival.checkPoint(self, lad.x, lad.y, self.x, self.y , self.dir)     #checks if player is in rival's field
             
-            
+        
             def checkPoint(self,playerx, playery , selfx ,selfy , dir):                  #fn called in moveit()
 
                 radius = 200
@@ -450,6 +417,7 @@ if __name__ != '__main__':
             for enemy in enemy_dict:
                 if enemy_dict[enemy] != None:
                     enemy_dict[enemy].draw()
+
             lad.draw()
             player.health(lad)
             score_text = font.render('Score: {}'.format(score), False, (0, 0, 0),(122,122,122))
@@ -458,12 +426,12 @@ if __name__ != '__main__':
             timelabel = font.render("Time - {} s".format(seconds), False, (0,0,0), (122,122,122))
             screen.blit(timelabel, (1050,0))
             
-
             if len(bulletss.bullet_list) != 0:
                 i = bulletss.bullet_list[j]
                 dishoom = pygame.transform.rotate(bullet,i[4])                 #turns bullet in direction for shooting
                 screen.blit(dishoom, (i[0], i[1]))                             #displays bullet on screen
                 bulletss.movebull(bulletss,i)                                  #fn to move bullet
+            
             pygame.display.update()                     #updates screen to show all characters 
 
         milliseconds = 0                            
@@ -473,7 +441,7 @@ if __name__ != '__main__':
         killcount = 0                               #no. of enemies killed
         running = True
 
-        while running:                                                 #game loop
+        while running:                                                         #game loop
             clock.tick(32)                                                     #32 ms delay for better accuracy
                 
             for event in pygame.event.get():                                
@@ -528,7 +496,7 @@ if __name__ != '__main__':
                 #if more than 5s have elapsed and if there are enemies have not yet been displayed on screen
                     x = not_running_dict.popitem()                          #remove them from not_running_dict
                     enemy_dict [x[0]] = x[1]                                #and add to enemy_dict
-                    new_guy_timer = 0                                           #reset timer to 0
+                    new_guy_timer = 0                                       #reset timer to 0
 
             #so that character does not go out of bounds 
             if lad.x <= 0 :                                                     

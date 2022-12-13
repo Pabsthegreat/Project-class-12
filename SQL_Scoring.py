@@ -4,70 +4,76 @@ if __name__ != '__main__':
     def run_game(name):
             con = m.connect(host = 'localhost', username = 'root', passwd = 'fab4', db = 'project')
 
-            def insertion_sort(lst):
+            def insertion_sort_scores(lst):
                 length = len(lst)
-                for i in range(1,length):
+                for i in range(1, length):
                     temp = lst[i]
                     j = i-1
-                    while j >= 0 and temp[2] >= lst[j][2]:
-                        if temp[2] > lst[j][2] or (temp[2] == lst[j][2] and temp[3] < lst[j][3]):
+                    while j >= 0 and temp[2] > lst[j][2]:
+
+                        if temp[2] > lst[j][2] :
                             lst[j+1] = lst[j]
-                            j = j-1
-                    else :
+                            j -= 1
+                    else:
                         lst[j+1] = temp
+            
+            def bubble_sort_time(lst):
+                n = len(lst)
+                for i in range(n): # Number of passes
+                    for j in range(0, n-i-1):
+                
+                        if lst[j][2] == lst[j+1][2]:
+                            if lst[j][3] > lst[j+1][3]:
+                            # Swap element at jth position with (j+1)th position
+                                lst[j], lst[j+1] = lst[j+1], lst[j]
 
-            score,time = game_loop()
-            try:
-                player = [100, name, score , time]
-                if con.is_connected():
-                    mycursor = con.cursor()
+            score, time = game_loop()
+            
+            player = [100, name, score , time]
+            if con.is_connected():
+                mycursor = con.cursor()
 
-                    query1 = 'select * from leaderboard'
-                    mycursor.execute(query1)
-                    result = mycursor.fetchall()
-                    lst = []
-                    lst1 = [mycursor.column_names]
-                    
+                query1 = 'select * from leaderboard'
+                mycursor.execute(query1)
+                result = mycursor.fetchall()
+                lst = []
+                print()
 
-                    if len(result) != 0:
-                        for i in range(len(result)):
-                            a = list(result[i])
-                            lst.append(a)
-                            if player[2] > a[2] and lst.count(player) == 0:
-                                lst.insert(i,player)
-                            elif player[2] == a[2] and (player[3]>a[3]) and lst.count(player) == 0:
-                                lst.insert(i+1,player)
-                            elif player[2] == a[2] and (player[3]<a[3]) and lst.count(player) == 0:
-                                lst.insert(i,player)
-                        if lst.count(player) == 0 and len(lst) < 5:
-                            lst.append(player)
-                            lst[len(lst)-1][0] = len(lst) 
-
-                        insertion_sort(lst)
-                        for i in range(len(lst)):
-                            lst[i][0] = i+1
-                            lst[i] = tuple(lst[i])
+                if len(result) != 0:
+                    for i in range(len(result)):
+                        a = list(result[i])
+                        lst.append(a)
                         
-                        if len(lst) > 5:
-                            lst.pop()
+                    lst.append(player)
+                    insertion_sort_scores(lst)
+                    bubble_sort_time(lst)
 
-                    elif len(lst) == 0:
-                        lst.append(player)
-                        lst[0][0] = 1
-                        lst[0] = tuple(lst[0])
-
-                    query2 = 'delete from leaderboard'
-                    mycursor.execute(query2)
-                    con.commit()
+                    for i in range(len(lst)):
+                        lst[i][0] = i+1
+                        lst[i] = tuple(lst[i])
                     
-                    query3 = 'insert into leaderboard values (%s,%s,%s,%s)'
-                    mycursor.executemany(query3,lst)
-                    con.commit()
+                    if len(lst) > 5:
+                        lst.pop()
 
-            except Exception as e:
-                print(e)
+                elif len(lst) == 0:
+                    lst.append(player)
+                    lst[0][0] = 1
+                    lst[0] = tuple(lst[0])
 
+                
+                query2 = 'delete from leaderboard'
+                mycursor.execute(query2)
+                con.commit()
+                
+                query3 = 'insert into leaderboard values (%s,%s,%s,%s)'
+                mycursor.executemany(query3, lst)
+                con.commit()
+
+            con.close()
+
+            if score == 1000:
+                return 'win'
             else:
-                lst.insert(0,lst1[0])
-                con.close()
+                return 'lose'
+
 
