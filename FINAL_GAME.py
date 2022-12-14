@@ -213,26 +213,30 @@ if __name__ != '__main__':
                                     self.x += self.velx                         #if no, move right with velx speed
                                 else:                                           #if yes, make velx negative so it enters next condn.
                                     self.velx = self.velx * -1
-                                
+                                    self.dir = 'l'                              #change direction to go in reverse
+
                             elif self.velx < 0:                                 #rival is moving backwards
                                 if self.x + self.velx >= self.startx:           #check if character has reached the beginning
                                     self.x += self.velx                         #if no, move left with velx speed(move right with -velx speed)
                                 else:                                           #if yes, make velx positive so it enters prev condn.
                                     self.velx = self.velx * -1
-                            
+                                    self.dir = 'r'                              #change direction to go in reverse
+
                         elif self.startx > self.endx: 
                             if self.velx < 0:                                   #rival is moving backwards
                                 if self.x >= self.endx:                         #check if character has reached the beginning
                                     self.x += self.velx                         #if no, move left with velx speed(move right with -velx speed)
                                 else:                                           #if yes, make velx positive so it enters prev condn.
                                     self.velx = self.velx * -1
+                                    self.dir = 'r'                              #change direction to go in reverse
 
                             elif self.velx > 0:                                 #if rival is moving forward (towards right)
                                 if self.x <= self.startx - self.height:         #check if character has reached the end
                                     self.x += self.velx                         #if no, move right with velx speed
                                 else:                                           #if yes, make velx negative so it enters next condn.
                                     self.velx = self.velx * -1
-                    
+                                    self.dir = 'l'                              #change direction to go in reverse
+
                     elif self.startx == self.endx:
                         self.velx = 0                                           #no movement along y-axis
 
@@ -243,26 +247,30 @@ if __name__ != '__main__':
                                     self.y += self.vely                         #if no, move right with vely speed
                                 else:                                           #if yes, make vely negative so it enters next condn.
                                     self.vely = self.vely * -1
-                                
+                                    self.dir = 'u'                              #change direction to go in reverse
+
                             elif self.vely < 0:                                 #rival is moving backwards
                                 if self.y + self.vely >= self.starty:           #check if character has reached the beginning
                                     self.y += self.vely                         #if no, move left with vely speed(move right with -vely speed)
                                 else:                                           #if yes, make vely positive so it enters prev condn.
                                     self.vely = self.vely * -1
-                            
+                                    self.dir = 'd'                              #change direction to go in reverse
+
                         elif self.starty > self.endy: 
                             if self.vely < 0:                                   #rival is moving backwards
                                 if self.y >= self.endy:                         #check if character has reached the beginning
                                     self.y += self.vely                         #if no, move left with vely speed(move right with -vely speed)
                                 else:                                           #if yes, make vely positive so it enters prev condn.
                                     self.vely = self.vely * -1
+                                    self.dir = 'd'                              #change direction to go in reverse
 
                             elif self.vely > 0:                                 #if rival is moving forward (towards right)
                                 if self.y <= self.starty - self.height:         #check if character has reached the end
                                     self.y += self.vely                         #if no, move right with vely speed
                                 else:                                           #if yes, make vely negative so it enters next condn.
                                     self.vely = self.vely * -1
-                                        
+                                    self.dir = 'u'                              #change direction to go in reverse
+
                 rival.checkPoint(self, lad.x, lad.y, self.x, self.y , self.dir)     #checks if player is in rival's field
             
         
@@ -302,12 +310,10 @@ if __name__ != '__main__':
                         self.move = True
                         self.vely = 2.5
 
-            
                 elif dir == 'l' and x > 0:
                     turn = math.degrees (math.atan(y/x))
                     self.Angle = -turn
-                    
-                    
+                                        
                     if (self.Angle <= endAngle1 and self.Angle >= endAngle2) and (rivalradius < radius):
                         rival.shoot(self)
                         self.theta = self.Angle + 90
@@ -316,13 +322,10 @@ if __name__ != '__main__':
                         self.move = True
                         self.velx = -2.5
 
-
                 elif dir == 'r' and x < 0:
                     turn = math.degrees (math.atan(y/x))
                     self.Angle =  -turn
                     
-                    
-
                     if (self.Angle <= endAngle1 and self.Angle >= endAngle2) and (rivalradius < radius):
                         rival.shoot(self)
                         self.theta = self.Angle - 90
@@ -391,7 +394,7 @@ if __name__ != '__main__':
                     lad.health -= 25
                     self.bullet_list.remove(i)            
 
-        font = pygame.font.SysFont('Calibri', 30)
+        font = pygame.font.SysFont('Comic Sans MS', 25)
         health_text = font.render('Health: ', False, (0, 0, 0), (122,122,122))
 
         #assigning values and co-ordinates to player and rivals
@@ -456,7 +459,7 @@ if __name__ != '__main__':
 
             if killcount == len(enemy_dict):                                   #if the player has killed all rivals
                 running = False                                                #stop the game
-
+        
             if j < len(bulletss.bullet_list) - 1:                              #so that index does not go out of range
                 j += 1                                                         #increment iterable
             else:

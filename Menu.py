@@ -30,7 +30,7 @@ def startgame():
         lose = Tk()
         lose.geometry('300x300')
         lose.grid()
-        lose.title("Victory!")
+        lose.title("Defeat")
         lose.configure(bg = '#ff636f')
         
         Label(lose, text = 'You Lose 😕 \nBetter Luck Next Time.', font = ("Comic Sans MS", 14), border = 3, bg = '#ff636f').place(x = 50, y = 50)
@@ -39,7 +39,6 @@ def startgame():
     def retrieve_input():
         name = textBox.get("1.0", "end-1c")
         win1.destroy()
-        root.destroy()
         result = SQL_Scoring.run_game(name)
         
         if result == 'win':
