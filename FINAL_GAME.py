@@ -273,29 +273,40 @@ if __name__ != '__main__':
 
                 rival.checkPoint(self, lad.x, lad.y, self.x, self.y , self.dir)     #checks if player is in rival's field
             
-        
-            def checkPoint(self,playerx, playery , selfx ,selfy , dir):                  #fn called in moveit()
-
+            #fn called in moveit()
+            def checkPoint(self,playerx, playery , selfx ,selfy , dir):      
+            
+                #getting a 120 degree arc with a radius of 200 px , this is the activation zone of the rival
                 radius = 200
-                endAngle1 =  60
+                endAngle1 =  60              
                 endAngle2 =  -60
 
-                x =  selfx - playerx  #dist btw player and rival
-                y =  selfy - playery 
+                #dist btw player and rival x coordinates
+                x =  selfx - playerx    
+                #dist btw player and rival y coordinates     
+                y =  selfy - playery   
                 
-                rivalradius = math.sqrt(x * x + y * y)
+                #shortest distance between the rival and player
+                rivalradius = math.sqrt(x * x + y * y)   
                 
+                #turn =  the angle the rival has to turn in order to face and shoot the player correctly
+                #self.Angle is the class variable equal to turn.
                 if dir == 'u' and y > 0 :
-                    turn = math.degrees (math.atan(x/y))
-                    self.Angle = turn
-                    
+                    turn = math.degrees (math.atan(x/y)) 
+                    self.Angle = turn 
+
+                #checking if the player lies within the activation zone.    
                     if (self.Angle <= endAngle1 and self.Angle >= endAngle2) and (rivalradius < radius):
-                        rival.shoot(self)
-                        self.theta = self.Angle
-                        self.shoot_cooldown -= 1
+                        #activating shoot
+                        rival.shoot(self)       
+                        #angle adjusting to the first and 4th quadrants, + 0 in this case as the rival is facing ahead already.
+                        self.theta = self.Angle 
+                        #reducing the cooldown time by one so that the bullets have enough time to shoot.
+                        self.shoot_cooldown -= 1 
                     else:
-                        self.move = True
-                        self.vely = -2.5
+                        #if the player is not in the activation zone the rival returns to normal path.
+                        self.move = True  
+                        self.vely = -2.5 
 
                 elif dir == 'd' and y < 0:
                     turn = math.degrees (math.atan(x/y))
@@ -304,6 +315,7 @@ if __name__ != '__main__':
 
                     if (self.Angle <= endAngle1 and self.Angle >= endAngle2) and (rivalradius < radius): 
                         rival.shoot(self)
+                        #turning the rival into the second and third quadrants.
                         self.theta = self.Angle + 180  
                         self.shoot_cooldown -= 1                                    
                     else:                                                      
@@ -316,7 +328,8 @@ if __name__ != '__main__':
                                         
                     if (self.Angle <= endAngle1 and self.Angle >= endAngle2) and (rivalradius < radius):
                         rival.shoot(self)
-                        self.theta = self.Angle + 90
+                        #turining the rival to first and second quadrants.
+                        self.theta = self.Angle + 90 
                         self.shoot_cooldown -= 1
                     else:
                         self.move = True
@@ -328,38 +341,53 @@ if __name__ != '__main__':
                     
                     if (self.Angle <= endAngle1 and self.Angle >= endAngle2) and (rivalradius < radius):
                         rival.shoot(self)
-                        self.theta = self.Angle - 90
+                        #bringing the rival into third and 4th quadrants.
+                        self.theta = self.Angle - 90 
                         self.shoot_cooldown -= 1
                     else:
                         self.move = True
                         self.velx = 2.5
 
-            def shoot(self):                                                        #fn called in checkPoint()
+            #fn called in checkPoint()
+            def shoot(self):    
                 self.velx = 0
                 self.vely = 0
-                if self.shoot_cooldown == 0:
+                # case that bullet has just been shot, the cool down is set back to 20 so there is ample gap between shots.
+                if self.shoot_cooldown == 0:    
                     self.shoot_cooldown = 20
                     bulletss(self.x, self.y, lad.x, lad.y, self.theta)
 
-            def die(self):                                                         #fn called in moveit()
+            #fn called in moveit()
+            def die(self):  
                 nonlocal score, enemy_dict, killcount
-
+                #if the player is within the coordinates of the rival, rival is terminated and is removed from the screen and game.
                 if (self.x < lad.x + 64 < self.x + 128) and (self.y < lad.y + 64 < self.y + 128) and keys [pygame.K_SPACE]:
-                    enemy_dict [self.name] = None
-                    score += 100
+                    #setting the name of enemy to none so it cannot be called, drawn in the game again.
+                    enemy_dict [self.name] = None 
+                    #100 points increment per kill, killcount increment by 1 per kill.
+                    score += 100   
                     killcount += 1
 
 
         class bulletss(object):
-            bullet_list = []
-            vel = 30
+            #list of bullets queued to shoot
+            bullet_list = []     
+            #bullet velocity                       
+            vel = 30   
+
             def __init__(self, ex, ey, px, py, theta1):
-                self.thetaa = theta1
-                if len(self.bullet_list) < 5:
-                    theta = math.atan2((py - ey),(px - ex))
+                #(ex, ey) gives us the coordinate of the mid point of the rival , the bullet is spawned and shot from this point.
+                #defining angle by which the bullet must turn in order to face the player.
+                self.thetaa = theta1 
+                #checking if the bullet list has less than 5 bullets, proceeding to move bullet.
+                if len(self.bullet_list) < 5:  
+                    
+                    #angle between the shooting point and the player,we find it so that we can configure the bullet into the right quadrant using propertins of sin and cos of angles.
+                    theta = math.atan2((py - ey),(px - ex)) 
                     sin = math.sin(theta)
                     cos = math.cos(theta)
                     
+                    #quadrants to which the bullet belongs is found out by the properties of sin and cos in trigonometry.
                     if sin >= 0 and cos >= 0:
                         Q = 1
 
@@ -371,27 +399,32 @@ if __name__ != '__main__':
                     
                     elif sin <= 0 and cos >= 0:
                         Q = 4
-
-                    self.bullet_list.append([ex + 64 ,ey + 64, cos, sin, self.thetaa])
-
+                    #the bullet with required configuration is appended into bullet list and queued for shooting.
+                    self.bullet_list.append([ex + 64 ,ey + 64, cos, sin, self.thetaa]) 
+                    
                 else:
-                    self.bullet_list.pop()
-            
+                    #if there are 5 bullets in the list the last bullet is removed from the list to make space for a new bullet on screen.
+                    self.bullet_list.pop()   
 
             def movebull(self,i): 
-                i[0] += self.vel * i[2]
+                #i is the list containig the information about the configuration of that bullet.
+                #we are considering the velocity of bullet as a vector in the x-y plane hence the resultant velocity is the result of the components of the velocity along the x and y axes.
+                #getting the x component of the bullet velocity so that the bullet moves towards the player with the required configuration. (x component of bullet velocity = velocity*sin(thetaa))
+                i[0] += self.vel * i[2]  
+                #getting the y component of the bullet velocity so that the bullet moves towards the player with the required configuration. (y component of bullet velocity = velocity*cos(thetaa))
                 i[1] += self.vel * i[3]
-
-                bulletss.delete(self,i)
+                #deleting bullets 
+                bulletss.delete(self,i) 
             
 
             def delete(self,i):
-                
-                if i[0] > 1200 or i[1] > 800 or i[1] < 0 or i[0] < 0:
+                #if bullet hits the edges, it is deleted
+                if i[0] > 1200 or i[1] > 800 or i[1] < 0 or i[0] < 0: 
                     self.bullet_list.remove(i)
-
+                #if the bullet hits the player it is deletd
                 elif (i[0] > lad.x) and (i[0] < lad.x + 128)  and (i[1] > lad.y) and (i[1] < lad.y + 128):
-                    lad.health -= 25
+                    #reducing the player health accordingly with impact of each bullet.
+                    lad.health -= 25 
                     self.bullet_list.remove(i)            
 
         font = pygame.font.SysFont('Comic Sans MS', 25)
