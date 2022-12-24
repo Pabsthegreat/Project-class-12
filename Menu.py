@@ -58,13 +58,13 @@ def startgame():
 #---------------------------------------------------------------------------
 
 def rules():
-    win4 = Tk()
-    win4.geometry("600x500")
-    win4.grid()
-    win4.title("Rules")
-    win4.configure(bg = '#ff636f')
+    win2 = Tk()
+    win2.geometry("600x500")
+    win2.grid()
+    win2.title("Rules")
+    win2.configure(bg = '#ff636f')
 
-    Label(win4, text = '''Rules\n 
+    Label(win2, text = '''Rules\n 
 1. Use WASD or arrow keys to move. \n
 2. To kill the enemy, overlap with the enemy and press space.\n
 3. The player has 100 health. Every bullet does 25 damage.\n
@@ -72,25 +72,8 @@ def rules():
 5. The game starts with you and 3 enemies on the screen. \nEvery 5 seconds a new enemy enters. Kill them all to win!\n''',
 font = ("Comic Sans MS", 14), border = 3, bg = '#ff636f').pack(anchor = CENTER)
 
-    Button(win4, text = "Back", font = ("Comic Sans MS", 14), command = win4.destroy).place(x = 500, y = 400)
+    Button(win2, text = "Back", font = ("Comic Sans MS", 14), command = win2.destroy).place(x = 500, y = 400)
     
-#---------------------------------------------------------------------------
-
-def endgame():
-    win2 = Tk()
-    win2.geometry("400x200")
-    win2.grid()
-    win2.title("End Game")
-    win2.configure(bg = '#ff636f')
-    
-    def end():
-        win2.destroy()
-        root.destroy()
-    
-    Label(win2, text = "Are you sure you want to exit?", font = ("Comic Sans MS", 18), bg = '#ff636f').place(x = 20, y = 30)
-    Button(win2, text = "Yes", font = ("Comic Sans MS", 14), command = end, border = 3).place(x = 250, y = 100)
-    Button(win2, text = "No", font = ("Comic Sans MS", 14), command = win2.destroy, border = 3).place(x = 300, y = 100)
-
 #---------------------------------------------------------------------------
 
 def leaderboard():
@@ -126,6 +109,23 @@ def leaderboard():
     con.close()
     
     Button(win3, text = "Back", font = ('Comic Sans MS', 16), command = win3.destroy).place(x = 900, y = 300)
+#---------------------------------------------------------------------------
+
+def endgame():
+    win4 = Tk()
+    win4.geometry("400x200")
+    win4.grid()
+    win4.title("End Game")
+    win4.configure(bg = '#ff636f')
+    
+    def end():
+        win4.destroy()
+        root.destroy()
+    
+    Label(win4, text = "Are you sure you want to exit?", font = ("Comic Sans MS", 18), bg = '#ff636f').place(x = 20, y = 30)
+    Button(win4, text = "Yes", font = ("Comic Sans MS", 14), command = end, border = 3).place(x = 250, y = 100)
+    Button(win4, text = "No", font = ("Comic Sans MS", 14), command = win4.destroy, border = 3).place(x = 300, y = 100)
+
 #---------------------------------------------------------------------------
 
 Startgame = Button(root, text = "Start Game", font = ('Comic Sans MS', 16), command = startgame, padx = 20 , pady = 20, bg = '#c0ae39', fg = '#000000')

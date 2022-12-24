@@ -23,7 +23,7 @@ if __name__ != '__main__':
                 for i in range(n): # Number of passes
                     for j in range(0, n-i-1):
                 
-                        if lst[j][2] == lst[j+1][2]:                    # If scores are equal
+                        if lst[j][2] == lst[j+1][2]:                    # Check if scores are equal
                             if lst[j][3] > lst[j+1][3]:                 # If time is greater
                                 lst[j], lst[j+1] = lst[j+1], lst[j]     # Swap element at jth position with (j+1)th position
 
@@ -44,8 +44,8 @@ if __name__ != '__main__':
                         lst.append(a)
                         
                     lst.append(player)                          #append player data
-                    insertion_sort_scores(lst)
-                    bubble_sort_time(lst)
+                    insertion_sort_scores(lst)                  #sort player ranking based on score
+                    bubble_sort_time(lst)                       #based on time if their scores are equal
 
                     for i in range(len(lst)):                   #using index posn as iterable i, 
                         lst[i][0] = i+1                         #change rank to i+1 since indexing starts from 0
