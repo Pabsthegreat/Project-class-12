@@ -17,7 +17,7 @@ def startgame(): #function to start game
     win1.title("Start Game")
     win1.configure(bg = '#ff636f')
     
-    def win():
+    def win(): #function to be executed if user wins
         winn = Tk()
         winn.geometry('300x300')
         winn.grid()
@@ -26,7 +26,7 @@ def startgame(): #function to start game
         Label(winn, text = 'Congratulations!!! \nYou win!🥳🥳🥳', font = ("Comic Sans MS", 14), border = 3, bg = '#ff636f').place(x = 50, y = 50)
         Button(winn, text = "Back", font = ("Comic Sans MS", 14), command = winn.destroy).place(x = 200, y = 200)
     
-    def lose():
+    def lose(): #function to be executed if user loses
         lose = Tk()
         lose.geometry('300x300')
         lose.grid()
@@ -37,7 +37,7 @@ def startgame(): #function to start game
         Button(lose, text = "Back", font = ("Comic Sans MS", 14), command = lose.destroy).place(x = 200, y = 200)
 
     
-    def retrieve_input():
+    def retrieve_input(): #function to retrieve data on the outcome of the game
         name = textBox.get("1.0", "end-1c")
         win1.destroy()
         result = SQL_Scoring.run_game(name)
@@ -51,7 +51,6 @@ def startgame(): #function to start game
     textBox = Text(win1, height = 1, width = 10, font = ('Comic Sans MS',12))
     textBox.place(x = 200, y = 155)
     buttonCommit = Button(win1, height = 1, width = 10, text = "Enter", font = ('Comic Sans MS', 12), command = lambda:retrieve_input())
-    #command=lambda: retrieve_input() >>> just means do this when i press the button
     buttonCommit.place(x = 150, y = 200)
     Button(win1, text = "Back", font = ("Comic Sans MS", 14), command = win1.destroy).place(x = 300, y = 300)
 
