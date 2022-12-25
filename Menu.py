@@ -2,8 +2,8 @@ from tkinter import * #importing tkinter
 import mysql.connector as m
 from tkinter import ttk
 import SQL_Scoring
-root=Tk()
-root.geometry("1280x720")
+root=Tk() #creating a window
+root.geometry("1280x720") #setting window dimensions
 root.title("Main Menu")
 
 #---------------------------------------------------------------------------
