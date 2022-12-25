@@ -27,6 +27,8 @@ if __name__ != '__main__':
                             if lst[j][3] > lst[j+1][3]:                 # If time is greater
                                 lst[j], lst[j+1] = lst[j+1], lst[j]     # Swap element at jth position with (j+1)th position
 
+            #---------------------------------------------------------------------------
+            
             score, time = game_loop()                           # run the game and store the returned values
             
             player = [100, name, score , time]
