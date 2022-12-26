@@ -54,7 +54,6 @@ def startgame(): #function to start game
     buttonCommit.place(x = 150, y = 200)
     Button(win1, text = "Back", font = ("Comic Sans MS", 14), command = win1.destroy).place(x = 300, y = 300)
 
-    
 #---------------------------------------------------------------------------
 
 def rules(): #function to bring up rules menu

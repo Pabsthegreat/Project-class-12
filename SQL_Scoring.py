@@ -66,13 +66,13 @@ if __name__ != '__main__':
                 mycursor.execute(query2)
                 con.commit()
                 
-                query3 = 'insert into leaderboard values (%s,%s,%s,%s)'
+                query3 = 'insert into leaderboard values (%s,%s,%s,%s)'         #insert new data into sql table
                 mycursor.executemany(query3, lst)
                 con.commit()
 
             con.close()
 
-            if score == 1000:       #return score to decide which window should be displayed
+            if score == 1000:       #return score to decide which window should be displayed - win or lose
                 return 'win'
             else:
                 return 'lose'
