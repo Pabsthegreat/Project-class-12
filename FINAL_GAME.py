@@ -38,6 +38,7 @@ if __name__ == '__main__':
         h16 = pygame.image.load('Hunter_Move/15.png').convert_alpha()
 
         Hunter_Walk = [h1,h2,h3,h4,h5,h6,h7,h8,rest,h10,h11,h12,h13,h14,h15,h16]
+        rest1 = rest
 
         #loading images of enemy
         e1 = pygame.image.load('Enemy_Move/1.png').convert_alpha() 
@@ -59,15 +60,15 @@ if __name__ == '__main__':
 
         Enemy_Walk = [e1,e2,e3,e4,e5,e6,e7,e8,REST,e10,e11,e12,e13,e14,e15,e16]
 
-        rest1 = rest
         bullet = pygame.image.load('pics/Bullet.png').convert_alpha() 
-        pygame.display.set_icon(rest1)
 
         bg =  pygame.image.load('pics/bg-2.jpg')
 
         clock = pygame.time.Clock()
 
         score = 0
+
+        #---------------------------------------------------------------------------
 
         class player(object):
 
@@ -135,6 +136,7 @@ if __name__ == '__main__':
                     color = (0,0,0)
                     pygame.draw.rect(screen,color, pygame.Rect(100, 45, self.health, 20))               
 
+        #---------------------------------------------------------------------------
 
         class rival(object):
             #initialising rival object
@@ -178,26 +180,23 @@ if __name__ == '__main__':
                     left = pygame.transform.rotate(Enemy_Walk[self.COUNT], 90)              #rival faces left
                     screen.blit(left, (self.x, self.y))                                     #display change on screen
                     self.COUNT += 1                                                  #increment iterable variables which goes thru images
-                    self.dir = 'l'                                                          #facing left
                 
                 elif self.velx > 0:
                     right  = pygame.transform.rotate(Enemy_Walk[self.COUNT], -90)         #rightfacing
                     screen.blit(right, (self.x, self.y))
                     self.COUNT += 1
-                    self.dir = 'r'
+                    
 
                 elif self.vely < 0:                                                     #moving up
                     up = pygame.transform.rotate(Enemy_Walk[self.COUNT], 0) 
                     screen.blit(up, (self.x, self.y))
                     self.COUNT += 1
-                    self.dir = 'u'
-
+                    
                 elif self.vely > 0:                                                      #moving down
                     down = pygame.transform.rotate(Enemy_Walk[self.COUNT], 180)
                     screen.blit(down, (self.x, self.y))
                     self.COUNT += 1
-                    self.dir = 'd'
-                
+                                    
                 else:                                                                   #rival stops moving in order to shoot
                     shoot = pygame.transform.rotate(Enemy_Walk[8], self.theta)          #turns by theta angle
                     screen.blit(shoot, (self.x, self.y))                                #displayed on screen
@@ -330,12 +329,12 @@ if __name__ == '__main__':
 
                 elif dir == 'l' and x > 0:
                     turn = math.degrees (math.atan(y/x))
-                    self.Angle = -turn
+                    self.Angle = turn
                                         
                     if (self.Angle <= endAngle1 and self.Angle >= endAngle2) and (rivalradius < radius):
                         rival.shoot(self)
                         #turining the rival to first and second quadrants.
-                        self.theta = self.Angle + 90 
+                        self.theta = 90 - self.Angle 
                         self.shoot_cooldown -= 1
                     else:
                         self.move = True
@@ -356,11 +355,13 @@ if __name__ == '__main__':
 
             #fn called in checkPoint()
             def shoot(self):    
+                # the rival stops moving to take aim and shoot
                 self.velx = 0
                 self.vely = 0
                 # case that bullet has just been shot, the cool down is set back to 20 so there is ample gap between shots.
                 if self.shoot_cooldown == 0:    
                     self.shoot_cooldown = 20
+                    #assigning variables to the bullet class
                     bulletss(self.x, self.y, lad.x, lad.y, self.theta)
 
             #fn called in moveit()
@@ -368,12 +369,13 @@ if __name__ == '__main__':
                 nonlocal score, enemy_dict, killcount
                 #if the player is within the coordinates of the rival, rival is terminated and is removed from the screen and game.
                 if (self.x < lad.x + 64 < self.x + 128) and (self.y < lad.y + 64 < self.y + 128) and keys [pygame.K_SPACE]:
-                    #setting the name of enemy to none so it cannot be called, drawn in the game again.
+                    #setting the value of enemy key to none so it cannot be called/ drawn in the game again.
                     enemy_dict [self.name] = None 
                     #100 points increment per kill, killcount increment by 1 per kill.
                     score += 100   
                     killcount += 1
 
+        #---------------------------------------------------------------------------
 
         class bulletss(object):
             #list of bullets queued to shoot
@@ -381,30 +383,19 @@ if __name__ == '__main__':
             #bullet velocity                       
             vel = 30   
 
-            def __init__(self, ex, ey, px, py, theta1):
+            def __init__(self, ex, ey, px, py, bullet_theta):
                 #(ex, ey) gives us the coordinate of the mid point of the rival , the bullet is spawned and shot from this point.
                 #defining angle by which the bullet must turn in order to face the player.
-                self.thetaa = theta1 
+                self.thetaa = bullet_theta
                 #checking if the bullet list has less than 5 bullets, proceeding to move bullet.
                 if len(self.bullet_list) < 5:  
                     
-                    #angle between the shooting point and the player,we find it so that we can configure the bullet into the right quadrant using propertins of sin and cos of angles.
+                    #angle between the shooting point and the player,we find it so that 
+                    #we can configure the bullet into the right quadrant using propertins of sin and cos of angles.
                     theta = math.atan2((py - ey),(px - ex)) 
                     sin = math.sin(theta)
                     cos = math.cos(theta)
                     
-                    #quadrants to which the bullet belongs is found out by the properties of sin and cos in trigonometry.
-                    if sin >= 0 and cos >= 0:
-                        Q = 1
-
-                    elif sin >= 0 and cos <= 0:
-                        Q = 2
-                    
-                    elif sin <= 0 and cos <= 0:
-                        Q = 3
-                    
-                    elif sin <= 0 and cos >= 0:
-                        Q = 4
                     #the bullet with required configuration is appended into bullet list and queued for shooting.
                     self.bullet_list.append([ex + 64 ,ey + 64, cos, sin, self.thetaa]) 
                     
@@ -414,10 +405,13 @@ if __name__ == '__main__':
 
             def movebull(self,i): 
                 #i is the list containig the information about the configuration of that bullet.
-                #we are considering the velocity of bullet as a vector in the x-y plane hence the resultant velocity is the result of the components of the velocity along the x and y axes.
-                #getting the x component of the bullet velocity so that the bullet moves towards the player with the required configuration. (x component of bullet velocity = velocity*sin(thetaa))
+                #we are considering the velocity of bullet as a vector in the x-y plane hence the resultant velocity 
+                #is the result of the components of the velocity along the x and y axes.
+                #getting the x component of the bullet velocity so that the bullet moves towards the player with the required configuration. 
+                #(x component of bullet velocity = velocity*cos(thetaa))
                 i[0] += self.vel * i[2]  
-                #getting the y component of the bullet velocity so that the bullet moves towards the player with the required configuration. (y component of bullet velocity = velocity*cos(thetaa))
+                #getting the y component of the bullet velocity so that the bullet moves towards the player with the required configuration. 
+                #(y component of bullet velocity = velocity*sin(thetaa))
                 i[1] += self.vel * i[3]
                 #deleting bullets 
                 bulletss.delete(self,i) 
@@ -427,12 +421,15 @@ if __name__ == '__main__':
                 #if bullet hits the edges, it is deleted
                 if i[0] > 1200 or i[1] > 800 or i[1] < 0 or i[0] < 0: 
                     self.bullet_list.remove(i)
-                #if the bullet hits the player it is deletd
+                #if the bullet hits the player it is deleted
                 elif (i[0] > lad.x) and (i[0] < lad.x + 128)  and (i[1] > lad.y) and (i[1] < lad.y + 128):
                     #reducing the player health accordingly with impact of each bullet.
                     lad.health -= 25 
                     self.bullet_list.remove(i)            
 
+        #---------------------------------------------------------------------------
+
+        #setting a font to be used to display text on screen
         font = pygame.font.SysFont('Comic Sans MS', 25)
         health_text = font.render('Health: ', False, (0, 0, 0), (122,122,122))
 
@@ -455,7 +452,7 @@ if __name__ == '__main__':
         enemy_dict = {'rival_1':rival_1,'rival_3':rival_3,'rival_7': rival_7}               #rivals present on screen
         
         def maindraw():                                 #draws all characters on screen
-            screen.blit(bg, (0,0))
+            screen.blit(bg, (0,0))                      #draws the screen bg
             for enemy in enemy_dict:
                 if enemy_dict[enemy] != None:
                     enemy_dict[enemy].draw()
@@ -469,7 +466,7 @@ if __name__ == '__main__':
             screen.blit(timelabel, (1050,0))
             
             if len(bulletss.bullet_list) != 0:
-                i = bulletss.bullet_list[j]
+                i = bulletss.bullet_list[bull_iterable]
                 dishoom = pygame.transform.rotate(bullet,i[4])                 #turns bullet in direction for shooting
                 screen.blit(dishoom, (i[0], i[1]))                             #displays bullet on screen
                 bulletss.movebull(bulletss,i)                                  #fn to move bullet
@@ -479,9 +476,11 @@ if __name__ == '__main__':
         milliseconds = 0                            
         seconds = 0                                 #time in seconds
         new_guy_timer = 0                           #time in 
-        j = 0                                       #iterable to iterate through bullet_list
+        bull_iterable = 0                                       #iterable to iterate through bullet_list
         killcount = 0                               #no. of enemies killed
         running = True
+
+        #---------------------------------------------------------------------------
 
         while running:                                                         #game loop
             clock.tick(32) 
@@ -500,10 +499,10 @@ if __name__ == '__main__':
             if killcount == len(enemy_dict):                                   #if the player has killed all rivals
                 running = False                                                #stop the game
         
-            if j < len(bulletss.bullet_list) - 1:                              #so that index does not go out of range
-                j += 1                                                         #increment iterable
+            if bull_iterable < len(bulletss.bullet_list) - 1:                              #so that index does not go out of range
+                bull_iterable += 1                                                         #increment iterable
             else:
-                j = 0                                                          #reset to 0 if it is out of range
+                bull_iterable = 0                                                          #reset to 0 if it is out of range
 
             keys = pygame.key.get_pressed()                                    #list of all keys on keyboard
             
@@ -511,7 +510,6 @@ if __name__ == '__main__':
                 lad.x -= lad.vel                                               #player co-ordinate changes with assigned velocity,
                 lad.dir = "left"                                               #direction is assigned as left.
                 rest1 = pygame. transform. rotate(rest, 90)                    #in case key is released, character remains facing left
-
 
             elif keys [pygame.K_RIGHT] or keys [pygame.K_d]  :
                 lad.x += lad.vel
@@ -527,7 +525,6 @@ if __name__ == '__main__':
                 lad.y += lad.vel
                 lad.dir = "down"
                 rest1 = pygame. transform. rotate(rest, 180)
-            
             
             milliseconds += clock.tick_busy_loop(150)
             if milliseconds > 150:                                          
