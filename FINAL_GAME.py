@@ -3,7 +3,7 @@ Co-ordinate systems work differently in pygame as in real math. The origin is in
 and +x-axis is towards right & +y-axis is towards down. Quadrant 1 is bottom right, Quadrant 2 is bottom left,
 Quadrant 3 is top left, and Quadrant 4 is top right.
 '''
-if __name__ != '__main__':
+if __name__ == '__main__':
     def game_loop():
         import pygame
         import math
@@ -12,6 +12,12 @@ if __name__ != '__main__':
         #creating the screen
         screen = pygame.display.set_mode((1200,800))
         pygame.display.set_caption("Hunter Assassin")
+
+        
+        pygame.mixer.init()
+        pygame.mixer.music.load("theme.wav")     
+        pygame.mixer.music.set_volume(1)
+        pygame.mixer.music.play(-1)  
 
         # loading all images of player
         h1 = pygame.image.load('Hunter_Move/1.png').convert_alpha() 
@@ -478,7 +484,8 @@ if __name__ != '__main__':
         running = True
 
         while running:                                                         #game loop
-            clock.tick(32)                                                     #32 ms delay for better accuracy
+            clock.tick(32) 
+                                                    #32 ms delay for better accuracy
                 
             for event in pygame.event.get():                                
                 if event.type == pygame.QUIT:                                  #if game is closed
@@ -551,5 +558,5 @@ if __name__ != '__main__':
             maindraw()                                                         #all draw functions are called here
             
         pygame.quit()                                                          #closes pygame
-
         return score, seconds
+game_loop()
