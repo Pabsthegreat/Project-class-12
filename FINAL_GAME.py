@@ -13,11 +13,6 @@ if __name__ == '__main__':
         screen = pygame.display.set_mode((1200,800))
         pygame.display.set_caption("Hunter Assassin")
 
-        
-        pygame.mixer.init()
-        pygame.mixer.music.load("theme.wav")     
-        pygame.mixer.music.set_volume(1)
-        pygame.mixer.music.play(-1)  
 
         # loading all images of player
         h1 = pygame.image.load('Hunter_Move/1.png').convert_alpha() 
