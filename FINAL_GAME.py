@@ -551,4 +551,5 @@ if __name__ == '__main__':
             
         pygame.quit()                                                          #closes pygame
         return score, seconds
+    
 game_loop()

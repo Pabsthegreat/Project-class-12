@@ -2,7 +2,7 @@ from FINAL_GAME import game_loop
 import mysql.connector as m
 if __name__ != '__main__':
     def run_game(name):             #fn called in menu.py
-            con = m.connect(host = 'localhost', username = 'root', passwd = 'fab4', db = 'project')
+            con = m.connect(host = 'localhost', username = 'root', passwd = 'dashmaharaj05', db = 'project')
 
             def insertion_sort_scores(lst):         #sort the scores from highest to lowest using insertion sort algorithm
                 length = len(lst)
