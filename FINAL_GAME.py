@@ -3,7 +3,7 @@ Co-ordinate systems work differently in pygame as in real math. The origin is in
 and +x-axis is towards right & +y-axis is towards down. Quadrant 1 is bottom right, Quadrant 2 is bottom left,
 Quadrant 3 is top left, and Quadrant 4 is top right.
 '''
-if __name__ == '__main__':
+if __name__ != '__main__':
     def game_loop():
         import pygame
         import math
@@ -551,5 +551,3 @@ if __name__ == '__main__':
             
         pygame.quit()                                                          #closes pygame
         return score, seconds
-    
-game_loop()
