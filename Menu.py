@@ -2,6 +2,7 @@ from tkinter import *   #importing tkinter
 import mysql.connector as m
 from tkinter import ttk
 import SQL_Scoring
+from db_config import load_db_config
 root=Tk() #creating a window
 root.geometry("800x600") #setting window dimensions
 root.title("Main Menu")
@@ -97,7 +98,8 @@ def leaderboard(): #function to show leaderboard stored in SQL table
     tree.heading('#4', text = 'Time')
     tree.pack()
 
-    con = m.connect(host = 'localhost', username = 'root', passwd = 'fab4', db = 'project') #connector object establishing connection to SQL
+    cfg = load_db_config()
+    con = m.connect(host = cfg["host"], username = cfg["user"], passwd = cfg["password"], db = cfg["database"]) #connector object establishing connection to SQL
     mycursor = con.cursor() #creating cursor object
     query = 'select * from leaderboard' #query to select all values from leaderboard
     mycursor.execute(query) #executing query and storing values returned in cursor object

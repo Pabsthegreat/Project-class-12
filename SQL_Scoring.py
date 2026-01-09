@@ -1,8 +1,11 @@
 from FINAL_GAME import game_loop
 import mysql.connector as m
+from db_config import load_db_config
+
 if __name__ != '__main__':
     def run_game(name):             #fn called in menu.py
-            con = m.connect(host = 'localhost', username = 'root', passwd = 'dashmaharaj05', db = 'project')
+            cfg = load_db_config()
+            con = m.connect(host = cfg["host"], username = cfg["user"], passwd = cfg["password"], db = cfg["database"])
 
             def insertion_sort_scores(lst):         #sort the scores from highest to lowest using insertion sort algorithm
                 length = len(lst)
